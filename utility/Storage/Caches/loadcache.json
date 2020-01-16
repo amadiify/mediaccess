@@ -54,5 +54,9 @@
     ".\/custom\/footer.html": {
         "hash": "b457562442fdc85a972c2112a084d02c",
         "path": "utility\/Storage\/Caches\/Footers\/cache.420f043b55cd0ea699bdd46745316f3d.AppError.footer.html"
+    },
+    ".\/pages\/App\/Views\/patient.html": {
+        "hash": "98045b4007b11d4057fc5b58642e5ffc",
+        "path": "utility\/Storage\/Caches\/Views\/cache.803e5fed0ba450501e29ca82182e19e6.App.patient.html"
     }
 }

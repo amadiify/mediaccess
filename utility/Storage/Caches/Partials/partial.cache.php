@@ -7,5 +7,7 @@ return array (
   '6daf26673995187cb476787c910843c5_search-form.html' => 'e86b6702c740977fa90e69b7ead20c88',
   'd853fd2f3909097305422923445b23e4_list-row.html' => '735b0df5c925bd76e52c4d11d0891d14',
   '08b4ab99f0bc0b359a1b0936b954832f_drug-list.html' => 'b9173eb038a63c1a92194c75e7d7034b',
+  'aa2aa113039792865d099be4abb3816d_reg-form.html' => 'b00455e790751242556de7ce59dd4356',
+  '31142f4772a4832cfbff73f0139fdcbb_form1.html' => '1b3ea2febd465c09e02bab1baf639a51',
 );
 ?>
