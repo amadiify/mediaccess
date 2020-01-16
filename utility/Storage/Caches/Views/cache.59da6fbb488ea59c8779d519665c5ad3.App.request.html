@@ -1,0 +1,75 @@
+<div class="container">
+
+		<div class="breadcrumb-content-area" style="margin-top: 50px;">
+			<div class="breadcrumb-area">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="<?=url("")?>">Home</a></li>  
+					<li class="breadcrumb-item"><a href="<?=url("list/$type")?>"><?=ucfirst($type)?></a></li>  
+					<li class="breadcrumb-item"><a href="<?=url("about/$who")?>"><?=$fullname?></a></li>  
+					<li aria-current="page" class="breadcrumb-item active">Request</li>
+				</ol>
+			</div>
+		</div>
+	
+		<div class="col-12 ptb-100" style="padding-bottom: 40px">
+			<div class="section-header" style="margin-bottom:10px;">
+				<h2 class="section-title">Request <span>Service</span></h2>
+				<p><?=$fullname?> typically responds within 30 minutes.</p>
+				<div class="divider">
+					<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+
+			<div class="request-form">
+				<form action="" method="POST">
+						<?=\Moorexa\Rexa::runDirective(true,'csrf')?>
+					<div class="row">
+
+					<div class="col-lg-3">
+						<section class="live-feed">
+							<span>Total</span>
+							<h1>₦0.00</h1>
+							<span>Service Type</span>
+							<h4>None</h4>
+						</section>
+					</div>
+
+					<div class="col-lg-9 request-list">
+						<ul>
+							<li><span>Service Type</span> <span>
+								<input type="hidden" name="service_type" required>
+								<input type="hidden" name="accountid" value="<?=$account->accountid?>">
+								<input type="hidden" name="consultant" value="<?=ucfirst($type)?> <?=$fullname?>" required>
+								<ul class="selectors" data-target="service_type">
+									<?php $groups = Query::getGroups($account->accounttypeid);?>
+									<?php
+$groups = $groups;if ($groups->rows > 0){
+while ($group = $groups->obj())
+{ ?>
+										<li data-amount="<?=number_format($group->service_fee, 2, '.', ',')?>"><?=$group->group_name?></li>
+									<?php }} ?>
+								</ul>
+							</span></li>
+							<li><span>Private Message</span> <span>
+								<textarea name="request_message" rows="10" placeholder="A private message from you to <?=$fullname?>"></textarea>
+							</span></li>
+						</ul>
+
+						<button type="submit" class="btn btn-default" style="justify-content: center;" >Make Payment</button>
+					</div>
+
+					
+					</div>
+
+					<div class="row">
+						<div class="col-lg-3"></div>
+						<div class="col-lg-9" style="display: flex; justify-content: flex-end;">
+							<img src="<?=$assets->image("we-accept.jpeg")?>" class="img-responsive we-accept">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>

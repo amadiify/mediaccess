@@ -1,0 +1,35 @@
+<div class="container">
+	<div class="ptb-10" style="padding-bottom: 40px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Order Details</h2>
+			<p>Review Customer Billing Information.</p>
+			<div class="divider">
+				<img $src="icon/divider.png" alt="icon">
+			</div>
+		</div>
+	</div>
+
+	{$billing = Query::getBillingInformation($txref);}
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="overall-info-area default-form-area">
+				<div class="table-responsive">
+					<table class="table">
+						@foreach ($billing as $key => $value)
+							<tr>
+								<td>{ucfirst($key)}</td>
+								<td>{Wrapper::billingInfo($key, $value)}</td>
+							</tr>
+						@endforeach
+
+							<tr>
+								<td></td>
+								<td><a $href="orders" class="btn btn-default">Go Back</a></td>
+							</tr>
+					</table>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

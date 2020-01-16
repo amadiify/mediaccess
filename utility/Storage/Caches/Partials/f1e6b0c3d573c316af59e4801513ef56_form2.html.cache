@@ -1,0 +1,40 @@
+<div class="form-group">
+    <input name="telephone" class="form-controllar" type="tel" placeholder="Telephone Number" value="<?=$model->telephone?>" required>
+    <?=$model->onError('telephone')?>
+</div>
+
+<div class="form-group">
+    <input name="address" class="form-controllar" type="text" placeholder="Home Address" value="<?=$model->address?>" required>
+</div>
+
+<div class="form-group form-select">
+    <select class="form-controllar" name="sexid" required>
+        <option value="">Sex</option>
+        <?php
+$sex = \Moorexa\DB::sql('SELECT * FROM sex ');if ($sex->rows > 0){
+while ($row = $sex->obj())
+{ ?>
+            <option value="<?=$row->sexid?>"><?=ucwords($row->sex)?></option>
+        <?php }} ?>
+    </select>
+    <?=$model->onError('sexid')?>
+</div>
+
+<div class="form-group form-select">
+    <select class="form-controllar" name="stateid" required>
+        <option value="">State/City</option>
+        <?php
+$states = \Moorexa\DB::sql('SELECT * FROM states ');if ($states->rows > 0){
+while ($row = $states->obj())
+{ ?>
+            <option value="<?=$row->stateid?>"><?=ucwords($row->state)?></option>
+        <?php }} ?>
+    </select>
+    <?=$model->onError('stateid')?>
+</div>
+
+<div class="remember-and-password">
+    <div class="login-form-remember"> 
+        <label><input id="remembermesignin" value="" type="checkbox" name="iagree" required><span>I agree to the <a href="">terms and conditions</a></span></label>
+    </div>
+</div><!--/.remember-and-password-->

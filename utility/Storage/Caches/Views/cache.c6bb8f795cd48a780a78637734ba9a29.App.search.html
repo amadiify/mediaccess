@@ -1,0 +1,117 @@
+<div class="container">
+
+		<div class="breadcrumb-content-area" style="margin-top: 50px;">
+			<div class="breadcrumb-area">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="<?=url("")?>">Home</a></li>  
+					<li aria-current="page" class="breadcrumb-item active">Search</li>
+				</ol>
+			</div>
+		</div>
+
+		<div class="col-6 ptb-100" style="padding-bottom: 40px">
+			<div class="section-header" style="margin-bottom:10px;">
+				<?php if($searchValue != '') { ?>
+					<h2 class="section-title">Search <span>Result<?=$total > 1 ? 's' : ''?></span></h2>
+					<p><?=$total?> record<?=$total > 1 ? 's' : ''?> found!</p>
+				<?php } else { ?>
+					<h2 class="section-title">Search for <span>Anything</span></h2>
+					<p>Be expressive, tell us what you want</p>
+				<?php } ?>
+				<?=\Moorexa\Rexa::runDirective(true,'partial','search-form')?>
+			</div>
+		</div>
+
+		<div class="tab-content filter-tab-content">		
+			<!--~~~~~ Start Tab Pane ~~~~~--> 
+			<div class="tab-pane fade show active" id="listing_list" role="tabpanel">
+				<div class="row">
+					
+					<div class="col-lg-12">
+
+						<div class="popular-categories-section popular-categories-style-one">
+							<div class="row categories-list">
+
+								<?php $account_types = Query::publicAccounts();?>
+								
+								<?php
+$account_types = $account_types;if ($account_types->rows > 0){
+while ($list = $account_types->obj())
+{ ?>
+									<div class="col-lg-3 col-md-6">
+										<div class="single-cat">
+											<div class="icon">
+												<span class="<?=$list->icon?>"></span>
+											</div>
+											<?php $type = strtolower($list->accounttype);?>
+											<h3 class="title"><a href="<?=url("list/$type$queryString")?>"><?=ucwords($list->accounttype)?><br>
+											<small style="display: block; position: relative; top: 10px; font-size: 14px; font-weight: bold;">
+												(<?=isset($applistData['get' . ucfirst($type)]) && is_array($applistData['get' . ucfirst($type)]) ? count($applistData['get' . ucfirst($type)]) : 0?>)
+											</small></a></h3>
+										</div>
+									</div>
+								<?php }} ?>
+									
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<?php if($searchValue != '') { ?>
+				<div class="row">
+					<div class="col-lg-8">
+
+						<div class="section-header" style="margin-bottom:10px; margin-top: 20px;">
+							<h2 class="section-title">Top <span>Match<?=$total > 1 ? 'es' : ''?></span></h2>
+							<p>Showing result<?=$total > 1 ? 's' : ''?> for '<?=$searchValue?>'</p>
+							<div class="divider">
+								<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+							</div>
+						</div>
+
+						<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+
+						<?php foreach ($applistData as $type => $list) { ?>
+							<?php if(is_array($list) && count($list) > 0) { ?>
+								
+								<?php $type = preg_replace('/^(get)/', '', $type);?>
+
+								<?=\Moorexa\Rexa::runDirective(true,'partial','list-row', ['list' => $list, 'type' => $type])?>
+								
+							<?php } ?>
+						<?php } ?>
+
+					</div>
+					<!--~~~~~ Start sidebar ~~~~~-->
+					<div class="col-lg-4">
+						<div class="sidebar">
+							
+							<!--~~~~ Start Widget Todo Categories ~~~~-->
+							<aside class="widget widget-todo-categories">
+								<h4 class="widget-title"><span class="icon-list1"></span>Top Categories</h4>
+								<div class="widget-content">
+									<ul>  
+										<?php
+$account_types = \Moorexa\DB::sql('SELECT * FROM account_types ');if ($account_types->rows > 0){
+while ($row = $account_types->obj())
+{ ?>
+											<?php if($row->showpublic == 1) { ?>
+												<?php $count = Query::isVerified($row->accounttypeid);?>
+												<li class="cat-item">
+													<a href="<?=url("list/$row->accounttype")?>"><?=ucwords($row->accounttype)?><span class="count"><?=$count?></span></a>
+												</li>
+											<?php } ?>
+										<?php }} ?>
+									</ul>
+								</div>
+							</aside><!--~./ end widget todo categories ~-->
+							
+						</div>
+					</div><!--~./ end sidebar ~-->
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+
+</div>

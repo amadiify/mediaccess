@@ -1,0 +1,118 @@
+<div class="container">
+	<div class="col-12 ptb-20" style="padding-bottom: 30px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Prescribe</h2>
+			@if (count($list) == 0)
+				<p>You have (0) drugs to prescribe. <a $href="drugs" style="text-decoration: underline;">Click here</a> to get started.</p>
+			@else
+				<p>You have ({count($list)}) drug{count($list) > 1 ? 's' : ''} ready for prescribtion. <a $href="drugs" style="text-decoration: underline;">Click here</a> to add more.</p>
+			@endif
+			<div class="divider">
+				<img $src="icon/divider.png" alt="icon">
+			</div>
+		</div>
+	</div>
+
+	@alert;
+
+	@if (count($list) > 0)
+		<form action="" method="POST">
+			@csrf
+			<div class="row">
+				<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Drug Name</th>
+							<th>Doctor Note</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						@foreach ($list as $drugName => $quantity)
+							<tr>
+								<td><a $href="prescribe/remove/{$drugName}" class="text text-danger" title="Remove {$drugName}"><i class="fa fa-trash"></i></a></td>
+								<td>{$drugName} <input type="hidden" name="drug[]" value="{Query::getDrugId($drugName)}"></td>
+								<td>
+									<textarea class="form-control" name="note[]" placeholder="How should this drug be used?"></textarea>
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<td></td>
+							<td style="display: flex; align-items: center; height: 90px;">Patient you are prescribing to</td>
+							<td>
+								<div class="form-group">
+									{$orders = Query::getOrders(session()->get('account.id'));}
+									<select name="patientid" class="form-control" required>
+										<option value="">Please select any of your patient</option>
+										@fetch ($orders, 'order')
+											@if ($order->dateclosed == null)
+												{$patient = Query::getAccount($order->fromid);}
+												<option value="{$patient->accountid}">{ucwords($patient->firstname . ' ' . $patient->lastname)}</option>
+											@endif
+										@endfetch
+									</select>
+								</div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				</div>
+
+				<div class="form-submit form-group">
+					<button type="submit" class="btn btn-default" style="color: #fff;">Prescribe</button>
+				</div>
+			</div>
+		</form>
+	@endif
+
+	<div class="row">
+		<div class="table-responsive">
+			<table class="table mt-15 overall-info-area default-form-area">
+				<thead>
+					<tr>
+						<th>Patient</th>
+						<th>Prescribtion Code</th>
+						<th>Drugs</th>
+						<th>Date Issued</th>
+						<th>Date Used</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@fetch ($prescriptions, 'prescription')
+						<tr>
+							{$account = $prescription->from('account', 'accountid')->get();}
+
+							<td>{ucwords($account->firstname.' '.$account->lastname)}</td>
+							<td>{$prescription->prescribtion_code}</td>
+							<td>
+								<ol>
+									{$json = json_decode($prescription->drugs);}
+									
+									@foreach ($json as $index => $obj)
+
+										{$drug = Query::getDrugInfo($obj->drugid);}
+
+										@if ($drug->rows > 0)
+											<li><h4>{$drug->drug_name}</h4>
+											<p>{$obj->note}</p></li>
+										@endif
+
+									@endforeach
+								</ol>
+							</td>
+							<td>{$prescription->dateissued}</td>
+							<td>{$prescription->dateused}</td>
+						</tr>
+					@endfetch	
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

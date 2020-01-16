@@ -1,0 +1,172 @@
+.product-detail-slide .item{
+    height: 600px;
+    width: 470px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-origin: content-box;
+    position: relative;
+}
+
+.product-detail-slide .item .preview-btn{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #87C033;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.product-detail-slide .item .preview-btn:hover{cursor: pointer;}
+
+.product-meta .product-status {
+    color: #87c033;
+}
+
+.product-status2{ 
+    color: #f00;
+    font-size: 12px;
+}
+
+.product-status1{ 
+    color: #87c033;
+    font-size: 12px;
+}
+
+.product-meta .product-price-and-rating .product-price {
+    color: #ff2b2b;
+    font-weight: 500;
+}
+
+.text-theme{color: #2f669c !important;}
+.filter-tab-area.style-three .nav-tabs > li > a.active {
+    color:#87C033;
+}
+
+.filter-tab-area.style-three .nav-tabs > li > a::before {
+    background-color:#87C033;
+}
+.text-line{text-decoration: underline; text-decoration-color: #000;
+text-decoration-line:underline; text-decoration-thickness: 1px;}
+.bg-gray {
+    background-color: #FBFBFB;
+}
+
+#preview-image-wrapper{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to right, rgba(135, 192, 51,0.9), rgba(135, 192, 51,0.9));
+    z-index: 999;
+    transition: opacity 0.8s ease-in-out;
+    transform-origin: center;
+    opacity: 0;
+    overflow: hidden;
+}
+#preview-image-wrapper.show{opacity: 1;}
+
+#preview-image-wrapper .preview-image{width: 50%; display: none;
+flex-direction: column; justify-content: center; align-items: center;
+transition: all 0.5s ease-in-out;
+transform-origin: bottom;
+transform:translateY(100px);
+opacity: 0;
+max-height: 70%;
+}
+#preview-image-wrapper .preview-image.show{opacity: 1; transform: translateY(0px);}
+#preview-image-wrapper .preview-image img{border-radius: 30px;}
+#preview-image-wrapper .preview-image h2{color: #fff; font-weight: normal;
+font-size: 20px; margin-bottom: 30px;}
+#preview-image-wrapper .preview-image .btn{background: #fff; color: #87C033;
+margin-top: 30px;}
+.entry-product-bg{
+    width: 270px;
+    height: 340px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.shop-item .product-item-info .product-title a:hover {
+    color:#87C033;
+}
+.item-shipping-option{display: flex; justify-content: center;
+align-items: center;}
+.item-shipping-option .form-group{
+    border-bottom: 1px solid#ddd;
+    height: 47px;
+    margin-top: -11px;
+    margin-left: 13px;
+    color:#000;
+}
+.nice-select{font-size: 16px;}
+
+.enter-code-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background-image: linear-gradient(to right, rgba(135, 192, 51,0.9), rgba(135, 192, 51,0.9));
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.6s ease-in-out;
+    opacity: 0;
+}
+
+.enter-code-modal.show{opacity: 1;}
+
+.enter-code-modal > .modal-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 20px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    width: 50%;
+    padding: 20px;
+    position: relative;
+    opacity: 0;
+    transition: all 0.6s ease-in-out;
+}
+
+.enter-code-modal > .modal-wrapper.show{
+    opacity: 1;
+}
+
+.enter-code-modal > .modal-wrapper > h1{
+    font-size: 20px;
+    align-self: flex-start;
+    margin-bottom: 0px;
+}
+
+.enter-code-modal > .modal-wrapper > .close-modal{
+    position: absolute;
+    right: -10px;
+    top: -35px;
+    width: 30px;
+    height: 30px;
+}
+
+.enter-code-modal > .modal-wrapper > .close-modal > img{
+    width: 80%;
+}
+
+.enter-code-modal > .modal-wrapper > .close-modal:hover{
+    cursor: pointer;
+}
+
+.enter-code-modal > .modal-wrapper > input{
+    box-shadow: none;
+}

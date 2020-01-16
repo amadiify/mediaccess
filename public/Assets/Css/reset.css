@@ -1,0 +1,42 @@
+.frontpage-banner-section.frontpage-banner-style-two.bg-overlay::before, .frontpage-banner-section.frontpage-banner-style-five.bg-overlay::before, .frontpage-banner-section.frontpage-banner-style-six.bg-overlay::before {
+    background-color: rgba(22, 22, 22, 0.32);
+}
+.frontpage-banner-section .frontpage-banner-content .banner-desc {
+    color: #fff;
+}
+
+::-moz-selection {
+    background-color: #2f669c !important;
+    color: #fff;
+}
+
+::-webkit-selection {
+    background-color: #2f669c !important;
+    color: #fff;
+}
+
+::-ms-selection {
+    background-color: #2f669c !important;
+    color: #fff; 
+}
+
+*[data-wishlist="oauth"]{color: #fff;}
+*[data-wishlist="oauth"]:hover{color: #7fbc56 !important;}
+*[data-wishlist="false"]{color: #ffb400 !important;}
+*[data-wishlist="false"]:hover{color: #ffb400 !important;}
+*[data-wishlist="true"]:hover{color: #ffb400 !important;}
+.form-controllar{font-size: 14px;}
+.listing-leave-review #review_form .form-submit #submit {
+    background-color: #87c034;
+}
+.topbutton{background-color: #2f669c;}
+*[data-wishlist-text="true"]{color: #000 !important;}
+*[data-wishlist-text="true"]:hover{color: #2f669c !important;}
+.not-verified::after{display: none;}
+.verified::before{
+    color: #00A7EA;
+    content: "";
+    font-family: "FontAwesome";
+    font-size: 16px;
+    padding-right: 5px;
+}

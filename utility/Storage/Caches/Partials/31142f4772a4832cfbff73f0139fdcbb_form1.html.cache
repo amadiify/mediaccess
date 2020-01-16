@@ -1,0 +1,30 @@
+<input type="hidden" name="accounttypeid" value="<?=$accounttypeid?>">
+<div class="form-group">
+    <input name="firstname" class="form-controllar" type="text" placeholder="First Name" value="<?=$model->firstname?>" required>
+    <?=$model->onError('firstname')?>
+</div>
+
+<div class="form-group">
+    <input name="lastname" class="form-controllar" type="text" placeholder="Last Name" value="<?=$model->lastname?>" required>
+    <?=$model->onError('lastname')?>
+</div>
+
+<div class="form-group">
+    <input id="email" name="email" class="form-controllar" type="email" placeholder="Email Address" value="<?=$model->email?>" required>
+    <?=$model->onError('email')?>
+</div>
+
+<div class="form-group">
+    <input id="username" name="username" class="form-controllar" type="text" placeholder="Username" value="<?=$model->username?>" required>
+    <?=$model->onError('username')?>
+</div>
+
+<div class="form-group">
+    <input id="pass" name="password" class="form-controllar" type="password" placeholder="Password" value="<?=$model->password?>" required>
+    <?=$model->onError('password')?>
+</div>
+
+<div class="form-group">
+    <input name="refercode" class="form-controllar" type="text" placeholder="Referer Code (optional)" value="<?=$model->refercode?>">
+    <?=$model->onError('refercode')?>
+</div>

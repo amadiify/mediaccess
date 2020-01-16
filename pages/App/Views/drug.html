@@ -1,0 +1,338 @@
+<!--********************************************************-->
+    <!--********************* SITE CONTENT *********************-->
+    <!--********************************************************-->
+    <div class="site-content">
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Product Details Section
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+		<div class="container">
+			<div class="row">
+				<div class="breadcrumb-content-area" style="margin-top: 50px;">
+					<div class="breadcrumb-area">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a $href="/">Home</a></li>  
+							<li class="breadcrumb-item"><a $href="pharmacy/$pharmacy">{$pharmacy}</a></li>  
+							<li class="breadcrumb-item"><a $href="pharmacy/$pharmacy/category/$category">{$category}</a></li>  
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        <div class="products-details-area">
+            <!--~~~~~ Start Single Products Details ~~~~~-->
+            <div class="single-products-details ptb-100">
+				
+                <div class="container">
+
+                    <div class="row align-items-center">
+                        <div class="col-lg-5">
+                            <div class="single-slider-item">
+                                <ul class="product-detail-slide owl-carousel">
+                                    <li class="item" $background-image="$drug->image" onmousemove="followMouse(event)">
+										<div class="preview-btn" onclick="previewScreen(event)">
+											<i class="fa fa-search"></i>
+										</div>
+                                    </li>							
+                                </ul>
+                            </div>
+						</div>
+						{$stars = $this->getTotalRating($drug->drug->drugid, $ratings, $allratings);}
+                        <div class="col-lg-7">
+                            <div class="product-item-info">
+								
+                                <h3 class="product-title">{ucwords($drugName)}</h3>
+                                <div class="product-meta">
+                                    <div class="product-price-and-rating">
+                                        <div class="product-price">₦{number_format($drug->drug->price, 2, '.', ',')}</div>
+                                        <div class="product-rating">
+                                            <span class="rating">
+												@foreach ($stars as $i => $star)
+													<i class="fa {$star}"></i>
+												@endforeach
+                                                <span style="margin-left: 10px;"> {$allratings} Rating{$allratings > 1 ? 's' : ''}</span>
+                                            </span>
+                                        </div>
+									</div>
+									@if ($drug->drug->isavaliable == 1)
+                                    <div class="product-status1">
+                                        Available In Stocks
+									</div>
+									@else
+									<div class="product-status2">
+                                        Not Available In Stocks
+									</div>
+									@endif
+                                </div>
+                                <div class="description">
+                                    <p>
+										{substr($drug->drug->description, 0, 150)} ...
+									</p>
+
+									@if ($drug->drug->prescribed == 1)
+									<p class="text text-line">
+										This drug must be prescribed by a doctor before it can be sold to you. Click add to cart if you have obtained a prescribtion code.										
+									</p>
+									@endif
+								</div>
+
+								@alert-danger;
+
+								@if ($drug->drug->isavaliable == 1)
+                                <form action="{url('cart')}" method="POST">
+									@csrf;
+									<div class="product-size-color">
+										<div class="item-shipping-option">
+											<h5 class="small-title">Shipping Option</h5>
+											<div class="form-group">
+											<select name="shipping_option">
+												@fetch($groups, 'group')
+													<option value="{$group->groupid}">{ucwords($group->group_name)}</option>
+												@endfetch
+											</select>
+											</div>
+										</div>
+									</div>
+                                    <div class="product-detail-bottom">
+                                        <div class="input-spinner number">
+                                            <a href="javascript:void(0)" class="minus">-</a>
+											<input id="product-number" type="text" name="quantity" value="1">
+                                            <a href="javascript:void(0)" class="plus">+</a>
+										</div><!--/.input-spinner-->
+										<input type="hidden" name="drugid" value="{$drug->drug->drugid}">
+										<input type="hidden" name="prescribed" value="{$drug->drug->prescribed}">
+										<input type="hidden" name="pharmacyid" value="{$drug->drug->pharmacyid}">
+                                        <div class="remove-cart">
+											@if (!Wrapper::cartHasDrug($drug->drug->drugid, $cartid))
+												<button class="btn btn-default" onclick="addToCart(event)"><span>+</span> Add to Cart</button>
+											@else
+												<a $href="cart/remove/$cartid" class="btn btn-default"><span>-</span> Remove from Cart</a>
+											@endif
+                                        </div>
+                                        <div class="share-and-whishlist">
+                                            <!-- <a class="add-to-whishlist" href="#"><span class="icon-heart"></span></a>~./ add-to-whishlist ~ -->
+                                            <div class="product-share">
+                                                <div class="share-link">
+                                                    <a href="#"><span class="fa fa-share-alt"></span></a>
+                                                    <ul class="share-list">
+                                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+								</form>
+								@else
+								<br>
+								<a href="javascript:history.back()" class="btn btn-default"><i class="fa fa-arrow-left"></i> Continue Shopping</a>
+								@endif
+                            </div>
+                        </div>			
+                    </div>
+                </div> 
+            </div><!--~./ end single products details ~-->
+            
+            <!--~~~~~ Start Products Details Tab Area ~~~~~-->
+            <div class="products-details-tab-area ptb-100 bg-gray">
+                <div class="container">
+                    <div class="row">
+						{$reviews = Query::getDrugReviews($drug->drug->drugid);}
+                        <div class="col-12">
+                            <div class="filter-tab-area style-three">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li>
+                                        <a class="active" data-toggle="tab" href="#product_description" role="tab">Full Description</a>          
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#product_details" role="tab">Details</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#product_reviews" role="tab">Reviews ({$reviews->rows})</a>
+                                    </li>
+                                </ul>
+                            </div><!--~./ end filter tab area ~-->
+                            
+                            <div class="tab-content filter-tab-content">
+                                <!--~~~~~ Start Tab Pane ~~~~~--> 
+                                <div class="tab-pane fade show active product-description" id="product_description" role="tabpanel">
+                                    <p>{ucfirst($drug->drug->description)}</p>
+                                </div><!--~./ end tab pane ~-->
+                                
+                                <!--~~~~~ Start Tab Pane ~~~~~--> 
+                                <div class="tab-pane fade" id="product_details" role="tabpanel">
+                                    <div class="product-desc">
+                                        <span class="item-number"><b>Prescribed :</b> {unless($drug->drug->prescribed == 1, ['Yes', 'No'])}</span>
+                                        <span class="item-cat"><b>Category :</b> {$category}</span>
+                                        <span class="item-cat"><b>Sold By :</b> {$pharmacy}</span>
+										<span class="item-cat"><b>Telephone :</b> 
+											@if (session()->has('account.id'))
+												<a href="tel:{$drug->account->telephone}" style="color: inherit; outline: none;">{$drug->account->telephone}</a>
+											@else
+												<a $href="sign-in?redirectTo=drug/$pharmacy/$drugName">{substr($drug->account->telephone, 0, 5)}-show number</a>
+											@endif   
+										</span>
+                                        <span class="item-tag"><b>Order Options :</b>  {$drug->account->groups}</span>
+                                    </div>
+                                </div><!--~./ end tab pane ~-->
+                                
+                                <!--~~~~~ Start Tab Pane ~~~~~--> 
+                                <div class="tab-pane fade" id="product_reviews" role="tabpanel">
+									@alert;
+                                    <div class="product-review-list">
+										
+										@fetch($reviews, 'review')
+                                        <div class="product-review">
+											{$this->totalStar($review->ratingcode, $stars)}
+                                            <div class="rating-riview">
+                                                <div class="rating">
+                                                    @foreach ($stars as $i => $star)
+														<i class="fa {$star}"></i>
+													@endforeach
+                                                </div><!-- rating -->
+                                                <div class="d-block">
+                                                    <span class="review-comment">{$review->review}</span>
+                                                </div><!-- review -->
+                                            </div>
+                                            <div class="review-user">
+												{$account = Query::getAccount($review->userid);}
+                                                <p class="review-user-name">{Wrapper::getFullname($account)}</p>
+                                                <p class="review-meta">{get_time_ago($review->date_created)}</p>
+                                            </div>
+										</div><!--product-review -->
+										@endfetch
+                                        
+									</div>
+									
+									<br>
+									<!--~~~~~ Start Listing Leave Review ~~~~~-->
+									<div class="listing-leave-review" id="leave-review">
+										<div class="title-icon">
+											<h3 class="title"><span class="icon-comment"></span>Leave a Review</h3>
+										</div><!--~./ title-icon ~-->
+										<div class="box-inner-content">
+											<div class="leave-review-content">
+												<br>
+												<form name="reviewForm" id='review_form' method="post" action=''>
+													@csrf;
+													@request('submitReview');
+													@model('Drugs');
+													<input type="hidden" name="drugid" value="{$drug->drug->drugid}">
+													<div class="review-box">
+														<ul class="list">
+															@fetch ('drug_rating_option', 'option')
+																<li>
+																	<span class="text">{$option->options}</span>
+																	<div class="review-rating" id="option{$option->optionid}"></div>
+																	<input type="hidden" name="rating[{$option->options}]" data-name="option{$option->optionid}" />
+																</li>
+															@endfetch
+														</ul>
+													</div>
+													<div class="row">
+														<div class="col-12">
+															<p>
+																<textarea name='review' id='message' class="form-controllar" aria-required="true" rows="8" cols="45" placeholder="Your Review" required></textarea>
+															</p>
+														</div>
+														<div class="col-12">
+															<p class="form-submit">
+																<input type="submit" value="SUBMIT REVIEW" id="submit">
+															</p>
+														</div>
+													</div>
+												</form> 
+											</div>
+										</div>
+									</div><!--~./ end listing leave review ~-->
+                                </div><!--~./ end tab pane ~-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--~./ end products details tab area ~-->
+        </div><!--~./ end product details section ~-->
+		
+		{$related = Query::relatedDrugs($drug);}
+
+		@if ($related->rows > 0)
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Related Product Section
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <div class="related-product-section ptb-100">
+            <div class="container">
+                <div class="row">
+                    <!--~~~~~ Start Section Header ~~~~~-->
+                    <div class="col-12">
+                        <div class="section-header text-left">
+                            <h2 class="section-title">Related <span>Drugs</span></h2>
+                            <p>More drugs for {$category}</p>
+                            <div class="divider">
+                                <img $src="icon/divider.png" alt="icon">
+                            </div>
+                        </div>
+                    </div><!--./ section-header -->
+                </div>
+                <div class="row">
+					@fetch ($related, 'other')
+                    <!--~~~~~ Start Shop Item ~~~~~-->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="shop-item">
+                            <div class="entry-product-thumbnail">
+                                <figure class="thumb-wrap">
+									<a $href="drug/$pharmacy/$other->drug_name">
+										{$image = Query::getDrugImage($other->drugid);}
+										<div class="entry-product-bg" $background-image="{$image}"></div>
+                                    </a>
+                                </figure><!--~./ thumb-wrap ~-->
+
+                                <a $href="drug/$pharmacy/$other->drug_name" class="add-to-cart"><span class="icon-paper-bag"></span></a><!--~./ add-to-cart ~-->
+                            </div><!--~./ entry-product-thumb ~-->
+                            <div class="product-item-info">
+                                <h3 class="product-title">
+                                    <a $href="drug/$pharmacy/$other->drug_name">{$other->drug_name}</a>
+                                </h3>
+                                <div class="product-price-and-rating">
+                                    <div class="product-price">₦{number_format($other->price, 2, '.', ',')}</div>
+                                    <div class="product-rating">
+										{$stars = $this->getTotalRating($other->drugid, $ratings, $allratings);}
+                                        <span class="rating">
+                                            @foreach ($stars as $i => $star)
+													<i class="fa {$star}"></i>
+											@endforeach
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><!--~./ product-item-info ~-->
+                        </div>
+					</div>
+					<!--~./ end shop item ~-->
+					@endfetch
+                </div>
+            </div>
+		</div>
+		<!--~./ end related product section ~-->
+		@endif
+    </div>
+    <!--~./ end site content ~-->
+	
+	<div id="preview-image-wrapper" onclick="closePreview(event)">
+		<div class="preview-image">
+			<h2> {$category} / {$drugName} / ₦{number_format($drug->drug->price, 2, '.', ',')}</h2>
+			<img $src="$drug->image"/>
+			<button class="btn btn-default" onclick="closePreview()">Close</button>
+		</div>
+	</div>
+
+	<!-- add modal to receive prescribtion code -->
+	<section class="enter-code-modal">
+		<div class="modal-wrapper">
+			<span class="close-modal">
+				<img $src="close.png">
+			</span>
+			<h1>Enter Prescription code</h1>
+			<input type="text" name="code-provided" class="form-control" placeholder="Please enter prescription code">
+			<button type="button" class="btn btn-default">Proceed to Cart</button>
+		</div>
+	</section>

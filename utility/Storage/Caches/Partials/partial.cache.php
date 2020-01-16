@@ -1,0 +1,11 @@
+<?php
+return array (
+  '47d6d4a10560fd293bac64f916ac4f74_meta-tags.md' => 'd15b83281d0aea4dd1d9d4a404cd194f',
+  '5395f913f4c6d06ac3624f5d7973e463_search-form.html' => 'c99c5ec055f990c87de9f559cd6581d8',
+  'f81f53fb549aa080830b7695c3ff065b_owl-list.html' => '6d18ac55c49b3d0d41402164ae23c4bc',
+  'b9b11320396c5611eb085ef8a38490c9_list-row.html' => 'c99c5ec055f990c87de9f559cd6581d8',
+  '6daf26673995187cb476787c910843c5_search-form.html' => 'e86b6702c740977fa90e69b7ead20c88',
+  'd853fd2f3909097305422923445b23e4_list-row.html' => '735b0df5c925bd76e52c4d11d0891d14',
+  '08b4ab99f0bc0b359a1b0936b954832f_drug-list.html' => 'b9173eb038a63c1a92194c75e7d7034b',
+);
+?>

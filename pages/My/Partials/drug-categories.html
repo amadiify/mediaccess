@@ -1,0 +1,19 @@
+<div class="table-responsive">
+    <table class="table table-border">
+        <thead>
+            <tr>
+                <th>Categories</th>
+                <th style="text-align: right;">Drugs</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @fetch ('pharmacytypes', 'pharmacy')
+                <tr data-href="drugs/{$pharmacy->pharmacytype}">
+                    <td>{ucwords($pharmacy->pharmacytype)}</td>
+                    <td style="text-align: right;">{Query::getPharmacyTypeDrugs($pharmacy->pharmacytypeid)->rows}</td>
+                </tr>
+            @endfetch	
+        </tbody>
+    </table>
+</div>

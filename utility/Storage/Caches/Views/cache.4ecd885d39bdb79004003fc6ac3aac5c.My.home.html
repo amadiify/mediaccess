@@ -1,0 +1,191 @@
+<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="default-form-area">
+                <h3 class="headline">Overview</h3>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <h6>This Week</h6>
+                        <h4 class="color-primary"><?=$thisWeek?></h4>
+                    </div>
+                </div>
+                <div id="simple-line-chart" class="ct-chart ct-golden-section"></div>
+            </div><!--~./ end default form area ~-->
+        </div>
+        
+        <div class="col-lg-3">
+            <div class="default-form-area">
+                <h3 class="headline">Activities</h3>
+                <div class="test-scroll ps ps--active-y" style="height:286px;position:relative;overflow: scroll !important;">
+                    <div class="card-body p-b-0" style="padding: 0px;">
+                        <?php $activity = db('activities')->get('accountid=?',$thisModel->id)->orderby('activityid','desc')->limit(0,30);?>
+                        <?php
+$activity = $activity;if ($activity->rows > 0){
+while ($row = $activity->obj())
+{ ?>
+                            <div class="card-notification">
+                            <div class="card-noti-conatin">
+                            <small><?=get_time_ago($row->time_added)?></small>
+                            <p class="text-muted m-b-30"><?=$row->activity?></p>
+                            </div>
+                            </div>
+                        <?php }} ?>
+                    
+                    </div>
+                </div>
+            </div><!--~./ end default form area ~-->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="default-form-area">
+                <?php if (Moorexa\Provider::permission("canRead", "7")) { ?>
+                    <h3 class="headline">Recent Orders</h3>
+                    <?php $orders = orders::get('fromid=:myid');?>
+                    <div class="upcoming-events">
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <h6>All Time</h6>
+                                <h4 class="color-primary">₦<?=number_format($orders->reduce(function($r){
+                                    return $r->from('payments')->get()->reduce('amount');
+                                }), 2, '.', ',')?></h4>
+                            </div>
+                        </div>
+                        <div class="table-responsive mt-15">
+                            <table class="table">
+                                <?php
+$orders = $orders;if ($orders->rows > 0){
+while ($order = $orders->obj())
+{ ?>
+                                    <?php $account = $order->from('account')->get();?>
+                                    <?php $accounttype = $account->from('account_types')->get();?>
+                                    <?php $photo = $account->from('web_photo', 'accountid')->get()->profile_image;?>
+                                    <tr>
+                                        <?php $photo = $photo == null ? 'man-3.png' : $photo;?>
+                                        <td><img src="<?=image($photo, '35:35')?>" alt=""></td>
+                                        <td><?=ucwords($account->firstname . ' ' . $account->lastname)?>
+                                            <a href="<?=url("list/$accounttype->accounttype")?>"><?=$accounttype->accounttype?></a>
+                                        </td>
+                                        <td><span class="badge badge-<?=$order->status?>"><?=$order->status?></span></td>
+                                        <td>₦<?=number_format($order->from('payments')->get()->amount, 2, '.', ',')?></td>
+                                        <td>
+                                            <?=get_time_ago($order->dateissued)?>
+                                        </td>
+                                        <?php if($order->dateclosed == null) { ?>
+                                        <td>
+                                            <a href="<?=url("conversation/$order->orderid")?>" class="btn btn-success" style="color: #fff;" target="_blank">Chat</a>
+                                        </td>
+                                        <?php } else { ?>
+                                        <td>
+                                            <span class="badge badge-danger">Closed</span>
+                                        </td>
+                                        <?php } ?>
+                                    </tr>
+                                <?php }} ?>
+                            </table>
+                        </div>
+                    </div><!--~./ end upcoming events ~-->
+                <?php } ?>
+
+                <?php if (Moorexa\Provider::permission("canRead", "3")) { ?>
+                    <?php $cart = Query::getPharmacyShoppingCart();?>
+                    <?php if($cart->rows > 0) { ?>
+                        <h3 class="headline">Orders</h3>
+                        <div class="upcoming-events">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <h6>All Drugs Purchased</h6>
+                                    <h4 class="color-primary"><?=Wrapper::money($cart->reduce('amount'))?></h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive mt-15">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Drug</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                        <th>Shipping</th>
+                                        <th>Time</th>
+                                        <th>Tracking</th>
+                                    </tr>
+                                </thead>
+    
+                                <tbody>
+                                    <?php
+$cart = $cart;if ($cart->rows > 0){
+while ($c = $cart->obj())
+{ ?>
+                                        <tr data-href="orders/cart-order/<?=$c->cartid?>">
+                                            <td><?=$c->from('drugs', 'drugid')->get()->drug_name?></td>
+                                            <td style="text-align:center;"><?=$c->quantity?></td>
+                                            <td><?=Wrapper::money($c->amount)?></td>
+                                            <td><?=$c->shipping?></td>
+                                            <td><?=get_time_ago($c->dateRequested)?></td>
+                                            <td>
+                                                <?php if($c->dateDelivered == null) { ?>
+                                                    <span class="badge badge-pending">Pending <?=$c->shipping == 'pickup' ? 'Collection' : 'Delivery'?></span>
+                                                <?php } else { ?>
+                                                    <span class="badge badge-success">Order Complete</span>
+                                                <?php } ?>
+                                            </td>
+                                        </tr>
+                                    <?php }} ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php } ?>
+                <?php } else { ?>
+
+                    <?php if (Moorexa\Provider::permission("canRead", "7") === false) { ?>
+                        <h3 class="headline">Recent Orders</h3>
+                        <?php $orders = orders::get('accountid=:myid');?>
+                        <div class="upcoming-events">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <h6>All Time</h6>
+                                    <h4 class="color-primary">₦<?=number_format($orders->reduce(function($r){
+                                        return $r->from('payments')->get()->reduce('amount');
+                                    }), 2, '.', ',')?></h4>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive mt-15">
+                                <table class="table">
+                                    <?php
+$orders = $orders;if ($orders->rows > 0){
+while ($order = $orders->obj())
+{ ?>
+                                        <?php $account = account::get('accountid=?', $order->fromid);?>
+                                        <?php $accounttype = $account->from('account_types')->get();?>
+                                        <?php $photo = web_photo::get('accountid=?', $order->fromid)->profile_image;?>
+                                        <tr data-href="order-<?=$order->orderid?>">
+                                            <?php $photo = $photo == null ? 'man-3.png' : $photo;?>
+                                            <td><img src="<?=image($photo, '35:35')?>" alt=""></td>
+                                            <td><?=ucwords($account->firstname . ' ' . $account->lastname)?>
+                                                <?php if($accounttype->accounttype != 'Patient') { ?>
+                                                    <a href="<?=url("list/$accounttype->accounttype")?>"><?=$accounttype->accounttype?></a>
+                                                <?php } ?>
+                                            </td>
+                                            <td><span class="badge badge-<?=$order->status?>"><?=$order->status?></span></td>
+                                            <td>₦<?=number_format($order->from('payments')->get()->amount, 2, '.', ',')?></td>
+                                            <td>
+                                                <?=get_time_ago($order->dateissued)?>
+                                            </td>
+                                        </tr>
+                                    <?php }} ?>
+                                </table>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                <?php } ?>
+            </div><!--~./ end default form area ~-->
+        </div>
+        
+    </div>
+</div>

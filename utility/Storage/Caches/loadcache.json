@@ -1,0 +1,30 @@
+{
+    ".\/pages\/App\/Custom\/header.html": {
+        "hash": "f81de13e8ea25688315e6b33204b1aff",
+        "path": "utility\/Storage\/Caches\/Headers\/cache.429d0c39bdea32321e7eaec3332389bb.App.header.html"
+    },
+    ".\/pages\/App\/Views\/home.html": {
+        "hash": "c27d31bed0a1068d6db9e256e3c5b5a8",
+        "path": "utility\/Storage\/Caches\/Views\/cache.6ca59b1b5498ee214c0f2258b73815c5.App.home.html"
+    },
+    ".\/pages\/App\/Custom\/footer.html": {
+        "hash": "79a201e4515fe5f18b3f77330baed734",
+        "path": "utility\/Storage\/Caches\/Footers\/cache.b951b83df995c40625ebe72aad5b5ab3.App.footer.html"
+    },
+    ".\/pages\/App\/Views\/list.html": {
+        "hash": "5101f29ad0e6c34866e6947c387e5db5",
+        "path": "utility\/Storage\/Caches\/Views\/cache.28d5829079a4c286a7deb019fd0d8481.App.list.html"
+    },
+    ".\/pages\/App\/Views\/buydrug.html": {
+        "hash": "43fa13d2fb11b4e41c55db03276f40fa",
+        "path": "utility\/Storage\/Caches\/Views\/cache.df1e7fac0b2c7c426e45f8833775a7ae.App.buydrug.html"
+    },
+    ".\/pages\/App\/Views\/about.html": {
+        "hash": "8aa82774f15e0bfcc236abef30578cc6",
+        "path": "utility\/Storage\/Caches\/Views\/cache.4473d2dab24bebd27bf2406d78bcd028.App.about.html"
+    },
+    ".\/pages\/App\/Views\/howitworks.html": {
+        "hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "path": "utility\/Storage\/Caches\/Views\/cache.9ba10cc2ab1039fd376cdbd8ee86d90b.App.howitworks.html"
+    }
+}

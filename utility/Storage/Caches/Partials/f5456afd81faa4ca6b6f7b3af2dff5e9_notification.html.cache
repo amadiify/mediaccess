@@ -1,0 +1,15 @@
+<?php if($showAlert) { ?>
+    <div class="alert notify-alert-<?=$type?> alert-dismissible">
+        <button data-dismiss="alert" class="close"></button>
+        <h4><?=$title?></h4>
+        <p>
+        <?=$message?>
+        </p>
+        <div class="btn-list">
+        <a class="btn btn-<?=$type?>" href="<?=$alertLink?>" style="color:#fff;">Okay</a>
+        <a class="btn btn-secondary" href="<?=$currentUrl?>">No, thanks</a>
+        </div>
+    </div>
+<?php } ?>
+  
+  

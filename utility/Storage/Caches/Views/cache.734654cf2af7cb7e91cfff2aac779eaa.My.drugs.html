@@ -1,0 +1,239 @@
+<div class="container">
+	<?php if (Moorexa\Provider::permission("canRead", "3")) { ?>
+	<div class="ptb-20" style="padding-bottom: 30px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Drugs</h2>
+			<p>Manage your drug inventory.</p>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+			<div class="overall-info-area default-form-area">
+				<form class="default-form" action="" method="POST" enctype="multipart/form-data">
+					<?=csrf_token()?>
+					<div class="row">
+						<div class="col-lg-12">
+							<h3 class="headline">Add a drug</h3>
+							<div class="form-group">
+								<input type="text" name="drug_name" value="<?=$model->drug_name?>" class="form-controllar" placeholder="Drug Name" required>
+								<small class="text-info">Drug Name</small>
+								<?=$model->onError('drug_name')?>
+							</div>
+							<div class="form-group">
+								<input type="tel" name="price" value="<?=$model->price?>" class="form-controllar" placeholder="Price" required>
+								<small class="text-info">Drug Selling Price</small>
+								<?=$model->onError('price')?>
+							</div>
+							<div class="form-group">
+								<textarea name="description" class="form-controllar" placeholder="Drug Description" required> <?=$model->description?> </textarea>
+								<small class="text-info">Drug Description</small>
+								<?=$model->onError('description')?>
+							</div>
+							<div class="form-group">
+								<?php $types = db('pharmacytypes')->get();?>
+								<select name="pharmacytypeid" required class="form-controllar">
+								<?php
+$types = $types;if ($types->rows > 0){
+while ($pt = $types->obj())
+{ ?>
+									<?php $select = unless($model->pharmacytypeid == $pt->pharmacytypeid, ['selected', null]);?>
+									<option value="<?=$pt->pharmacytypeid?>" <?=$select?>><?=ucwords($pt->pharmacytype)?></option>
+								<?php }} ?>
+								</select>
+								<small class="text-info">Drug Category</small>
+								<?=$model->onError('email')?>
+							</div>
+							<div class="form-group">
+								<select name="prescribed" required class="form-controllar">
+									<?php 
+
+										$options = ['No', 'Yes'];
+									?>
+
+									<?php foreach ($options as $index => $title) { ?>
+										<?php $select = unless($index == $model->prescribed, ['selected', null]);?>
+										<option value="<?=$index?>" <?=$select?>><?=$title?></option>
+									<?php } ?>
+								</select>
+								<small class="text-info">Is Prescribed?</small>
+								<?=$model->onError('prescribed')?>
+							</div>
+
+							<div class="form-group">
+								<select name="isavaliable" required class="form-controllar">
+									<?php 
+
+										$options = ['Yes', 'No'];
+									?>
+
+									<?php foreach ($options as $index => $title) { ?>
+										<?php $index += 1;?>
+										<?php $select = unless($index == $model->isavaliable, ['selected', null]);?>
+										<option value="<?=$index?>" <?=$select?>><?=$title?></option>
+									<?php } ?>
+								</select>
+								<small class="text-info">Is Avaliable?</small>
+								<?=$model->onError('isavaliable')?>
+							</div>
+
+							<div class="form-group">
+								<div id="file-upload" data-file="drug_image" data-accept=".png,.jpg,.jpeg" data-text="Drug Image"></div>
+								<?=$model->onError('drug_image')?>
+							</div>
+
+						</div><!--~./ col-lg-12 ~-->
+						<div class="col-12">
+							<div class="form-submit form-group">
+								<button class="btn btn-default">Submit</button>
+							</div>
+						</div>
+					</div>
+				</form><!--~./ default-form ~-->
+			</div>
+		</div>
+	</div>
+
+	<?php if($drugs->status == 'success') { ?>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="table-responsive mt-15 overall-info-area default-form-area">
+				<table class="table">
+					<tr>
+						<th>SN</th>
+						<th>Drug Name</th>
+						<th>Category</th>
+						<th>Price</th>
+						<th>Avaliable</th>
+						<th>Sales</th>
+						<th>Prescribed</th>
+						<th></th>
+					</tr>
+					<?php foreach ($drugs->drugs as $index => $drug) { ?>
+						<tr>
+							<td><?=$index + 1?></td>
+							<td><?=ucwords($drug->drug_name)?></td>
+							<td><?=db('pharmacytypes')->get('pharmacytypeid=?', $drug->pharmacytypeid)->pharmacytype?></td>
+							<td>₦<?=number_format($drug->price)?></td>
+							<td><?=unless($drug->isavaliable == 1, ['Yes', 'No'])?></td>
+							<td><?=unless($drug->sales > 1 , [$drug->sales, 'None'])?></td>
+							<td><?=unless($drug->prescribed == 1, ['Yes', 'No'])?></td>
+							<td>
+								<a href="<?=action("edit/$drug->drugid")?>" class="text-primary" title="Edit <?=$drug->drug_name?>"><i class="fa fa-edit"></i></a> <small>|</small>  
+								<a href="<?=action("delete/$drug->drugid")?>" class="text-danger" title="Delete <?=$drug->drug_name?>"><i class="fa fa-trash"></i></a>
+							</td>
+						</tr>
+					<?php } ?>
+				</table>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+
+	<?php } ?>
+
+
+	<?php if (Moorexa\Provider::permission("canRead", "1")) { ?>
+	<div class="row ptb-20">
+		<div class="col-8" style="padding-bottom: 30px">
+			<div class="section-header" style="margin-bottom:10px;">
+				<h2 class="section-title">Drugs</h2>
+				<p>Prescribe or see all drug listings.</p>
+				<div class="divider">
+					<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+				</div>
+			</div>
+		</div>
+
+		<div class="col-4">
+			<form action="" method="GET" class="search-box">
+				<input type="text" name="s" required class="form-control" placeholder="Search for a drug">
+				<button type="submit"><i class="fa fa-search"></i></button>
+			</form>
+			
+			<h5 style="padding-top: 10px; text-align: right;">
+				<?php $list = session()->get('drug.list') !== false ? count(session()->get('drug.list')) : 0;?>
+				<a href="<?=url("prescribe")?>" style="text-decoration: underline;">Selected Drugs (<?=$list?>)</a></h5>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="overall-info-area default-form-area">
+				<?=\Moorexa\Rexa::runDirective(true,'partial',$partial)?>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+
+	<?php if (Moorexa\Provider::permission("canRead", "7")) { ?>
+
+		<div class="col-12 ptb-20" style="padding-bottom: 30px">
+			<div class="section-header" style="margin-bottom:10px;">
+				<h2 class="section-title">Drugs Prescribed</h2>
+				<p>Drugs prescribed to you would be displayed here.
+				</p>
+				<div class="divider">
+					<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="table-responsive">
+				<table class="table mt-15 overall-info-area default-form-area">
+					<thead>
+						<tr>
+							<th>Doctor</th>
+							<th>Prescribtion Code</th>
+							<th>Drugs</th>
+							<th>Date Issued</th>
+							<th>Date Used</th>
+						</tr>
+					</thead>
+	
+					<tbody>
+
+						<?php $prescriptions = Query::getPatientPrescribtions($id);?>
+
+						<?php
+$prescriptions = $prescriptions;if ($prescriptions->rows > 0){
+while ($prescription = $prescriptions->obj())
+{ ?>
+							<tr>
+								<?php $doctor = $prescription->from('doctors', 'doctorid')->get();?>
+								<?php $account = $doctor->from('account','accountid')->get();?>
+	
+								<td><?=ucwords($account->firstname.' '.$account->lastname)?></td>
+								<td><?=$prescription->prescribtion_code?></td>
+								<td>
+									<ol>
+										<?php $json = json_decode($prescription->drugs);?>
+										
+										<?php foreach ($json as $index => $obj) { ?>
+	
+											<?php $drug = Query::getDrugInfo($obj->drugid);?>
+	
+											<?php if($drug->rows > 0) { ?>
+												<li><h4><a href="<?=url("buydrug?filter=yes&drug=$drug->drug_name&search=$drug->drug_name")?>" target="_blank" style="text-decoration:underline"><?=$drug->drug_name?></a></h4>
+												<p><?=$obj->note?></p></li>
+											<?php } ?>
+	
+										<?php } ?>
+									</ol>
+								</td>
+								<td><?=$prescription->dateissued?></td>
+								<td><?=$prescription->dateused?></td>
+							</tr>
+						<?php }} ?>	
+					</tbody>
+				</table>
+			</div>
+		</div>
+	
+	<?php } ?>
+</div>

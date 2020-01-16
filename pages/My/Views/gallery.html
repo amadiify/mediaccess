@@ -1,0 +1,35 @@
+<div class="container-fluid">
+		@alert;
+		<div class="row">
+			<div class="col-lg-12">
+				<form action="" method="POST" enctype="multipart/form-data">
+					<section class="upload-section row">
+						<section class="upload-box col-md-12 form-group">
+							<label>Please select a photo</label>
+							<small class="text-warning" style="display: block;">Max photo size is 2mb.</small>
+							<div class="row">
+								<div class="col-lg-10">
+									<input type="file" multiple data-accept=".jpg,.png,.jpeng,.gif" class="form-control" name="upload[]" required>
+								</div>
+								<div class="col-lg-2">
+									<button class="btn btn-success" type="submit">Upload</button>
+								</div>
+							</div>
+						</section>
+					</section>
+				</form>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				
+			</div>
+			{$photo = photo_gallery::get('accountid=?',$id);}
+			@fetch ($photo, 'row')
+				<div class="col-lg-3 photo-list" $background-image="{$row->photo}">
+					<a href="?del={$row->photoid}" class="text-danger text-right"><i class="fa fa-trash"></i></a>
+				</div>
+			@endfetch
+		</div>
+</div>

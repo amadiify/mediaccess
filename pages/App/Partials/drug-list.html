@@ -1,0 +1,87 @@
+@if (count($list) > 0)
+    @foreach ($list as $i => $row)
+    {$ls = isset($listType) ? $listType : null;}
+    <div class="col-lg-{$ls != null ? '12' : '4'}">
+        <!--~~~~~ Start Popular Todo Item ~~~~~-->
+        <div class="popular-todo-item {$ls}">
+            <div class="todo-thumbnail-area">
+                {$link = $row->pharmacy . '/' . $row->drug->drug_name;}
+                <a $href="drug/$link">
+                <figure class="item-thumb">  
+                    <div class="item-thumb-image" $background-image="$row->image"></div> 
+                </figure><!--./ item-thumb -->
+                </a>
+                {$stars = $this->getTotalRating($row->drug->drugid, $ratings, $allratings);}
+                <div class="todo-overlay-info">
+                    @if ($ratings >= 3)
+                        <div class="todo-type rated">top rated</div>
+                    @endif
+                    <div class="todo-meta-bottom">
+                        <span class="photo">
+                            <i class="fa fa-eye"></i> &nbsp;
+                            {$row->drug->views}
+                        </span>
+                    </div>
+                </div><!--./ todo-overlay-info -->
+            </div><!--./ todo-overlay-info -->
+            @if ($ls != null)
+            <div class="content-entry-wrap">
+            @endif
+            <div class="todo-content">
+                <h3 class="title"><a $href="drug/$link" php-if::class="$row->isverified == 1 ? '' : 'not-verified'">{ucwords($row->drug->drug_name)}</a></h3>
+                <div class="todo-rating">
+                    <div class="rating-value">
+                        <span>{$ratings}</span>{$allratings} Rating{$allratings > 1 ? 's' : ''}
+                    </div>
+                    <div class="rating-icon">
+                        <ul>
+                            @foreach ($stars as $i => $star)
+                                <li class="yellow"><i class="fa {$star}"></i></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div><!--./ todo-rating -->
+                <div class="todo-meta">
+                    <div class="todo-location">
+                        <span class="icon-location"></span>
+                        {$state = db('states')->get('stateid=?', $row->account->stateid);}
+                        {ucwords($state->state.', NG')}       
+                    </div>
+                    <div class="todo-number">
+                        <span class="icon-phone"></span>
+                        @if (session()->has('account.id'))
+                            <a href="tel:{$row->account->telephone}" style="color: inherit; outline: none;">{$row->account->telephone}</a>
+                        @else
+                            <a $href="sign-in?redirectTo=drug/$link">{substr($row->account->telephone, 0, 5)}-show number</a>
+                        @endif         
+                    </div>
+                </div><!--./ todo-meta -->
+                <div class="todo-summary">
+                    <p>
+                        <a $href="drug/{$link}">
+                            {substr($row->drug->description, 0, 130)}..
+                        </a>
+                    </p>
+                </div>
+            </div><!--./ todo-content -->
+            <div class="todo-footer">
+                @php
+                    $fullname = strtolower($row->account->firstname . ' ' . $row->account->lastname);
+                    $pharmacy = strtolower(str_replace(' ','-', $fullname));
+                @endphp
+                
+                <a $href="pharmacy/{$row->pharmacy}" class="todo-cat todo-cat-restaurant">
+                    Sold by {ucwords($row->pharmacy)}
+                </a>
+                
+                <a href="javascript:void()" class="todo-status">
+                    {$row->pharmacytype}    
+                </a>
+            </div><!--./ todo-footer -->
+            @if ($ls != null)
+            </div>
+            @endif
+        </div><!--~./ end popular todo item ~-->
+    </div>
+    @endforeach
+@endif

@@ -1,0 +1,173 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="listing-todo-thumbnail-area style-two" style="flex: 1;">
+				{$cover = $data->web_photo->cover_image;}
+				<div class="todo-thumb bg-image bg-overlay" $background-image="{$cover}"></div>
+				
+				<div class="listing-todo-header">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<div class="listing-todo-content text-white">
+									<div class="content-left">
+										<div class="todo-brand-logo">
+											{$image = $data->web_photo->profile_image;}
+											{$info = $data->account;}
+											<img $src="{$image}" alt="Profile Image">
+										</div>
+										<div class="info">
+											<h3 class="title">{ucwords($info->firstname . ' ' . $info->lastname)}</h3>
+											<div class="todo-location">
+												<span class="icon-location"></span>
+												{$data->account->address}   
+											</div><!--./ todo-location -->
+										</div>
+									</div><!--./ content-left -->
+									<div class="content-right">
+											{$stars = $this->model('app/about')->getTotalRating($data->account->accountid);}
+										<div class="listing-rating">
+											<span class="rating">
+												@foreach ($stars as $s => $star)
+													<i class="fa {$star}"></i>
+												@endforeach
+												{$reviews = $this->model('app/about')->getTotalReviews($data->account->accountid);}
+												<a $href="reviews">{$reviews} Review{$reviews > 1 ? 's' : ''}</a>
+											</span>
+										</div>
+									</div><!--./ content-right -->
+								</div><!--~~./ listing-todo-content ~~-->
+							</div>
+						</div>
+					</div>
+				</div><!--~~./ listing-todo-header ~~-->
+				
+		</div>
+	</div>
+
+	@alert;
+	
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="overall-info-area default-form-area">
+				<form class="default-form" action="" method="POST" enctype="multipart/form-data">
+					{csrf_token()}
+					{$account = $data->account;}
+					<div class="row">
+						<div class="col-lg-6">
+							<h3 class="headline">Personal Information</h3>
+							<div class="form-group">
+								<input type="text" name="firstname" value="{$account->firstname}" class="form-controllar" placeholder="First Name" required>
+								<small class="text-info">First Name</small>
+								{$model->onError('firstname')}
+							</div>
+							<div class="form-group">
+								<input type="text" name="lastname" value="{$account->lastname}" class="form-controllar" placeholder="Last Name" required>
+								<small class="text-info">Last Name</small>
+								{$model->onError('lastname')}
+							</div>
+							<div class="form-group">
+								<input type="tel" name="telephone" value="{$account->telephone}" class="form-controllar" placeholder="Telephone" required>
+								<small class="text-info">Telephone</small>
+								{$model->onError('telephone')}
+							</div>
+							<div class="form-group">
+								<input type="email" name="email" value="{$account->email}" class="form-controllar" placeholder="Email Address" required>
+								<small class="text-info">Email Address</small>
+								{$model->onError('email')}
+							</div>
+							<div class="form-group">
+								<input type="text" name="address" value="{$account->address}" class="form-controllar" placeholder="Address" required>
+								<small class="text-info">Address</small>
+								{$model->onError('address')}
+							</div>
+						</div><!--~./ col-lg-6 ~-->
+						<div class="col-lg-6">
+							<h3 class="headline" style="visibility: hidden;">More</h3>
+							<div class="form-group">
+								<input type="text" name="username" value="{$account->username}" class="form-controllar" placeholder="User Name" required>
+								<small class="text-info">Username</small>
+								{$model->onError('username')}
+							</div>
+							<div class="form-group">
+								<select name="sexid" class="form-controllar" required>
+									@fetch ('sex',row)
+
+										{$other = null;}
+										@if ($row->sexid == $account->sexid)
+											{$other = 'selected';}
+										@endif
+
+										<option value="{$row->sexid}" {$other}>{ucwords($row->sex)}</option>
+									@endfetch
+								</select>
+								<small class="text-info">Sex.</small>
+							</div>
+							<div class="form-group">
+								<select name="stateid" class="form-controllar" required>
+									@fetch ('states',row)
+
+										{$other = null;}
+										@if ($row->stateid == $account->stateid)
+											{$other = 'selected';}
+										@endif
+
+										<option value="{$row->stateid}" {$other}>{ucwords($row->state)}</option>
+									@endfetch
+								</select>
+								<small class="text-info">State.</small>
+							</div>
+							
+							<div class="form-group">
+								<textarea placeholder="About you" class="form-controllar" name="about" required>{$account->about}</textarea>
+								<small class="text-info">Bio. About you</small>
+								{$model->onError('about')}
+							</div>
+						</div><!--~./ col-lg-6 ~-->
+						@if ($account->accounttypeid != 7)
+						<div class="col-12">
+							<div class="form-group">
+								{$group = groups::get('accounttypeid=?',$account->accounttypeid);}
+								{$groups = $account->groups;}
+								@if ($groups == '')
+									{$row = [];}
+									@fetch($group, 'r')
+										{$row[] = $r->group_name;}
+									@endfetch
+									{$groups = implode(',', $row);}
+								@endif
+								<input type="text" value="{$groups}" data-role="tagsinput" name="groups" placeholder="Service offering">
+								<small class="text-info">Service Groups.</small>
+							</div>
+						</div>
+						@endif
+						<div class="col-12">
+							<div class="form-submit form-group">
+								<button class="btn btn-default">Update</button>
+							</div>
+						</div>
+					</div>
+				</form><!--~./ default-form ~-->
+			</div><!--~./ default-form-area ~-->
+		</div>
+		<div class="col-lg-4">
+			@partial('update-cover');
+			<br>
+			@if (!$hasTypeForm)
+				@partial('change-password');
+			@endif
+		</div>
+	</div>
+
+	@if ($hasTypeForm)
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="overall-info-area default-form-area">
+					@partial($acctype);
+				</div><!--~./ default-form-area ~-->
+			</div>
+			<div class="col-lg-4">
+				@partial('change-password');
+			</div>
+		</div>
+	@endif
+</div>

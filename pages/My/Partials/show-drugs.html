@@ -1,0 +1,32 @@
+@alert;
+
+<div class="table-responsive">
+    <table class="table table-border">
+        <thead>
+            <tr>
+                <th><a $href="drugs" class="table-link">Drugs</a> / {$get->s}</th>
+                <th>Price</th>
+                <th>Pharmacy</th>
+                <th>Store Location</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if ($drugs !== null)
+                @while ($drug = $drugs->obj())
+                    {$category = $drug->from('pharmacytypes', 'pharmacytypeid')->get()->pharmacytype;}
+                    <tr data-href="drugs/{$category}/{$drug->drug_name}" data-target="preview-panel">
+                        {$pharmacy = Query::getPharmacy($drug->pharmacyid);}
+                        {$location = $pharmacy->from('states','stateid')->get()->state;}
+                        <td>{ucwords($drug->drug_name)}</td>
+                        <td>{Wrapper::money($drug->price)}</td>
+                        <td>{ucwords($pharmacy->pharmacy_name)}</td>
+                        <td data-json="{$this->getDrugAsJson($drug, $location)}">{ucwords($location)}</td>
+                    </tr>
+                @endwhile
+            @endif
+        </tbody>
+    </table>
+</div>
+
+@partial('preview-panel');

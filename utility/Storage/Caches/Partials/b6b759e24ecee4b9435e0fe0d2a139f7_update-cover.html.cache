@@ -1,0 +1,22 @@
+
+<div class="overall-info-area default-form-area">
+    <form class="default-form" action="" method="POST" enctype="multipart/form-data">
+        <?=csrf_token()?>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="headline">Display Image</h3>
+                <div class="form-group">
+                    <div id="file-upload" data-file="profile_image" data-accept=".png,.jpg,.jpeg" data-text="Profile Image"></div>
+                    <?=$model->onError('profile_image')?>
+                </div>
+                <div class="form-group">
+                    <div id="file-upload" data-file="cover_image" data-accept=".png,.jpg,.jpeg" data-text="Cover Image"></div>
+                    <?=$model->onError('cover_image')?>
+                </div>
+                <div class="form-submit form-group">
+                    <button class="btn btn-default">Update</button>
+                </div>
+            </div><!--~./ col-lg-6 ~-->
+        </div>
+    </form><!--~./ default-form ~-->
+</div><!--~./ default-form-area ~-->

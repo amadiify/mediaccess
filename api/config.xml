@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<api>
+    <request>
+        <identifier>
+            <header>X-Identifier</header>
+            <value>Api</value>
+        </identifier>
+    </request>
+</api>

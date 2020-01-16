@@ -1,0 +1,179 @@
+
+<section class="error-page-section bg-gray2 ptb-100 reduce-padding">
+	<div class="container">
+		
+		@if ($option !== null)
+		<div class="container">
+			<div class="breadcrumb-content-area" style="margin-top: 10px;">
+				<div class="breadcrumb-area">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a $href="/">Home</a></li>  
+						<li class="breadcrumb-item"><a $href="pharmacy/$pharmacy">{$pharmacy}</a></li>  
+						<li aria-current="page" class="breadcrumb-item active">{ucwords($category)}</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+		@endif
+
+		<div class="row align-items-center">
+			<div class="col-lg-6">
+				<div class="error-page-content">
+					<h2>{$pharmacy}</h2>
+					<p>Welcome to the official store of {$pharmacy}. You can browse for drugs and offers.</p>
+					<div class="search-form-area">
+						<form class="search-form" action="{url('app/search')}" method="get">
+							<div class="input-group">
+								<input type="search" name="s" value="{vars('searchValue')}" class="form-controllar" placeholder="What drug are you looking for?">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="submit" id="submit-btn">search now</button>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div><!--/.error-page-content-->
+			</div><!--/.col-lg-6-->
+			<div class="col-lg-6">
+				<div class="error-thumbnail text-center">
+					<img $src="black_female_doctor.png" alt="Error">
+				</div><!--/.error-thumbnail-->
+			</div>
+		</div><!--/.row-->
+	</div>
+</section><!--~./ end error page section ~-->
+
+
+<div class="site-content">
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Start Main Wrapper
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<div class="main-wrapper ptb-100 move-up">
+		<div class="container">
+			<div class="row has-shadow">
+				<div class="col-lg-12">
+					<h2>Categories</h2>
+					<ul class="drug-categories">
+						@fetch('pharmacytypes', '_pharmacy')
+							{$link = "pharmacy/$pharmacy/category/$_pharmacy->pharmacytype";}
+							<li php-if::class="$this->isActive($_pharmacy->pharmacytype) ? 'active' : ''"><a $href="$link">{$_pharmacy->pharmacytype}</a></li>
+						@endfetch
+					</ul>
+				</div>
+			</div>
+
+			@alert;
+
+			<div class="row site-row-content">
+				<div class="col-lg-12">
+
+					@if ($hasResult)
+					<div class="row">
+						<div class="col-lg-8">
+							<main class="site-main">
+								<div class="tab-content filter-tab-content">
+									<div class="tab-pane fade show active" id="listing_list" role="tabpanel">
+										<div class="row">
+											@partial('drug-list', ['list' => $data->drugs, 'listType' => 'todo-item-list status-closed']);
+										</div>
+									</div>
+								</div>
+							</main>
+						</div>
+
+						<div class="col-lg-4">
+							
+							@php
+								$fullname = strtolower($data->account->firstname . ' ' . $data->account->lastname);
+								$fullname = strtolower(str_replace(' ','-', $fullname));
+								$who = 'pharmacy-'.$fullname;
+							@endphp
+
+							<div class="sidebar">
+								<aside class="widget bt-about-us-widget">
+										<h4 class="widget-title"><span class="icon-review"></span>About Pharmacy</h4>
+										<div class="widget-content">
+											<div class="about-info">
+												<div class="thumb">
+													<img src="{image($data->web_photo->profile_image,'100:100')}" alt="img">
+												</div>
+												<div class="info">
+													<h3>{ucwords($pharmacy)}</h3>
+													<p style="margin-bottom: 6px;">Member Since {date('F Y', strtotime($data->account->date_added))}</p>
+													<p>
+														@if ($data->account->isavaliable == 1)
+															<span class="circle-open"></span> avaliable
+														@else
+															<span class="circle-busy"></span> currently busy
+														@endif
+													</p>
+												</div>
+											</div>
+											<ul class="info-list list">
+												<li>
+													@if (session()->has('account.id'))
+														<a href="tel:{$data->account->telephone}" style="color: inherit; outline: none;"><span class="icon-call"></span> {$data->account->telephone}</a>
+													@else
+														<a $href="sign-in?redirectTo=about/{$who}"><span class="icon-call"></span> {substr($data->account->telephone, 0, 5)}-show number</a>
+													@endif
+												</li>
+												<li><a href="{$data->account->email}"><span class="icon-email"></span>{$data->account->email}</a></li>
+												
+												@if ($data->account->groups != '')
+													<li><a href="javascript:void(0)"><span class="icon-flag1"></span>Offers: {ucwords($data->account->groups)}</a></li>
+												@endif
+		
+												<li>
+													<hy>
+														<Request namespace="Button" href="about/{$who}">Visit Page</Request>
+													</hy>
+												</li>
+											</ul>
+										</div>
+								</aside>
+
+								@if (count($data->nearby) > 0)
+								<aside class="widget bt-browse-nearby-widget">
+									<h4 class="widget-title"><span class="icon-placeholder1"></span>Pharmacies Nearby</h4>
+									<div class="widget-content">
+										<ul class="list">
+											@foreach ($data->nearby as $nearby)
+												<li>
+													{$stars = $this->model('app/about')->getTotalRating($nearby->account->accountid, $ratings, $allratings);}
+													<a $href="pharmacy/{$nearby->pharmacy_name}">
+														<img $src="{$nearby->image}" style="margin-right: 14px; width: 50px;">
+														<div style="display: block;">
+															<span style="font-size: 16px;">{$nearby->pharmacy_name}</span>
+															<br>
+															<div class="todo-location">
+																<span class="icon-location"></span>
+																{ucwords($nearby->location)}       
+															</div>
+															<div class="todo-rating">
+																<div class="rating-icon">
+																	<ul>
+																		@foreach ($stars as $i => $star)
+																			<li class="yellow"><i class="fa {$star}"></i></li>
+																		@endforeach
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</a>
+												</li>
+											@endforeach
+										</ul>
+									</div>
+								</aside>
+								@endif
+							</div>
+						</div>
+					</div>
+
+
+					@endif
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

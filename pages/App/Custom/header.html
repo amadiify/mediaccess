@@ -1,0 +1,143 @@
+@setdefault;
+<!DOCTYPE html>
+<html lang="en-us">
+<head> 
+	<title>{$package->name}</title>
+
+	<!-- meta tags -->
+	@partial('meta-tags.md')
+
+	<!-- link tags -->
+	<link rel="canonical" href="{url($package->url)}">
+	<!-- favicon -->
+	<link rel="icon" type="image/png" href="{$package->icon}" sizes="32x32">
+	
+	<!-- css -->
+	{$assets->loadCss($__css)}
+  
+</head>
+	
+<body>
+    
+<!--********************************************************-->
+    <!--********************* SITE HEADER **********************-->
+    <!--********************************************************-->
+    <header class="site-header header-style-one">
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Site Navigation
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <div class="site-navigation">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="navbar navbar-expand-lg navigation-area">
+                            <div class="site-logo-block">
+                                <a class="navbar-brand site-logo" $href="/">
+                                    <img $src="mediaccess.png" alt="logo">
+                                </a>  
+                            </div><!--~./ site-logo-block ~-->
+                            
+                            <div class="mainmenu-area">
+                                <nav class="menu">
+                                    {$view = uri()->view;}
+                                    <ul id="nav">
+                                        <li><a $href="/">Home</a>
+                                        </li>
+                                        <li php-if::class="$view == 'list' || $view == 'about' ? 'active-link dropdown-trigger mega-menu' : 'dropdown-trigger mega-menu'">
+                                            <a href="#">Explore</a>
+                                            <div class="mega-menu-content carousel-nav-dots owl-carousel">
+                                                {$account_types = db('account_types')->get('showpublic = 1');}
+												@fetch($account_types, row)
+													<a class="cat-item" $href="list/{$row->accounttype}">
+														<div class="cat-thumb">
+															<img src="{image($row->image)}" alt="cat">
+														</div>
+														<span class="cat-name">{ucwords($row->accounttype)}</span>
+													</a>
+												@endfetch
+
+                                            </div><!--/.mega-menu-content-->
+                                        </li>
+                                        <li php-if::class="$view == 'how-it-works' ? 'active-link' : ''"><a $href="how-it-works">How it works</a>
+                                        </li>
+                                        <li class="dropdown-trigger">
+                                            <a href="#">Store</a>
+                                            <ul class="dropdown-content">
+                                                <li><a $href="about-us">About us</a></li>
+                                                <li><a $href="pricing">Pricing</a></li>
+                                            </ul>
+                                        </li>
+                                        <li php-if::class="$view == 'buydrug' ? 'active-link' : ''"><a $href="buydrug">Drugs</a></li>
+                                        <li php-if::class="$view == 'contact' ? 'active-link' : ''"><a $href="contact">Contact</a></li>
+                                    </ul>
+                                </nav><!--/.menu-->
+                            </div><!--~./ mainmenu-wrap ~-->
+                            
+                            <div class="header-navigation-right">
+                                <div class="header-card-area">
+                                    {$hasCart = Wrapper::hasCart();}
+                                    <a php-if::href="$hasCart ? url('cart') : '#'">
+                                        <span class="icon-paper-bag"></span>
+                                        @if ($hasCart)
+                                            <sup>{Wrapper::totalInCart()}</sup>
+                                        @endif
+                                    </a>
+                                </div><!--~./ site-logo-block ~-->
+                                
+                                <div class="search-wrap">
+                                    <div class="search-btn" data-toggle="modal" data-target="#header_search_model">
+                                        <span class="icon icon-search32"></span>
+                                        <span class="text">Search</span>
+                                    </div>
+                                </div><!--~./ search-wrap ~-->
+                                
+                                
+                                <div class="user-registration-area dropdown">
+                                    @if (!session()->has('account.id'))
+                                        <a class="user-reg-btn" $href="app/sign-in">
+                                            <span class="icon icon-user-1"></span>
+                                            <span class="text">Account</span>
+                                        </a>
+                                    @else
+                                        {$user = session()->get('account.info');}
+                                        <a class="user-reg-btn" $href="my/home">
+                                            <span class="icon icon-user-1"></span>
+                                            <span class="text">{ucwords($user->firstname)}</span>
+                                        </a>
+                                    @endif
+                                </div>
+                                <div class="add-listing-area">
+                                @if (!session()->has('account.id'))
+                                    <a class="btn btn-default" $href="app/register">+ register </a>
+                                @else
+                                    <a class="btn btn-default" $href="my/logout"> logout </a>
+                                @endif
+                                </div>
+                            </div><!--~./ header-navigation-right ~-->
+                        </div><!--~./ navigation-area ~-->
+                    </div>
+                </div>
+            </div>
+        </div><!--~./ site-navigation ~-->
+        
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Mobile Menu
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <div class="mobile-menu">
+            <a class="mobile-logo" $href="/">
+                <img $src="icons.png" alt="logo">
+            </a>
+        </div><!--~~./ end mobile menu ~~-->
+        
+    </header>
+    <!--~~~ Sticky Header ~~~-->
+	<div id="sticky-header"></div><!--~./End site header ~-->
+	
+
+	<!--********************************************************-->
+    <!--********************* SITE CONTENT *********************-->
+    <!--********************************************************-->
+    <div class="site-content">
+        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Start Frontpage Banner Section
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->

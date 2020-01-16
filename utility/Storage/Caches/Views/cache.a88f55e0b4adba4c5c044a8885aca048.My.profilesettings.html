@@ -1,0 +1,182 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="listing-todo-thumbnail-area style-two" style="flex: 1;">
+				<?php $cover = $data->web_photo->cover_image;?>
+				<div class="todo-thumb bg-image bg-overlay" style="background-image:url('<?=$assets->image("$cover")?>');"></div>
+				
+				<div class="listing-todo-header">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<div class="listing-todo-content text-white">
+									<div class="content-left">
+										<div class="todo-brand-logo">
+											<?php $image = $data->web_photo->profile_image;?>
+											<?php $info = $data->account;?>
+											<img src="<?=$assets->image("$image")?>" alt="Profile Image">
+										</div>
+										<div class="info">
+											<h3 class="title"><?=ucwords($info->firstname . ' ' . $info->lastname)?></h3>
+											<div class="todo-location">
+												<span class="icon-location"></span>
+												<?=$data->account->address?>   
+											</div><!--./ todo-location -->
+										</div>
+									</div><!--./ content-left -->
+									<div class="content-right">
+											<?php $stars = $thisModel->model('app/about')->getTotalRating($data->account->accountid);?>
+										<div class="listing-rating">
+											<span class="rating">
+												<?php foreach ($stars as $s => $star) { ?>
+													<i class="fa <?=$star?>"></i>
+												<?php } ?>
+												<?php $reviews = $thisModel->model('app/about')->getTotalReviews($data->account->accountid);?>
+												<a href="<?=url("reviews")?>"><?=$reviews?> Review<?=$reviews > 1 ? 's' : ''?></a>
+											</span>
+										</div>
+									</div><!--./ content-right -->
+								</div><!--~~./ listing-todo-content ~~-->
+							</div>
+						</div>
+					</div>
+				</div><!--~~./ listing-todo-header ~~-->
+				
+		</div>
+	</div>
+
+	<?=\Moorexa\Rexa::runDirective(true,'alert',"")?>
+	
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="overall-info-area default-form-area">
+				<form class="default-form" action="" method="POST" enctype="multipart/form-data">
+					<?=csrf_token()?>
+					<?php $account = $data->account;?>
+					<div class="row">
+						<div class="col-lg-6">
+							<h3 class="headline">Personal Information</h3>
+							<div class="form-group">
+								<input type="text" name="firstname" value="<?=$account->firstname?>" class="form-controllar" placeholder="First Name" required>
+								<small class="text-info">First Name</small>
+								<?=$model->onError('firstname')?>
+							</div>
+							<div class="form-group">
+								<input type="text" name="lastname" value="<?=$account->lastname?>" class="form-controllar" placeholder="Last Name" required>
+								<small class="text-info">Last Name</small>
+								<?=$model->onError('lastname')?>
+							</div>
+							<div class="form-group">
+								<input type="tel" name="telephone" value="<?=$account->telephone?>" class="form-controllar" placeholder="Telephone" required>
+								<small class="text-info">Telephone</small>
+								<?=$model->onError('telephone')?>
+							</div>
+							<div class="form-group">
+								<input type="email" name="email" value="<?=$account->email?>" class="form-controllar" placeholder="Email Address" required>
+								<small class="text-info">Email Address</small>
+								<?=$model->onError('email')?>
+							</div>
+							<div class="form-group">
+								<input type="text" name="address" value="<?=$account->address?>" class="form-controllar" placeholder="Address" required>
+								<small class="text-info">Address</small>
+								<?=$model->onError('address')?>
+							</div>
+						</div><!--~./ col-lg-6 ~-->
+						<div class="col-lg-6">
+							<h3 class="headline" style="visibility: hidden;">More</h3>
+							<div class="form-group">
+								<input type="text" name="username" value="<?=$account->username?>" class="form-controllar" placeholder="User Name" required>
+								<small class="text-info">Username</small>
+								<?=$model->onError('username')?>
+							</div>
+							<div class="form-group">
+								<select name="sexid" class="form-controllar" required>
+									<?php
+$sex = \Moorexa\DB::sql('SELECT * FROM sex ');if ($sex->rows > 0){
+while ($row = $sex->obj())
+{ ?>
+
+										<?php $other = null;?>
+										<?php if($row->sexid == $account->sexid) { ?>
+											<?php $other = 'selected';?>
+										<?php } ?>
+
+										<option value="<?=$row->sexid?>" <?=$other?>><?=ucwords($row->sex)?></option>
+									<?php }} ?>
+								</select>
+								<small class="text-info">Sex.</small>
+							</div>
+							<div class="form-group">
+								<select name="stateid" class="form-controllar" required>
+									<?php
+$states = \Moorexa\DB::sql('SELECT * FROM states ');if ($states->rows > 0){
+while ($row = $states->obj())
+{ ?>
+
+										<?php $other = null;?>
+										<?php if($row->stateid == $account->stateid) { ?>
+											<?php $other = 'selected';?>
+										<?php } ?>
+
+										<option value="<?=$row->stateid?>" <?=$other?>><?=ucwords($row->state)?></option>
+									<?php }} ?>
+								</select>
+								<small class="text-info">State.</small>
+							</div>
+							
+							<div class="form-group">
+								<textarea placeholder="About you" class="form-controllar" name="about" required><?=$account->about?></textarea>
+								<small class="text-info">Bio. About you</small>
+								<?=$model->onError('about')?>
+							</div>
+						</div><!--~./ col-lg-6 ~-->
+						<?php if($account->accounttypeid != 7) { ?>
+						<div class="col-12">
+							<div class="form-group">
+								<?php $group = groups::get('accounttypeid=?',$account->accounttypeid);?>
+								<?php $groups = $account->groups;?>
+								<?php if($groups == '') { ?>
+									<?php $row = [];?>
+									<?php
+$group = $group;if ($group->rows > 0){
+while ($r = $group->obj())
+{ ?>
+										<?php $row[] = $r->group_name;?>
+									<?php }} ?>
+									<?php $groups = implode(',', $row);?>
+								<?php } ?>
+								<input type="text" value="<?=$groups?>" data-role="tagsinput" name="groups" placeholder="Service offering">
+								<small class="text-info">Service Groups.</small>
+							</div>
+						</div>
+						<?php } ?>
+						<div class="col-12">
+							<div class="form-submit form-group">
+								<button class="btn btn-default">Update</button>
+							</div>
+						</div>
+					</div>
+				</form><!--~./ default-form ~-->
+			</div><!--~./ default-form-area ~-->
+		</div>
+		<div class="col-lg-4">
+			<?=\Moorexa\Rexa::runDirective(true,'partial',"'update-cover'")?>
+			<br>
+			<?php if(!$hasTypeForm) { ?>
+				<?=\Moorexa\Rexa::runDirective(true,'partial',"'change-password'")?>
+			<?php } ?>
+		</div>
+	</div>
+
+	<?php if($hasTypeForm) { ?>
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="overall-info-area default-form-area">
+					<?=\Moorexa\Rexa::runDirective(true,'partial',"{$acctype}")?>
+				</div><!--~./ default-form-area ~-->
+			</div>
+			<div class="col-lg-4">
+				<?=\Moorexa\Rexa::runDirective(true,'partial',"'change-password'")?>
+			</div>
+		</div>
+	<?php } ?>
+</div>

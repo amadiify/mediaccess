@@ -1,0 +1,33 @@
+<hy directive="Hello">
+    private $version = '1.0';
+
+    <hy func="render">
+
+        $name = props.name;
+
+        $students = [ 
+            'frank',
+            'daniel',
+            'ifeanyi'
+        ];
+
+        <hy lang="html">
+            <h1>Welcome {props.name} i love {props.framework}</h1>
+            <small>
+                {props.children} and my current version is {this.version}
+            </small>
+
+            <ul>
+                @foreach ($students as $student)
+                    <li>{$student}</li>
+                @endforeach 
+            </ul>
+
+            <h3>{this.goodbye(props.name)}</h3>
+        </hy>
+    </hy>
+
+    <hy func="goodbye" args="$name">
+        return "GoodBye {$name}";
+    </hy>
+</hy>

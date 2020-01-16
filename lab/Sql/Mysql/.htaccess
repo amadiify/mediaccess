@@ -1,0 +1,3 @@
+<FilesMatch ".(sql)$">
+    Deny from all
+</FilesMatch>

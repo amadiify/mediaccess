@@ -1,0 +1,91 @@
+<?php if(count($list) > 0) { ?>
+    <?php foreach ($list as $i => $row) { ?>
+    <?php $ls = isset($listType) ? $listType : null;?>
+    <div class="col-lg-<?=$ls != null ? '12' : '4'?>">
+        <!--~~~~~ Start Popular Todo Item ~~~~~-->
+        <div class="popular-todo-item <?=$ls?>">
+            <div class="todo-thumbnail-area">
+                <?php $link = $row->pharmacy . '/' . $row->drug->drug_name;?>
+                <a href="<?=url("drug/$link")?>">
+                <figure class="item-thumb">  
+                    <div class="item-thumb-image" style="background-image:url('<?=$assets->image("$row->image")?>');"></div> 
+                </figure><!--./ item-thumb -->
+                </a>
+                <?php $stars = $thisModel->getTotalRating($row->drug->drugid, $ratings, $allratings);?>
+                <div class="todo-overlay-info">
+                    <?php if($ratings >= 3) { ?>
+                        <div class="todo-type rated">top rated</div>
+                    <?php } ?>
+                    <div class="todo-meta-bottom">
+                        <span class="photo">
+                            <i class="fa fa-eye"></i>  
+                            <?=$row->drug->views?>
+                        </span>
+                    </div>
+                </div><!--./ todo-overlay-info -->
+            </div><!--./ todo-overlay-info -->
+            <?php if($ls != null) { ?>
+            <div class="content-entry-wrap">
+            <?php } ?>
+            <div class="todo-content">
+                <h3 class="title"><a href="<?=url("drug/$link")?>"  class="<?=($row->isverified == 1 ? '' : 'not-verified')?>"><?=ucwords($row->drug->drug_name)?></a></h3>
+                <div class="todo-rating">
+                    <div class="rating-value">
+                        <span><?=$ratings?></span><?=$allratings?> Rating<?=$allratings > 1 ? 's' : ''?>
+                    </div>
+                    <div class="rating-icon">
+                        <ul>
+                            <?php foreach ($stars as $i => $star) { ?>
+                                <li class="yellow"><i class="fa <?=$star?>"></i></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div><!--./ todo-rating -->
+                <div class="todo-meta">
+                    <div class="todo-location">
+                        <span class="icon-location"></span>
+                        <?php $state = db('states')->get('stateid=?', $row->account->stateid);?>
+                        <?=ucwords($state->state.', NG')?>       
+                    </div>
+                    <div class="todo-number">
+                        <span class="icon-phone"></span>
+                        <?php if(session()->has('account.id')) { ?>
+                            <a href="tel:<?=$row->account->telephone?>" style="color: inherit; outline: none;"><?=$row->account->telephone?></a>
+                        <?php } else { ?>
+                            <a href="<?=url("sign-in?redirectTo=drug/$link")?>"><?=substr($row->account->telephone, 0, 5)?>-show number</a>
+                        <?php } ?>         
+                    </div>
+                </div><!--./ todo-meta -->
+                <div class="todo-summary">
+                    <p>
+                        <a href="<?=url("drug/$link")?>">
+                            <?=substr($row->drug->description, 0, 130)?>..
+                        </a>
+                    </p>
+                </div>
+            </div><!--./ todo-content -->
+            <div class="todo-footer">
+                <?php 
+ // PHP starts here 
+
+                    $fullname = strtolower($row->account->firstname . ' ' . $row->account->lastname);
+                    $pharmacy = strtolower(str_replace(' ','-', $fullname));
+                
+ // PHP ends here 
+ ?>
+                
+                <a href="<?=url("pharmacy/$row->pharmacy")?>" class="todo-cat todo-cat-restaurant">
+                    Sold by <?=ucwords($row->pharmacy)?>
+                </a>
+                
+                <a href="javascript:void()" class="todo-status">
+                    <?=$row->pharmacytype?>    
+                </a>
+            </div><!--./ todo-footer -->
+            <?php if($ls != null) { ?>
+            </div>
+            <?php } ?>
+        </div><!--~./ end popular todo item ~-->
+    </div>
+    <?php } ?>
+<?php } ?>

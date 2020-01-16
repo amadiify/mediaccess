@@ -1,0 +1,63 @@
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-4 make-payment">
+			<img $src="08-Road-map.png">
+			<div class="info text-center">
+					<h3 class="title">Almost done..</h3>
+					
+					<div class="todo-location">
+						<p>You will now be required to pay with your credit card/ Naria Card or via bank. Please hold on while to vet your connection</p>
+					</div><!--./ todo-location -->
+					<br>
+					<a href="javascript:history.back()" class="btn btn-default"> Cancel </a>
+				</div>
+		</div>
+		<div class="col-lg-4">
+			<span style="display:none;" data-target="json" data-url="{url()}">{isset($checkout) ? json_encode($checkout) : json_encode(session()->get('user.payment'))}</span>
+		</div>
+	</div>
+</div>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+function payWithPaystack(){
+
+	var dd = document.querySelector('*[data-target="json"]');
+	var data = JSON.parse(dd.innerText.trim());
+	var url = dd.getAttribute('data-url');
+
+
+    var handler = PaystackPop.setup({
+      key: 'pk_test_615d8aa19f02fe711503776704f9de974cf262f3',
+      email: data.email,
+      amount: Number(data.amount) * 100,
+      currency: "NGN",
+      ref: data.ref,
+      metadata: {
+         custom_fields: [
+            {
+                display_name: "Mobile Number",
+                variable_name: "mobile_number",
+                value: data.phone
+            }
+         ]
+      },
+      callback: function(response){
+		  window.open(url + '/my/payment/' + response.status + '/' + response.reference, '_self');
+      },
+      onClose: function(){
+          window.history.back();
+      }
+    });
+    handler.openIframe();
+}
+
+window.onload = function(){
+	setTimeout(function(){
+		payWithPaystack();
+	},1000);
+};
+</script>

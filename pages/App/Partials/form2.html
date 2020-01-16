@@ -1,0 +1,34 @@
+<div class="form-group">
+    <input name="telephone" class="form-controllar" type="tel" placeholder="Telephone Number" value="{$model->telephone}" required>
+    {$model->onError('telephone')}
+</div>
+
+<div class="form-group">
+    <input name="address" class="form-controllar" type="text" placeholder="Home Address" value="{$model->address}" required>
+</div>
+
+<div class="form-group form-select">
+    <select class="form-controllar" name="sexid" required>
+        <option value="">Sex</option>
+        @fetch('sex', row)
+            <option value="{$row->sexid}">{ucwords($row->sex)}</option>
+        @endfetch
+    </select>
+    {$model->onError('sexid')}
+</div>
+
+<div class="form-group form-select">
+    <select class="form-controllar" name="stateid" required>
+        <option value="">State/City</option>
+        @fetch('states', row)
+            <option value="{$row->stateid}">{ucwords($row->state)}</option>
+        @endfetch
+    </select>
+    {$model->onError('stateid')}
+</div>
+
+<div class="remember-and-password">
+    <div class="login-form-remember"> 
+        <label><input id="remembermesignin" value="" type="checkbox" name="iagree" required><span>I agree to the <a href="">terms and conditions</a></span></label>
+    </div>
+</div><!--/.remember-and-password-->

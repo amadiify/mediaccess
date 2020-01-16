@@ -1,0 +1,194 @@
+	
+	<section class="error-page-section bg-gray2 ptb-100 reduce-padding">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-lg-6">
+						<div class="error-page-content">
+							<h2><?=ucwords($listTitle)?></h2>
+							<p><?=ucfirst($listCaption)?></p>
+							<?=\Moorexa\Rexa::runDirective(true,'partial','search-form')?>
+						</div><!--/.error-page-content-->
+					</div><!--/.col-lg-6-->
+					<div class="col-lg-6">
+						<div class="error-thumbnail text-center">
+							<img src="<?=$assets->image("black_female_doctor.png")?>" alt="Error">
+						</div><!--/.error-thumbnail-->
+					</div>
+				</div><!--/.row-->
+			</div>
+	</section><!--~./ end error page section ~-->
+
+	<!--********************************************************-->
+    <!--********************* SITE CONTENT *********************-->
+    <!--********************************************************-->
+    <div class="site-content">
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				Start Main Wrapper
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+			<div class="main-wrapper ptb-100 move-up">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<!--~~~~~ Start Site Main ~~~~~-->
+							<main class="site-main">
+								<div class="row">
+									<div class="col-12">
+										<div class="search-filter-options mb-60">
+											<div class="row align-items-end">
+												<div class="col-lg-3 col-md-6">
+													<div class="products-ordering-list">
+														<span>Sort By</span>
+														<select class="option-form-input custom-select sort">
+															<option value="">Default</option>
+															<?php foreach ($groups as $row) { ?>
+																<?php if($sort != null) { ?>
+																	<?php $sort = ltrim(substr($sort, strpos($sort, '-')), '-');?>
+																	<?php if($sort == $row->group_name) { ?>
+																		<option value="<?=$row->groupid?>" selected><?=ucwords($row->group_name)?></option>
+																	<?php } else { ?>
+																		<option value="<?=$row->groupid?>"><?=ucwords($row->group_name)?></option>
+																	<?php } ?>
+																<?php } else { ?>
+																	<option value="<?=$row->groupid?>"><?=ucwords($row->group_name)?></option>
+																<?php } ?>
+															<?php } ?>
+														</select>
+													</div><!--~./ products-ordering-list ~-->
+												</div>
+												
+												<div class="col-lg-3 col-md-6">
+													<div class="price-ordering-list">
+														<span>Price</span>
+														<select class="option-form-input custom-select price">
+															<option value="1">Low to High </option>
+															<option value="2">High to Low</option>
+															<option value="3">Price High</option>
+															<option value="4">Price Low</option>
+														</select>
+													</div><!--~./ products-ordering-list ~-->
+												</div>
+												<div class="col-lg-3 col-md-6">
+													<div class="show-products-category">
+														<span>category</span>
+														<select class="option-form-input custom-select category">
+															<option value="general">General</option>
+															<?php foreach ($groups as $row) { ?>
+																<option value="<?=$row->groupid?>"><?=ucwords($row->group_name)?></option>
+															<?php } ?>
+														</select>
+													</div><!--~./ show-products-category ~-->
+												</div>
+												
+											</div>
+										</div><!--~./ search-filter-options ~-->
+									</div>
+								</div>
+								
+								<div class="tab-content filter-tab-content">
+									
+									<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+									
+									<!--~~~~~ Start Tab Pane ~~~~~--> 
+									<div class="tab-pane fade show active" id="listing_list" role="tabpanel">
+										<div class="row">
+											
+
+											<div class="col-lg-8">
+												<?=\Moorexa\Rexa::runDirective(true,'partial','list-row')?>
+											</div>
+
+											<!--~~~~~ Start sidebar ~~~~~-->
+											<div class="col-lg-4">
+													<div class="sidebar sidebar-two">
+														<!--~~~~ Start Widget Search Filter ~~~~-->
+														<aside class="widget bt-widget-search-filter">
+															<h4 class="widget-title"><span class="icon-search32"></span>Search Listing</h4>
+															<div class="widget-content">
+																<form name="searchfilterForm" id='search_filter_form' method="post" action='#' class="search_filter_form">
+																	<div class="filter-group">
+																		<input id="filter_search" placeholder="What are you looking for?" type="text" class="form-controllar">
+																	</div>
+																	<div class="filter-group">
+																		<select class="custom-select category">
+																			<option>Filter By Category</option>
+																			<option>Beauty</option>
+																			<option>Nightlife</option>
+																			<option>Hotels</option>
+																			<option>Automotive</option>
+																			<option>Travels</option>
+																			<option>Real Estates</option>
+																			<option>Shopping</option>
+																		</select><!--~./ location ~-->
+																	</div>
+																	<div class="filter-group">
+																		<select class="custom-select country">
+																			<option>Filter By Country</option>
+																			<option>Algeria</option>
+																			<option>Australia</option>
+																			<option>Angola</option>
+																			<option>India</option>
+																			<option>New York</option>
+																			<option>Bangladesh</option>
+																		</select><!--~./ location ~-->
+																	</div>
+																	<div class="filter-group">
+																		<select class="custom-select country">
+																			<option>Filter By City</option>
+																			<option>City one</option>
+																			<option>City Two</option>
+																			<option>City Three</option>
+																			<option>City Four</option>
+																			<option>City Five</option>
+																			<option>City Six</option>
+																		</select><!--~./ location ~-->
+																	</div>
+																	<div class="filter-group filter_location">
+																		<input id="filter_location" placeholder="Location" type="text" class="form-controllar">
+																	</div>
+																	<div class="filter-group">
+																		<div class="search-distance-value">
+																			Radius: 
+																			<span class="distance-value">60</span>KM
+																		</div>
+																		<div id="search_distance"></div>
+																	</div>
+																	<div class="form-submit">
+																		<button class="btn btn-default">apply filter</button>
+																	</div>
+																</form>
+															</div>
+														</aside><!--~./ end widget search filter ~-->
+														
+														<!--~~~~ Start Widget Todo Categories ~~~~-->
+														<aside class="widget widget-todo-categories">
+															<h4 class="widget-title"><span class="icon-list1"></span>Top Categories</h4>
+															<div class="widget-content">
+																<ul>  
+																	<?php
+$account_types = \Moorexa\DB::sql('SELECT * FROM '.(\Moorexa\DB::getTableName('account_types')).' ');if ($account_types->rows > 0){
+while ($row = $account_types->obj())
+{ ?>
+																		<?php if($row->showpublic == 1) { ?>
+																		<?php $count = account::get('accounttypeid=? and isverified=?', $row->accounttypeid,1)->rows;?>
+																		<li class="cat-item">
+																			<a href="<?=url("list/$row->accounttype")?>"><?=ucwords($row->accounttype)?><span class="count"><?=$count?></span></a>
+																		</li>
+																		<?php } ?>
+																	<?php }} ?>
+																</ul>
+															</div>
+														</aside><!--~./ end widget todo categories ~-->
+														
+														
+													</div>
+											</div><!--~./ end sidebar ~-->
+										</div>
+									</div><!--~./ end tab pane ~-->
+								</div> 
+							</main><!--~./ end site main ~-->
+						</div>
+					</div>
+				</div>
+			</div><!--~./ end main wrapper ~-->
+		</div>
+		<!--~./ end site content ~-->

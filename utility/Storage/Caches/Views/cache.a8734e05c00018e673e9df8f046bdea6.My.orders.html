@@ -1,0 +1,244 @@
+<div class="container">
+	<div class="ptb-10" style="padding-bottom: 40px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Recent Orders</h2>
+			<p>Review your orders.</p>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+	</div>
+	<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+	<?=\Moorexa\Rexa::runDirective(true,'partial','notification', ['type' => 'danger', 'title' => 'Finish Order', 'message' => 'This action would close this order and concludes every transactions with this pharmacy. Click "Okay" to continue'])?>
+	<div class="row">
+		<div class="col-lg-12">
+				<?php if (Moorexa\Provider::permission("canRead", "7")) { ?>
+					<?php $orders = orders::get('fromid=:myid');?>
+
+					<?php if($orders->rows > 0) { ?>
+						<div class="default-form-area">
+							<div class="upcoming-events">
+								<div class="row">
+									<div class="col-xl-4">
+										<h6>All Services Requested</h6>
+										<h4 class="color-primary">₦<?=number_format($orders->reduce(function($r){
+											return $r->from('payments')->get()->reduce('amount');
+										}), 2, '.', ',')?></h4>
+									</div>
+								</div>
+								<div class="table-responsive mt-15">
+									<table class="table">
+										<?php
+$orders = $orders;if ($orders->rows > 0){
+while ($order = $orders->obj())
+{ ?>
+											<?php $account = $order->from('account')->get();?>
+											<?php $accounttype = $account->from('account_types')->get();?>
+											<?php $photo = $account->from('web_photo', 'accountid')->get()->profile_image;?>
+											<tr>
+												<?php $photo = $photo == null ? 'man-3.png' : $photo;?>
+												<td><img src="<?=image($photo, '35:35')?>" alt=""></td>
+												<td><?=ucwords($account->firstname . ' ' . $account->lastname)?>
+													<a href="<?=url("list/$accounttype->accounttype")?>"><?=$accounttype->accounttype?></a>
+												</td>
+												<td><span class="badge badge-<?=$order->status?>"><?=$order->status?></span></td>
+												<td>₦<?=number_format($order->from('payments')->get()->amount, 2, '.', ',')?></td>
+												<td>
+													<?=get_time_ago($order->dateissued)?>
+												</td>
+												<?php if($order->dateclosed == null) { ?>
+												<td>
+													<a href="<?=url("conversation/$order->orderid")?>" class="btn btn-success" style="color: #fff;" target="_blank">Chat</a>
+												</td>
+												<?php } else { ?>
+												<td>
+													<span class="badge badge-danger">Closed</span>
+												</td>
+												<?php } ?>
+											</tr>
+										<?php }} ?>
+									</table>
+								</div>
+							</div><!--~./ end upcoming events ~-->
+						</div>
+					<?php } ?>
+
+				<?php } else { ?>
+					<?php $orders = orders::get('accountid=:myid');?>
+
+					<?php if($orders->rows > 0) { ?>
+						<div class="default-form-area">
+							<div class="upcoming-events">
+								<div class="row">
+									<div class="col-xl-4">
+										<h6>All Time</h6>
+										<h4 class="color-primary">₦<?=number_format($orders->reduce(function($r){
+											return $r->from('payments')->get()->reduce('amount');
+										}), 2, '.', ',')?></h4>
+									</div>
+								</div>
+								
+								<div class="table-responsive mt-15">
+									<table class="table">
+										<?php
+$orders = $orders;if ($orders->rows > 0){
+while ($order = $orders->obj())
+{ ?>
+											<?php $account = account::get('accountid=?', $order->fromid);?>
+											<?php $accounttype = $account->from('account_types')->get();?>
+											<?php $photo = web_photo::get('accountid=?', $order->fromid)->profile_image;?>
+											<tr data-href="order-<?=$order->orderid?>">
+												<?php $photo = $photo == null ? 'man-3.png' : $photo;?>
+												<td><img src="<?=image($photo, '35:35')?>" alt=""></td>
+												<td><?=ucwords($account->firstname . ' ' . $account->lastname)?>
+													<?php if($accounttype->accounttype != 'Patient') { ?>
+														<a href="<?=url("list/$accounttype->accounttype")?>"><?=$accounttype->accounttype?></a>
+													<?php } ?>
+												</td>
+												<td><span class="badge badge-<?=$order->status?>"><?=$order->status?></span></td>
+												<td>₦<?=number_format($order->from('payments')->get()->amount, 2, '.', ',')?></td>
+												<td>
+													<?=get_time_ago($order->dateissued)?>
+												</td>
+												<?php if($order->dateclosed != null) { ?>
+												<td>
+													<span class="badge badge-danger">Closed</span>
+												</td>
+												<?php } ?>
+											</tr>
+										<?php }} ?>
+									</table>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+
+				<?php } ?>
+			</div><!--~./ end default form area ~-->
+		</div>
+	</div>
+
+	<?php $cart = Query::getPharmacyShoppingCart();?>
+	<?php if($cart->rows > 0) { ?>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="default-form-area">
+					<div class="upcoming-events">
+						<div class="row">
+							<div class="col-xl-4">
+								<h6>All Drugs Purchased</h6>
+								<h4 class="color-primary"><?=Wrapper::money($cart->reduce('amount'))?></h4>
+							</div>
+						</div>
+					
+
+						<div class="table-responsive mt-15">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Drug Name</th>
+										<th>Quantity</th>
+										<th>Amount</th>
+										<th>Shipping Mode</th>
+										<th>Time</th>
+										<th>Tracking</th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<?php
+$cart = $cart;if ($cart->rows > 0){
+while ($c = $cart->obj())
+{ ?>
+										<tr data-href="orders/cart-order/<?=$c->cartid?>">
+											<td><?=$c->from('drugs', 'drugid')->get()->drug_name?></td>
+											<td style="text-align:center;"><?=$c->quantity?></td>
+											<td><?=Wrapper::money($c->amount)?></td>
+											<td><?=$c->shipping?></td>
+											<td><?=get_time_ago($c->dateRequested)?></td>
+											<td>
+												<?php if($c->dateDelivered == null) { ?>
+													<span class="badge badge-pending">Pending <?=$c->shipping == 'pickup' ? 'Collection' : 'Delivery'?></span>
+												<?php } else { ?>
+													<span class="badge badge-success">Order Complete</span>
+												<?php } ?>
+											</td>
+											<td>
+												<?php if($c->dateDelivered == null) { ?>
+													<a href="<?=url("orders/cart-order/$c->cartid")?>" class="btn btn-success" style="color: #fff; font-weight: normal;">Order Details</a>
+												<?php } ?>
+											</td>
+										</tr>
+									<?php }} ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+
+	<?php $cart = Query::getUserShoppingCart();?>
+	<?php if($cart->rows > 0) { ?>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="default-form-area">
+					<div class="upcoming-events">
+						<div class="row">
+							<div class="col-xl-4">
+								<h6>All Drugs Ordered</h6>
+								<h4 class="color-primary"><?=Wrapper::money($cart->reduce('amount'))?></h4>
+							</div>
+						</div>
+
+						<div class="table-responsive mt-15">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Pharmacy</th>
+										<th>Drug</th>
+										<th>Quantity</th>
+										<th>Amount</th>
+										<th>Shipping</th>
+										<th>Time</th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<?php
+$cart = $cart;if ($cart->rows > 0){
+while ($c = $cart->obj())
+{ ?>
+										<tr>
+											<td><?=$c->from('pharmacies', 'pharmacyid')->get()->pharmacy_name?></td>
+											<td><?=$c->from('drugs', 'drugid')->get()->drug_name?></td>
+											<td style="text-align:center;"><?=$c->quantity?></td>
+											<td><?=Wrapper::money($c->amount)?></td>
+											<td style="text-align:center;"><?=$c->shipping?></td>
+											<td><?=get_time_ago($c->dateRequested)?></td>
+											<td>
+												<?php if($c->dateDelivered == null) { ?>
+													<a href="<?=url("orders/trigger-confirm?tracking=complete&ref=$c->txref:$c->cartid")?>" class="btn btn-success" style="color: #fff;">Recieved?</a>
+												<?php } else { ?>
+													<span class="badge badge-success">Order Complete</span>
+												<?php } ?>
+											</td>
+										</tr>
+									<?php }} ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+
+</div>

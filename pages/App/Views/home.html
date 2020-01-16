@@ -1,0 +1,289 @@
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Start Error Page Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<section class="error-page-section bg-gray2 ptb-100 reduce-padding">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-6">
+					<div class="error-page-content">
+						<h2>We Make Your Health <br> Our Business</h2>
+						<p>We are commited to your health first, welcome to a community of top medical pratitionals.</p>
+						@partial('search-form');
+					</div><!--/.error-page-content-->
+				</div><!--/.col-lg-6-->
+				<div class="col-lg-6">
+					<div class="error-thumbnail text-center">
+						<img $src="black_female_doctor.png" alt="Error">
+					</div><!--/.error-thumbnail-->
+				</div>
+			</div><!--/.row-->
+		</div>
+</section><!--~./ end error page section ~-->
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Start Features Cat List Area
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div class="features-cat-list-area">
+        <div class="container">
+            <div class="row">
+
+                {$account_types = Query::publicAccounts();}
+
+                @fetch($account_types, list)
+                    <!--~~~~~ Start Cat List Item ~~~~~-->
+                    {$hasGroup = Query::getGroups($list->accounttypeid);}
+
+                    @if ($hasGroup->rows > 0)
+                        <div class="col-lg-2 col-md-6">
+                            <div class="cat-list-item">
+                                <div class="cat-title">
+                                    <div class="icon">
+                                        <span class="{$list->icon}"></span>
+                                    </div>
+                                    <div class="cat-name">{$list->accounttype}</div>
+                                </div>
+                                <ul class="list">
+                                    @fetch($hasGroup, group)
+                                        <!-- get group -->
+                                        {$users = Query::getRowsFromGroupUsers($group->group_name);}
+                                        <li><a $href="list/{$list->accounttype}/show-{$group->group_name}">{ucwords($group->group_name)}</a><span>{$users}</span></li>
+                                    @endfetch
+                                </ul>
+                            </div> 
+                        </div><!--./ cat-list-item -->
+                    @endif
+                    
+                @endfetch 
+            </div>
+        </div>
+        <!--~~~~~ Start Social Profile~~~~~-->
+        <div class="social-profile">
+            <ul class="social-share-two">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            </ul>
+        </div><!--./ social-profile -->
+</div><!--~./ end features cat list area ~-->
+
+
+<section class="popular-categories-section popular-categories-style-one ptb-100">
+    <div class="container">
+        <div class="row">
+            <!--~~~~~ Start Section Header ~~~~~-->
+            <div class="col-12">
+                <div class="section-header text-center">
+                    <h2 class="section-title">What Are You <span>Interested In</span></h2>
+                    <p>Poular Categories</p>
+                    <div class="divider">
+                        <img $src="icon/divider.png" alt="icon">
+                    </div>
+                </div>
+            </div><!--./ section-header -->
+        </div>
+        
+        <div class="row categories-list">
+
+            @fetch($account_types, list)
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-cat">
+                        <div class="icon">
+                            <span class="{$list->icon}"></span>
+                        </div>
+                        <h3 class="title"><a $href="list/{$list->accounttype}">{ucwords($list->accounttype)}</a></h3>
+                    </div>
+                </div>
+            @endfetch
+            
+        </div>
+    </div>
+</section>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Start Popular Todos Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<section class="popular-todos-section popular-todos-style-two ptb-100">
+        <div class="container">
+            <div class="row">
+                <!--~~~~~ Start Section Header ~~~~~-->
+                <div class="col-lg-8">
+                    <div class="section-header">
+                        <h2 class="section-title">Top medical <span>Pratitionals</span></h2>
+                        <p>Get quality health care from a range of top medical pratitionals in nigeria</p>
+                        <div class="divider">
+                            <img $src="icon/divider.png" alt="icon">
+                        </div>
+                    </div>
+                </div><!--./ section-header -->
+            </div>
+        </div>
+        
+        <!--~~~~~ Start Todo Items Carousel ~~~~~--> 
+        <div class="todo-items-carousel owl-carousel carousel-nav-text">
+            
+            @partial('owl-list')
+
+        </div><!--~./ end todo items carousel ~-->
+</section><!--~./End popular todos section ~-->
+
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Start Process Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<section id="process" class="our-work-process-section bg-image bg-gray ptb-100" style="background-image:url('assets/images/bg/buliding-bg.png')">
+    <div class="container">
+        <div class="row">
+            <!--~~~~~ Start Section Header ~~~~~-->
+            <div class="col-12">
+                <div class="section-header text-center">
+                    <h2 class="section-title">How Does It <span>Work</span></h2>
+                    <p>Easy steps in few moments</p>
+                    <div class="divider">
+                        <img $src="icon/divider.png" alt="icon">
+                    </div>
+                </div>
+            </div><!--./ section-header -->
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="process-main-content">
+                    <div class="bg-line" $background-image="linearrow.png"></div><!--~./ end bg line ~-->
+                    <div class="row process-list">
+                        <!--~./ Start Single Process ~-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="single-process" >
+                                <h3 class="process-no">1</h3>
+                                <div class="single-process-inner">
+                                    <h2>Choose Location</h2>
+                                    <div class="icon">
+                                        <img $src="icon/process/1.png" alt="icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--~./ end single process ~-->
+                        
+                        <!--~./ Start Single Process ~-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="single-process" >
+                                <h3 class="process-no">2</h3>
+                                <div class="single-process-inner">
+                                    <h2>Find Healthcare</h2>
+                                    <div class="icon">
+                                        <img $src="icon/process/2.png" alt="icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--~./ end single process ~-->
+                        
+                        <!--~./ Start Single Process ~-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="single-process" >
+                                <h3 class="process-no">3</h3>
+                                <div class="single-process-inner">
+                                    <h2>Explore Place</h2>
+                                    <div class="icon">
+                                        <img $src="icon/process/3.png" alt="icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--~./ end single process ~-->
+                        
+                        <!--~./ Start Single Process ~-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="single-process" >
+                                <h3 class="process-no">4</h3>
+                                <div class="single-process-inner">
+                                    <h2>Enjoy Your Day</h2>
+                                    <div class="icon">
+                                        <img $src="icon/process/4.png" alt="icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--~./ end single process ~-->
+                    </div>
+                </div><!--~./ end process main content ~-->
+            </div>
+        </div>
+    </div>
+</section><!--~~./ end process section ~~-->
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Start Popular Todos Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<section class="popular-todos-section popular-todos-style-two ptb-100">
+        <div class="container">
+            <div class="row">
+                <!--~~~~~ Start Section Header ~~~~~-->
+                <div class="col-lg-8">
+                    <div class="section-header">
+                        <h2 class="section-title">Top rated <span>Experiences</span></h2>
+                        <p>What are you interested</p>
+                        <div class="divider">
+                            <img $src="icon/divider.png" alt="icon">
+                        </div>
+                    </div>
+                </div><!--./ section-header -->
+            </div>
+        </div>
+        
+        <!--~~~~~ Start Todo Items Carousel ~~~~~--> 
+        <div class="todo-items-carousel owl-carousel carousel-nav-text">
+                @partial('owl-list', 'switch')
+        </div><!--~./ end todo items carousel ~-->
+</section><!--~./End popular todos section ~-->
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Start Testimonial Section
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<div id="testimonials" class="testimonial-section bg-fixed bg-overlay-gradient bg-image pt-60 pb-100" $background-image="1364.jpg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div id="testimonial-carousel" class="owl-carousel carousel-nav-dots">
+                    <!--~~~~~ Start Single Testimonial ~~~~~-->
+                    <div class="single-testimonial text-center">
+                        <div class="quote-icon">
+                            <img $src="icon/quote.png" alt="thumb">
+                        </div>
+                        <div class="client-thumb">
+                            <img $src="man-3.png" alt="thumb">
+                        </div>
+                        <div class="info text-white">
+                            <p>Imagination… What we can easily see is only a small percentage of what is possible.</p>
+                            <h5 class="name">Fatma Hassan</h5>
+                        </div>
+                    </div><!--~./ end single testimonail ~-->
+                    
+                    <!--~~~~~ Start Single Testimonial ~~~~~-->
+                    <div class="single-testimonial text-center">
+                        <div class="quote-icon">
+                            <img $src="icon/quote.png" alt="thumb">
+                        </div>
+                        <div class="client-thumb">
+                            <img $src="man-3.png" alt="thumb">
+                        </div>
+                        <div class="info text-white">
+                            <p>Imagination… What we can easily see is only a small percentage of what is possible.</p>
+                            <h5 class="name">Fatma Hassan</h5>
+                        </div>
+                    </div><!--~./ end single testimonail ~-->
+                    
+                    <!--~~~~~ Start Single Testimonial ~~~~~-->
+                    <div class="single-testimonial text-center">
+                        <div class="quote-icon">
+                            <img $src="icon/quote.png" alt="thumb">
+                        </div>
+                        <div class="client-thumb">
+                            <img $src="man-3.png" alt="thumb">
+                        </div>
+                        <div class="info text-white">
+                            <p>Imagination… What we can easily see is only a small percentage of what is possible.</p>
+                            <h5 class="name">Fatma Hassan</h5>
+                        </div>
+                    </div><!--~./ end single testimonail ~-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--~./ end testimonial section ~-->

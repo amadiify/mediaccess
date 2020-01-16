@@ -1,0 +1,107 @@
+@if (count($owllist->list) > 0)
+    @foreach ($owllist->list as $i => $row)
+        <!--~~~~~ Start Popular Todo Item ~~~~~-->
+        <div class="popular-todo-item">
+            <div class="todo-thumbnail-area">
+                {$preview = strtolower($row->type).'-'.$row->account->firstname.'-'.$row->account->lastname;}
+                <a $href="about/{$preview}">
+                <figure class="item-thumb">  
+                    <img src="{image($row->web_photo->cover_image,'370:270')}" alt="Thmubnail"> 
+                </figure><!--./ item-thumb -->
+                </a>
+                {$stars = $this->model('app/about')->getTotalRating($row->account->accountid, $ratings, $allratings);}
+                <div class="todo-overlay-info">
+                    @if ($ratings >= 3)
+                        <div class="todo-type rated">top rated</div>
+                    @endif
+                    <div class="todo-meta-bottom">
+                        @if (!isset($type) && isset($row->type))
+                            {$type = $row->type;}
+                        @endif
+
+                        {$add = url('add-wishlist/'.$row->account->accountid.'/'.$type);}
+                        {$remove = url('remove-wishlist/'.$row->account->accountid.'/'.$type);}
+                        {$addWish = 'oauth';}
+
+                        @if (!session()->has('account.id'))
+                            {$url = url('sign-in?redirectTo='.$add);}
+                        @else
+                            {$accountid = session()->get('account.id');}
+                            {$check = db('wishlist')->get('id=? and addedby=?',$row->account->accountid,$accountid);}
+                            @if ($check->rows == 0)
+                                {$url = $add;}
+                                {$addWish = 'true';}
+                            @else
+                                {$url = $remove;}
+                                {$addWish = 'false';}
+                            @endif
+                        @endif
+
+                        <a href="{$url}" data-wishlist="{$addWish}" class="save">
+                            <i class="fa fa-heart"></i>
+                            save
+                        </a>
+                        <span class="photo">
+                            <i class="fa fa-eye"></i> &nbsp;
+                            {$row->views}
+                        </span>
+                    </div>
+                </div><!--./ todo-overlay-info -->
+            </div><!--./ todo-overlay-info -->
+            
+            <div class="todo-content">
+                {$isverified = account_verification::get('accountid=? and isverified=?', $row->account->accountid, 1)->row;}
+                <h3 class="title"><a $href="about/{$preview}" php-if::class="$isverified == 1 ? '' : 'not-verified'">{ucwords($row->account->firstname . ' ' . $row->account->lastname)}</a></h3>
+                <div class="todo-rating">
+                    <div class="rating-value">
+                        <span>{$ratings}</span>{$allratings} Rating{$allratings > 1 ? 's' : ''}
+                    </div>
+                    <div class="rating-icon">
+                        <ul>
+                            @foreach ($stars as $i => $star)
+                                <li class="yellow"><i class="fa {$star}"></i></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div><!--./ todo-rating -->
+                <div class="todo-meta">
+                    <div class="todo-location">
+                        <span class="icon-location"></span>
+                        {$state = db('states')->get('stateid=?', $row->account->stateid);}
+                            
+                        {ucwords($state->state.', NG')}       
+                    </div>
+                    <div class="todo-number">
+                        <span class="icon-phone"></span>
+                        @if (session()->has('account.id'))
+                            <a href="tel:{$row->account->telephone}" style="color: inherit; outline: none;">{$row->account->telephone}</a>
+                        @else
+                            <a $href="sign-in?redirectTo=about/{$preview}">{substr($row->account->telephone, 0, 5)}-show number</a>
+                        @endif         
+                    </div>
+                </div><!--./ todo-meta -->
+                <div class="todo-summary">
+                    <p>
+                        <a $href="about/{$preview}">
+                            {substr($row->account->about, 0, 90)}..
+                        </a>
+                    </p>
+                </div>
+            </div><!--./ todo-content -->
+            <div class="todo-footer">
+                <a $href="list/{$row->type}" class="todo-cat todo-cat-restaurant">
+                    {ucwords($row->type)}
+                </a>
+                @if ($row->account->isavaliable == 1)
+                    <a href="javascript:void()" class="todo-status">
+                        Avaliable
+                    </a>
+                @else
+                    <a href="javascript:void()" class="todo-status text-danger">
+                        Unavaliable
+                    </a>
+                @endif
+            </div><!--./ todo-footer -->
+        </div><!--~./ end popular todo item ~-->
+    @endforeach
+@endif

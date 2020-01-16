@@ -1,0 +1,32 @@
+*[data-wishlist]{
+    color: #000;
+}
+.btn.btn-default:hover{
+    color:#fff !important;
+}
+.listing-average-rating .rating-overview .single-progress-bar .progress .progress-bar {
+    background-color: #276999;
+}
+.listing-average-rating .rating-overview .rating-overview-right{padding-left: 24px;}
+.user-reg-form-area {
+    background-image: -webkit-linear-gradient(left, rgba(135, 192, 51,0.9), rgba(135, 192, 51,0.9));
+    background-image: linear-gradient(to right, rgba(135, 192, 51,0.9), rgba(135, 192, 51,0.9));
+}
+.content-right{align-self: center;}
+.todo-location > span {
+    color: #87C033 !important;
+}
+.widget.bt-about-us-widget .info-list.list > li > a:hover, .widget.bt-business-info-widget .info-list.list > li > a:hover {
+    color: inherit;
+}
+.listing-leave-review #review_form .form-submit {
+    margin-top: 15px;
+}
+.verified{
+    font-size: 14px;
+    color: #b3b3b3;
+    margin-top: 6px;
+}
+.comment-list .parent .children{
+    margin-top: -50px;
+}

@@ -1,0 +1,44 @@
+<section class="popular-categories-section popular-categories-style-one">
+	<div class="container">
+			<div class="breadcrumb-content-area" style="margin-top: 50px;">
+				<div class="breadcrumb-area">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="<?=url("")?>">Home</a></li>  
+						<li class="breadcrumb-item"><a href="<?=url("register")?>">Register</a></li>  
+						<li aria-current="page" class="breadcrumb-item active">Non Patient</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="col-12 ptb-100" style="padding-bottom: 40px">
+				<div class="section-header" style="margin-bottom:10px;">
+					<h2 class="section-title">What Are You <span>Interested In</span></h2>
+					<p>Choose an account type</p>
+					<div class="divider">
+						<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+					</div>
+				</div>
+			</div>
+
+			<div class="row categories-list">
+
+				<?php $account_types = Query::publicAccounts();?>
+				
+				<?php
+$account_types = $account_types;if ($account_types->rows > 0){
+while ($list = $account_types->obj())
+{ ?>
+					<div class="col-lg-3 col-md-6">
+						<div class="single-cat">
+							<div class="icon">
+								<span class="<?=$list->icon?>"></span>
+							</div>
+							<?php $type = strtolower($list->accounttype);?>
+							<h3 class="title"><a href="<?=url("register-as-$type")?>"><?=ucwords($list->accounttype)?></a></h3>
+						</div>
+					</div>
+				<?php }} ?>
+					
+			</div>
+	</div>
+</section>

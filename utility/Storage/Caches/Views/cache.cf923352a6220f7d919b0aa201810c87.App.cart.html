@@ -1,0 +1,133 @@
+<div class="container">
+	<div class="breadcrumb-content-area" style="margin-top: 50px;">
+		<div class="breadcrumb-area">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="<?=url("")?>">Home</a></li>  
+				<?php if(session()->has('previous.page', $link)) { ?>
+					<?php 
+
+						$previous = uri()->previous();
+						$previousPage = explode('/', $previous->link);
+					?>
+					
+					<li class="breadcrumb-item"><a href="<?=url("$previous->link")?>"><?=end($previousPage)?></a></li> 
+				<?php } ?>
+				<li aria-current="page" class="breadcrumb-item active">Cart</li>
+			</ol>
+		</div>
+	</div>
+
+	<div class="col-12 ptb-100" style="padding-bottom: 40px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Shopping <span>Cart</span></h2>
+			<p>Please review your cart and proceed to checkout.</p>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+		<br>
+		<a href="<?=url("$continueShopping")?>" class="btn btn-default"><i class="fa fa-arrow-left"></i> Continue Shopping </a>
+	</div>
+</div>
+
+<!--********************************************************-->
+<!--********************* SITE CONTENT *********************-->
+<!--********************************************************-->
+<div class="site-content">
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Start Shopping Cart Section
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<div class="shopping-cart-section ptb-50">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="table-responsive">
+						<table class="shop-table table">
+							<thead>
+								<tr>
+									<th colspan="2" class="product-name">Product</th>
+									<th class="product-price">Price</th>
+									<th class="product-quantity">Quantity</th>
+									<th class="product-total">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php $carts = session()->get('user.cart');?>
+								<?php $shippingCost = 0;?>
+								<?php $subTotal = 0;?>
+
+								<?php if(is_array($carts)) { ?>
+									<?php foreach ($carts as $cartid => $cart) { ?>
+										<tr class="shoping-cart-item">
+											<td class="product-thumbnail">
+												<?php if($cart['servicefee'] == '0') { ?>
+													<a href="#"><img src="<?=$assets->image("icon/pickup.png")?>" alt="Pickup"></a>
+												<?php } else { ?>
+													<a href="#"><img src="<?=$assets->image("icon/delivery-van.png")?>" alt="Delivery"></a>
+												<?php } ?>
+											</td>
+											<td class="product-info">
+												<?php $previous = $cart['link'];?>
+												<h2><a href="<?=url("$previous")?>"><?=ucwords($cart['drug_name'])?></a></h2>
+												<ul class="list choosen-list">
+													<li><span>Shipping Mode</span><?=$cart['shipping']?></li>
+												</ul>
+												<ul class="list tools">
+													<li><a href="<?=url("cart/remove/$cartid")?>"><span class="icon-cancel-circle"></span> remove</a></li>
+												</ul>
+											</td>
+											<td class="product-price">
+												<span class="amount"><?=Wrapper::money($cart['price'])?></span>					
+											</td>
+											<td class="product-quantity">
+												<div class="quantity">
+													<div class="input-spinner product-no">
+														<a href="javascript:void(0)" class="minus" onclick="applyQuantity(event)">-</a>
+														<input type="text" value="<?=$cart['quantity']?>" data-cartid="<?=$cartid?>" name="quantity">
+														<a href="javascript:void(0)" class="plus" onclick="applyQuantity(event)">+</a>
+													</div><!--/.input-spinner-->
+												</div>
+											</td>
+											<td class="product-subtotal">
+												<?php $total = ($cart['price'] * $cart['quantity']) + $cart['servicefee'];?>
+												<span class="amount-total" data-amount="<?=$cartid?>"><?=Wrapper::money($total)?></span>
+											</td>
+											<?php $shippingCost += $cart['servicefee'];?>
+											<?php $subTotal += ($cart['price'] * $cart['quantity']);?>
+										</tr><!--~./ shoping-cart-item ~-->
+									<?php } ?>
+								<?php } ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row pt-55">
+				<div class="col-lg-8">
+				</div>
+
+				<div class="col-lg-4">
+					<div class="cart-total-area">
+						<div class="cart-total-info">
+							<ul class="list">
+								<li class="cart-subtotal"><span>Sub Total</span> <strong data-target="subtotal"><?=Wrapper::money($subTotal)?></strong></li>
+								<li class="order-shipping"><span>Shipping & Handling </span> <strong data-target="shipping"><?=Wrapper::money($shippingCost)?></strong></li>
+							</ul>
+							<h3 class="cart-total-amount"><span>order total</span> <span class="amount" data-target="total">
+								<?=Wrapper::money(($subTotal + $shippingCost))?>
+							</span></h3>
+						</div>
+						<div class="text-center">
+							<a href="<?=url("checkout")?>" class="btn btn-default">PROCCED TO CHECKOUT</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!--~./ end shopping cart section ~-->
+</div>
+<!--~./ end site content ~-->
+
+<div class="circle-loader-wrapper">
+	<div class="circle-loader"></div>
+</div>

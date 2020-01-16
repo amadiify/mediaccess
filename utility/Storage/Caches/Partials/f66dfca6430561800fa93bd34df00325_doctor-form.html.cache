@@ -1,0 +1,92 @@
+<form class="default-form" action="" method="POST" enctype="multipart/form-data">
+    <?=csrf_token()?>
+    <?php $info = $data->data;?>
+    <div class="row">
+        <div class="col-lg-6">
+            <h3 class="headline">Work Information</h3>
+            <div class="form-group">
+                <input type="text" name="home_address" value="<?=$info->home_address?>" class="form-controllar" placeholder="Home Address" required>
+                <small class="text-info">Home Address</small>
+                <?=$model->onError('home_address')?>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="present_place_of_work" value="<?=$info->present_place_of_work?>" class="form-controllar" placeholder="Present Place of Work" required>
+                <small class="text-info">Present Place of Work</small>
+                <?=$model->onError('present_place_of_work')?>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="address_to_place_of_work" value="<?=$info->address_to_place_of_work?>" class="form-controllar" placeholder="Work Address" required>
+                <small class="text-info">Work Address</small>
+                <?=$model->onError('address_to_place_of_work')?>
+            </div>
+            <div class="form-group">
+                <input type="text" name="insitution_attended" value="<?=$info->insitution_attended?>" class="form-controllar" placeholder="Insitution Attended" required>
+                <small class="text-info">Institution Attended</small>
+                <?=$model->onError('insitution_attended')?>
+            </div>
+            <div class="form-group">
+                <input type="text" name="years_of_experience" value="<?=$info->years_of_experience?>" class="form-controllar" placeholder="Years of Experience" required>
+                <small class="text-info">Years of Experience</small>
+                <?=$model->onError('years_of_experience')?>
+            </div>
+            <div class="form-group">
+                <select name="specializationid" id="specialization" class="form-controllar">
+                    <option value="0">General</option>
+                    <?php
+$specializations = \Moorexa\DB::sql('SELECT * FROM specializations ');if ($specializations->rows > 0){
+while ($row = $specializations->obj())
+{ ?>
+                        <?php $other = null;?>
+                        <?php if($info->specializationid == $row->specializationid) { ?>
+                            <?php $other = 'selected';?>
+                        <?php } ?>
+                        <option value="<?=$row->specializationid?>" <?=$other?>><?=ucwords($row->specialization)?></option>
+                    <?php }} ?>
+                </select>
+                <small class="text-info">Area of expertise or specialization.</small>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+                <h3 class="headline">Location</h3>
+                <div class="form-group">
+                    <select name="stateid" class="form-controllar" required>
+                        <?php
+$states = \Moorexa\DB::sql('SELECT * FROM states ');if ($states->rows > 0){
+while ($row = $states->obj())
+{ ?>
+                            <?php $other = null;?>
+                            <?php if($row->stateid == $row->stateid) { ?>
+                               <?php $other = 'selected';?>
+                            <?php } ?>
+                            <option value="<?=$row->stateid?>" <?=$other?>><?=ucwords($row->state)?></option>
+                        <?php }} ?>
+                    </select>
+                    <small class="text-info">Your state.</small>
+                </div>
+                <div class="form-group">
+                    <select name="cityid" class="form-controllar" required>
+                        <?php
+$cities = \Moorexa\DB::sql('SELECT * FROM cities ');if ($cities->rows > 0){
+while ($row = $cities->obj())
+{ ?>
+                            <?php $other = null;?>
+                            <?php if($row->cityid == $row->cityid) { ?>
+                                <?php $other = 'selected';?>
+                            <?php } ?>
+                            <option value="<?=$row->cityid?>" <?=$other?>><?=ucwords($row->city)?></option>
+                        <?php }} ?>
+                    </select>
+                    <small class="text-info">Your city.</small>
+                </div>
+        </div><!--~./ col-lg-6 ~-->
+
+        <div class="col-12">
+            <div class="form-submit form-group">
+                <button class="btn btn-default">Update</button>
+            </div>
+        </div>
+    </div>
+</form><!--~./ default-form ~-->

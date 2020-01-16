@@ -1,0 +1,22 @@
+<form action="#" class="hero-search-form style-two">
+        <div class="inner-form">
+            <div class="hero-form-input search">
+                <input id="search" type="text" placeholder="What are you looking for?" />
+            </div><!--~./ search ~-->
+            <select class="hero-form-input custom-select location">
+                <option>Location </option>
+                @fetch('states',row)
+                    <option value="{$row->stateid}">{$row->state}</option>
+                @endfetch
+            </select><!--~./ location ~-->
+            <select class="hero-form-input custom-select category">
+                <option>Category</option>
+                @fetch('account_types', 'where showpublic = 1', list)
+                    <option value="{$list->accounttypeid}">{$list->accounttype}</option>
+                @endfetch
+            </select><!--~./ location ~-->
+            <div class="hero-form-input submitbtn">
+                <button class="btn btn-default" type="button">find now</button>
+            </div><!--~./ location ~-->
+        </div>
+</form><!--./ hero-search-form -->

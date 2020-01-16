@@ -1,0 +1,111 @@
+<div class="container">
+
+		<div class="breadcrumb-content-area" style="margin-top: 50px;">
+			<div class="breadcrumb-area">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a $href="/">Home</a></li>  
+					<li aria-current="page" class="breadcrumb-item active">Search</li>
+				</ol>
+			</div>
+		</div>
+
+		<div class="col-6 ptb-100" style="padding-bottom: 40px">
+			<div class="section-header" style="margin-bottom:10px;">
+				@if ($searchValue != '')
+					<h2 class="section-title">Search <span>Result{$total > 1 ? 's' : ''}</span></h2>
+					<p>{$total} record{$total > 1 ? 's' : ''} found!</p>
+				@else
+					<h2 class="section-title">Search for <span>Anything</span></h2>
+					<p>Be expressive, tell us what you want</p>
+				@endif
+				@partial('search-form');
+			</div>
+		</div>
+
+		<div class="tab-content filter-tab-content">		
+			<!--~~~~~ Start Tab Pane ~~~~~--> 
+			<div class="tab-pane fade show active" id="listing_list" role="tabpanel">
+				<div class="row">
+					
+					<div class="col-lg-12">
+
+						<div class="popular-categories-section popular-categories-style-one">
+							<div class="row categories-list">
+
+								{$account_types = Query::publicAccounts();}
+								
+								@fetch($account_types, list)
+									<div class="col-lg-3 col-md-6">
+										<div class="single-cat">
+											<div class="icon">
+												<span class="{$list->icon}"></span>
+											</div>
+											{$type = strtolower($list->accounttype);}
+											<h3 class="title"><a $href="list/{$type}{$queryString}">{ucwords($list->accounttype)}<br>
+											<small style="display: block; position: relative; top: 10px; font-size: 14px; font-weight: bold;">
+												({isset($applistData['get' . ucfirst($type)]) && is_array($applistData['get' . ucfirst($type)]) ? count($applistData['get' . ucfirst($type)]) : 0})
+											</small></a></h3>
+										</div>
+									</div>
+								@endfetch
+									
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				@if ($searchValue != '')
+				<div class="row">
+					<div class="col-lg-8">
+
+						<div class="section-header" style="margin-bottom:10px; margin-top: 20px;">
+							<h2 class="section-title">Top <span>Match{$total > 1 ? 'es' : ''}</span></h2>
+							<p>Showing result{$total > 1 ? 's' : ''} for '{$searchValue}'</p>
+							<div class="divider">
+								<img $src="icon/divider.png" alt="icon">
+							</div>
+						</div>
+
+						@alert;
+
+						@foreach ($applistData as $type => $list)
+							@if (is_array($list) && count($list) > 0)
+								
+								{$type = preg_replace('/^(get)/', '', $type);}
+
+								@partial('list-row', ['list' => $list, 'type' => $type]);
+								
+							@endif
+						@endforeach
+
+					</div>
+					<!--~~~~~ Start sidebar ~~~~~-->
+					<div class="col-lg-4">
+						<div class="sidebar">
+							
+							<!--~~~~ Start Widget Todo Categories ~~~~-->
+							<aside class="widget widget-todo-categories">
+								<h4 class="widget-title"><span class="icon-list1"></span>Top Categories</h4>
+								<div class="widget-content">
+									<ul>  
+										@fetch ('account_types', 'row')
+											@if ($row->showpublic == 1)
+												{$count = Query::isVerified($row->accounttypeid);}
+												<li class="cat-item">
+													<a $href="list/{$row->accounttype}">{ucwords($row->accounttype)}<span class="count">{$count}</span></a>
+												</li>
+											@endif
+										@endfetch
+									</ul>
+								</div>
+							</aside><!--~./ end widget todo categories ~-->
+							
+						</div>
+					</div><!--~./ end sidebar ~-->
+				</div>
+				@endif
+			</div>
+		</div>
+
+</div>

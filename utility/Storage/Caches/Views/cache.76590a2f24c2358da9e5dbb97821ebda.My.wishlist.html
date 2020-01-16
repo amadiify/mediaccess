@@ -1,0 +1,11 @@
+<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+
+<div class="tab-pane fade show active" id="listing_list" role="tabpanel">
+	<div class="row">
+		<div class="col-lg-12">
+			<?php if(count($list) > 0) { ?>
+				<?=\Moorexa\Rexa::runDirective(true,'partial','list-row')?>
+			<?php } ?>
+		</div>
+	</div>
+</div>

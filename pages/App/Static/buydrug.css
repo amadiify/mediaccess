@@ -1,0 +1,25 @@
+.error-page-content > h2 {
+    font-size: 37px;
+}
+.has-shadow{box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+padding:40px;
+margin-top: -100px;
+position: relative; z-index: 80;
+background: #fff;}
+.drug-categories{display: grid; grid-template-columns: repeat(5, 1fr);
+padding: 0px; grid-row-gap:10px; }
+.drug-categories li{list-style: none;}
+.drug-categories li:hover{color: #87C033;}
+.drug-categories li > a{font-size: 14px;}
+.drug-categories li > a:hover{color: #87C033;}
+.has-shadow h2{display: block; margin-bottom: 20px; font-size: 20px;}
+.site-main{margin-top: 80px;}
+.popular-todo-item .item-thumb::before{
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0));
+}
+.popular-todo-item .todo-footer .todo-cat.todo-cat-restaurant {
+    color: #87c033;
+}
+.popular-todo-item.status-closed .todo-footer .todo-status {
+    color:#2F669C;
+}

@@ -1,0 +1,124 @@
+<div class="container">
+	<div class="col-12 ptb-20" style="padding-bottom: 30px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Prescribe</h2>
+			<?php if(count($list) == 0) { ?>
+				<p>You have (0) drugs to prescribe. <a href="<?=url("drugs")?>" style="text-decoration: underline;">Click here</a> to get started.</p>
+			<?php } else { ?>
+				<p>You have (<?=count($list)?>) drug<?=count($list) > 1 ? 's' : ''?> ready for prescribtion. <a href="<?=url("drugs")?>" style="text-decoration: underline;">Click here</a> to add more.</p>
+			<?php } ?>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+	</div>
+
+	<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+
+	<?php if(count($list) > 0) { ?>
+		<form action="" method="POST">
+			<?=\Moorexa\Rexa::runDirective(true,'csrf')?>
+			<div class="row">
+				<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Drug Name</th>
+							<th>Doctor Note</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<?php foreach ($list as $drugName => $quantity) { ?>
+							<tr>
+								<td><a href="<?=url("prescribe/remove/$drugName")?>" class="text text-danger" title="Remove <?=$drugName?>"><i class="fa fa-trash"></i></a></td>
+								<td><?=$drugName?> <input type="hidden" name="drug[]" value="<?=Query::getDrugId($drugName)?>"></td>
+								<td>
+									<textarea class="form-control" name="note[]" placeholder="How should this drug be used?"></textarea>
+								</td>
+							</tr>
+						<?php } ?>
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<td></td>
+							<td style="display: flex; align-items: center; height: 90px;">Patient you are prescribing to</td>
+							<td>
+								<div class="form-group">
+									<?php $orders = Query::getOrders(session()->get('account.id'));?>
+									<select name="patientid" class="form-control" required>
+										<option value="">Please select any of your patient</option>
+										<?php
+$orders = $orders;if ($orders->rows > 0){
+while ($order = $orders->obj())
+{ ?>
+											<?php if($order->dateclosed == null) { ?>
+												<?php $patient = Query::getAccount($order->fromid);?>
+												<option value="<?=$patient->accountid?>"><?=ucwords($patient->firstname . ' ' . $patient->lastname)?></option>
+											<?php } ?>
+										<?php }} ?>
+									</select>
+								</div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				</div>
+
+				<div class="form-submit form-group">
+					<button type="submit" class="btn btn-default" style="color: #fff;">Prescribe</button>
+				</div>
+			</div>
+		</form>
+	<?php } ?>
+
+	<div class="row">
+		<div class="table-responsive">
+			<table class="table mt-15 overall-info-area default-form-area">
+				<thead>
+					<tr>
+						<th>Patient</th>
+						<th>Prescribtion Code</th>
+						<th>Drugs</th>
+						<th>Date Issued</th>
+						<th>Date Used</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<?php
+$prescriptions = $prescriptions;if ($prescriptions->rows > 0){
+while ($prescription = $prescriptions->obj())
+{ ?>
+						<tr>
+							<?php $account = $prescription->from('account', 'accountid')->get();?>
+
+							<td><?=ucwords($account->firstname.' '.$account->lastname)?></td>
+							<td><?=$prescription->prescribtion_code?></td>
+							<td>
+								<ol>
+									<?php $json = json_decode($prescription->drugs);?>
+									
+									<?php foreach ($json as $index => $obj) { ?>
+
+										<?php $drug = Query::getDrugInfo($obj->drugid);?>
+
+										<?php if($drug->rows > 0) { ?>
+											<li><h4><?=$drug->drug_name?></h4>
+											<p><?=$obj->note?></p></li>
+										<?php } ?>
+
+									<?php } ?>
+								</ol>
+							</td>
+							<td><?=$prescription->dateissued?></td>
+							<td><?=$prescription->dateused?></td>
+						</tr>
+					<?php }} ?>	
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

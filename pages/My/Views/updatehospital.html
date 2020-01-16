@@ -1,0 +1,63 @@
+@alert;
+
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="overall-info-area default-form-area">
+					<form class="default-form" action="" method="POST" enctype="multipart/form-data">
+						{csrf_token()}
+						<div class="row">
+							<div class="col-lg-6">
+								<h3 class="headline">Hospital Information</h3>
+								<div class="form-group">
+									<input type="text" name="hospital_name" value="{$model->hospital_name}" class="form-controllar" placeholder="Hospital Name" required>
+									{$model->onError('hospital_name')}
+								</div>
+								<div class="form-group">
+									<input type="text" name="address" value="{$model->address}" class="form-controllar" placeholder="Hospital Address" required>
+									{$model->onError('address')}
+								</div>
+								<div class="form-group">
+									<input type="text" value="{$model->specialization}" data-role="tagsinput" name="specialization" placeholder="Service offering">
+									<small class="text-info">Hospital Specializations.</small>
+									{$model->onError('specialization')}
+								</div>
+							</div><!--~./ col-lg-6 ~-->
+							<div class="col-lg-6">
+								<h3 class="headline">Location & Certificate</h3>
+								<div class="form-group">
+									<select name="stateid" class="form-controllar" required>
+										@fetch ('states',row)
+											<option value="{$row->stateid}">{ucwords($row->state)}</option>
+										@endfetch
+									</select>
+									<small class="text-info">Your state.</small>
+								</div>
+								<div class="form-group">
+									<select name="cityid" class="form-controllar" required>
+										@fetch ('cities',row)
+											<option value="{$row->cityid}">{ucwords($row->city)}</option>
+										@endfetch
+									</select>
+									<small class="text-info">Your city.</small>
+								</div>
+								<div class="form-group">
+									<div id="file-upload" data-file="cac_certificate" data-accept=".png,.jpg,.jpeg,.pdf" data-text="CAC Certificate"></div>
+									{$model->onError('cac_certificate')}
+								</div>
+							</div><!--~./ col-lg-6 ~-->
+							<div class="col-12">
+								<div class="form-submit form-group">
+									<button class="btn btn-default">Save</button>
+									<a $href="dashboard" class="btn btn-default btn-default2">Skip</a>
+								</div>
+							</div>
+						</div>
+					</form><!--~./ default-form ~-->
+				</div><!--~./ default-form-area ~-->
+			</div>
+			<div class="col-lg-4">
+				@partial('update-cover');
+			</div>
+		</div>
+</div>

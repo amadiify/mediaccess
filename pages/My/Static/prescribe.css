@@ -1,0 +1,8 @@
+.nice-select{height: 60px;}
+tfoot{background: #306895; color: #fff;}
+tfoot .nice-select{background: #fff;}
+.table-responsive{overflow-x: visible;}
+.table ol{padding-left: 0px;}
+.table ol h4{font-weight: normal; font-size: 18px; margin-bottom: 5px; color: #306895;}
+.table ol li p{font-size: 14px;}
+.table ol li{margin-bottom: 15px;}

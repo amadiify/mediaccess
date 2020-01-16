@@ -1,0 +1,180 @@
+<div class="container">
+	<div class="ptb-20" style="padding-bottom: 30px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Reviews</h2>
+			<p>Manage all your reviews.</p>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+	</div>
+</div>
+<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+
+<div class="tab-pane fade show active" id="listing_list" role="tabpanel">
+	<div class="row">
+		<?php $reviews = reviews::get('accountid=? and replied = 0', $thisModel->id)->orderby('reviewid','desc');?>
+		<?php if($reviews->rows > 0) { ?>
+			<?php
+$reviews = $reviews;if ($reviews->rows > 0){
+while ($review = $reviews->obj())
+{ ?>
+			<?php $user = account::get('accountid=?', $review->userid);?>
+			<?php $photo = web_photo::get('accountid=?', $review->userid);?>
+			<div class="col-lg-12 listing-reviews-area">
+					<div class="box-inner-content" style="background: #fff; padding: 15px; padding-top: 25px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); margin-bottom: 25px;">
+						<ol class="comment-list">
+							<li id="comment-<?=$review->reviewid?>" class="comment even thread-even depth-1 parent">
+									<article class="comment-body" style="margin-bottom: 0px;">
+										<div class="comment-author vcard">
+											<?php if($photo->row == 1) { ?>
+												<img alt="card" src="<?=image($photo->profile_image, '90:90')?>" class="avatar photo">   
+											<?php } else { ?>
+												<img alt="card" src="<?=image('man-3.png','90:90')?>" class="avatar photo"> 
+											<?php } ?> 
+											<b class="author-name">
+												<a href="#" rel="external nofollow" class="url"><?=$user->firstname?></a>
+											</b>
+											<div class="reviews-no">
+											<span class="number"><i class="fa fa-star"></i><?=$thisModel->model('app/about')->totalStar($review->ratingcode, $stars)?></span>
+												<span class="text">Rating</span>
+											</div>
+										</div><!-- .comment-author -->
+										<div class="comment-info">
+											<div class="comment-info-inner">
+													<div class="info-title-header">
+														<h3 class="title"><?=$review->review_title?></h3>
+														<div class="comment-metadata">
+															<a href="#">
+																<span><?=get_time_ago($review->date_created)?></span>
+															</a>
+														</div><!-- .comment-metadata -->
+													</div><!-- .info-title-header -->   
+													<div class="comment-rating">
+														<span class="rating">
+															<?php foreach ($stars as $i => $star) { ?>
+																<i class="fa <?=$star?>"></i>
+															<?php } ?>
+														</span>
+													</div><!-- .comment-rating -->  	
+											</div><!-- .comment-content -->	
+											<div class="comment-content">
+												<p><?=$review->review?></p>
+											</div><!-- .comment-content -->	
+										</div>		
+									</article><!-- .comment-body -->
+									<ol class="children">
+										<?php $photo = web_photo::get('accountid=?', $review->accountid);?>
+										<li id="comment-3" class="comment odd alt depth-2">
+											<article class="comment-body">
+												<div class="comment-author vcard">
+													<?php if($photo->row == 1) { ?>
+														<img alt="card" src="<?=image($photo->profile_image, '90:90')?>" class="avatar photo">   
+													<?php } else { ?>
+														<img alt="card" src="<?=image('man-3.png','90:90')?>" class="avatar photo"> 
+													<?php } ?> 
+												</div><!-- .comment-author -->
+												<div class="comment-info">
+													<div class="comment-info-inner">
+														<div class="info-title-header">
+															<h3 class="title">Leave a reply</h3>
+														</div><!-- .info-title-header -->		
+													</div><!-- .comment-content -->	
+													<div class="comment-content">
+													</div><!-- .comment-content -->	
+													<form action="" method="POST">
+													<?=csrf_token()?>
+													<?=requestMethod('replyReview')?>
+													<input type="hidden" name="reviewid" value="<?=$review->reviewid?>">
+													<input type="hidden" name="parentid" value="<?=$review->reviewid?>">
+													<input type="hidden" name="ratingcode" value="<?=$review->ratingcode?>">
+													<input type="hidden" name="accountid" value="<?=$review->userid?>">
+													<input type="hidden" name="userid" value="<?=$review->accountid?>">
+													<input type="hidden" name="review_title" value="<?=$review->review_title?>">
+													<div class="comment-meta">	
+														<div class="comment-meta-inner">
+															<div class="col-lg-12">
+																<div class="form-group">
+																	<textarea name="review" class="form-control" required placeholder="What would you like to say to chirls"></textarea>
+																</div>
+															</div>
+														</div>
+														<div class="reply">
+															<button type="submit" style="border: none; background: none;" class="comment-reply-link"><span class="icon-reply1"></span> Reply</button>
+														</div>
+													</div><!-- .comment-meta -->
+													</form>
+												</div>		
+											</article><!-- .comment-body -->
+										</li><!-- #comment -->
+									</ol><!-- .children -->
+							</li><!-- #comment-## -->
+						</ol>
+					</div>
+			</div>
+			<?php }} ?>
+		<?php } ?>
+	</div>
+</div>
+
+
+<?php $reviews = reviews::get('accountid=?', $thisModel->id)->orderby('reviewid','desc');?>
+
+<?php if($reviews->rows > 0) { ?>
+<div class="tab-pane fade show active review-table" id="listing_list" role="tabpanel">
+	<div class="row">
+		<div class="col-lg-12 listing-reviews-area">
+				<div class="box-inner-content" style="background: #fff; padding: 15px; padding-top: 25px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); margin-top: 25px;">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>SN</th>
+									<th>User</th>
+									<th>Review</th>
+									<th style="width: 100px;">Rating</th>
+									<th>Your comment</th>
+									<th style="width: 150px;">Period</th>
+								</tr>
+							</thead>
+							<tbody>
+									<?php $i = 1;?>
+									<?php
+$reviews = $reviews;if ($reviews->rows > 0){
+while ($review = $reviews->obj())
+{ ?>
+										<?php $user = account::get('accountid=?',$review->userid);?>
+										<tr>
+											<td><?=$i?></td>
+											<td><?=ucwords($user->firstname . ' ' . $user->lastname)?></td>
+											<td><?=$review->review?></td>
+											<td>
+												<?php $rating = $thisModel->model('app/about')->totalStar($review->ratingcode, $stars);?>
+												<div class="comment-rating">
+													<span class="rating">
+														<?php foreach ($stars as $i => $star) { ?>
+															<i class="fa <?=$star?>"></i>
+														<?php } ?>
+													</span>
+												</div><!-- .comment-rating --> 
+											</td>
+											<td>
+												<?php $reply = reviews::get('parentid=?',$review->reviewid);?>
+												<?php if($reply->rows > 0) { ?>
+													<?=$reply->review?>
+												<?php } ?>
+											</td>
+											<td><?=get_time_ago($review->date_created)?></td>
+										</tr>
+										<?php $i++;?>
+									<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+<?php } else { ?>
+	<div class="alert alert-info">You have no reviews yet.</div>
+<?php } ?>

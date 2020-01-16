@@ -1,0 +1,11 @@
+<div class="search-form-area">
+    <form class="search-form" action="{url('app/search')}" method="get">
+        <div class="input-group">
+            <input type="search" name="s" value="{vars('searchValue')}" class="form-controllar" placeholder="{$placeholder}">
+            {vars('searchCategory')}
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" id="submit-btn">search now</button>
+            </span>
+        </div>
+    </form>
+</div>

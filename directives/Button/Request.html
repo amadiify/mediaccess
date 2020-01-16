@@ -1,0 +1,25 @@
+<hy directive="Request">
+    private $href = '';
+
+    <hy func="__construct" args="$props, $var">
+        if (isset($props->href))
+        {
+            $this->href = $props->href;
+        }
+        else
+        {
+            this.href = 'request/' . $var->who;
+        }
+
+        if (!session()->has('account.id'))
+        {
+            this.href = 'sign-in?redirectTo=' . this.href;
+        }
+    </hy>
+
+    <hy func="render">
+        <hy lang="html">
+            <a hy-href="this.href" class="btn btn-default" style="justify-content: center;">{props.children}</a>
+        </hy>
+    </hy>
+</hy>

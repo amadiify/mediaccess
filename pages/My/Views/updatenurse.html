@@ -1,0 +1,66 @@
+@alert;
+
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="overall-info-area default-form-area">
+					<form class="default-form" action="" method="POST" enctype="multipart/form-data">
+						{csrf_token()}
+						<div class="row">
+							<div class="col-lg-6">
+								<h3 class="headline">Work Information</h3>
+								<div class="form-group">
+									<input type="text" name="present_place_of_work" value="{$model->present_place_of_work}" class="form-controllar" placeholder="Present Place of Work" required>
+									{$model->onError('present_place_of_work')}
+								</div>
+								<div class="form-group">
+									<input type="text" name="address_to_place_of_work" value="{$model->address_to_place_of_work}" class="form-controllar" placeholder="Work Address" required>
+									{$model->onError('address_to_place_of_work')}
+								</div>
+								<div class="form-group">
+									<input type="text" name="insitution_attended" value="{$model->insitution_attended}" class="form-controllar" placeholder="Insitution Attended" required>
+									{$model->onError('insitution_attended')}
+								</div>
+								<div class="form-group">
+									<input type="text" name="years_of_experience" value="{$model->years_of_experience}" class="form-controllar" placeholder="Years of Experience" required>
+									{$model->onError('years_of_experience')}
+								</div>
+							</div><!--~./ col-lg-6 ~-->
+							<div class="col-lg-6">
+								<h3 class="headline">Location & Certificate</h3>
+								<div class="form-group">
+									<select name="stateid" class="form-controllar" required>
+										@fetch ('states',row)
+											<option value="{$row->stateid}">{ucwords($row->state)}</option>
+										@endfetch
+									</select>
+									<small class="text-info">Your state.</small>
+								</div>
+								<div class="form-group">
+									<select name="cityid" class="form-controllar" required>
+										@fetch ('cities',row)
+											<option value="{$row->cityid}">{ucwords($row->city)}</option>
+										@endfetch
+									</select>
+									<small class="text-info">Your city.</small>
+								</div>
+								<div class="form-group">
+									<div id="file-upload" data-file="certificate" data-accept=".png,.jpg,.jpeg,.pdf" data-text="Certificate"></div>
+									{$model->onError('certificate')}
+								</div>
+							</div><!--~./ col-lg-6 ~-->
+							<div class="col-12">
+								<div class="form-submit form-group">
+									<button class="btn btn-default">Save</button>
+									<a $href="dashboard" class="btn btn-default btn-default2">Skip</a>
+								</div>
+							</div>
+						</div>
+					</form><!--~./ default-form ~-->
+				</div><!--~./ default-form-area ~-->
+			</div>
+			<div class="col-lg-4">
+				@partial('update-cover');
+			</div>
+		</div>
+</div>

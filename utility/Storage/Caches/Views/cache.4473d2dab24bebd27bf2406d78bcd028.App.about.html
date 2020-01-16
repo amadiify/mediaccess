@@ -1,0 +1,558 @@
+    <?php $bg = $data->web_photo->cover_image;?>
+    <?php $image = $data->web_photo->profile_image;?>
+
+    <div class="container">
+        <div class="breadcrumb-content-area" style="margin-top: 50px;">
+            <div class="breadcrumb-area">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?=url("")?>">Home</a></li>  
+                    <li class="breadcrumb-item"><a href="<?=url("list/$previous")?>"><?=$previous?></a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <?php extract(Wrapper::containWishlist($data, $previous));?>
+
+    <div class="listing-todo-thumbnail-area style-four">
+        <div class="listing-todo-header mt-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="listing-todo-content">
+                            <div class="content-left">
+                                <div class="todo-brand-logo">
+                                    <img src="<?=image($image, '160:160')?>" alt="logo">
+                                </div>
+                                <div class="info">
+                                    <h3 class="title"><?=ucwords($about_name)?></h3>
+                                    
+                                    <div class="todo-location">
+                                        <span class="icon-location"></span>
+                                        <?=$address?>  
+                                    </div><!--./ todo-location -->
+                                </div>
+                            </div><!--./ content-left -->
+                            <div class="content-right">
+                                <div class="listing-todo-feature-list">
+                                    <a href="#" class="single-list">
+                                        <span class="text">Share</span>
+                                        <span class="icon-share1"></span>
+                                    </a>
+                                    <a href="#leave-review" class="single-list">
+                                        <span class="text">Submit Review</span>
+                                        <span class=" icon-comment"></span>
+                                    </a>
+                                    <a href="<?=$url?>" class="single-list" data-wishlist="<?=$addWish?>" data-wishlist-text="true">
+                                        <span class="text">
+                                            <b style="font-weight: normal;">
+                                                <?php if($addWish != 'false') { ?>
+                                                Add to Wishlist
+                                                <?php } else { ?>
+                                                Remove Item
+                                                <?php } ?>
+                                            </b>
+                                        </span>
+                                        <span class="icon-bookmark1"></span>
+                                    </a>
+                                    <a href="#" data-toggle="modal" data-target="#reg_form_report" class="single-list">
+                                        <span class="text">Report</span>
+                                        <span class="icon-flag1"></span>
+                                    </a>
+                                    <a href="mailto:<?=$data->account->email?>?subject=Consultation&body=Hello <?=$previous?> <?=$fullname?>, My name is ____, reaching out to your from Medicaccess. Please _____" class="single-list">
+                                        <span class="text">Send E-mail</span>
+                                        <span class="icon-email-1"></span>
+                                    </a>
+                                </div><!--~~./ listing-todo-feature-list ~~-->
+                                <div class="listing-rating">
+                                    <?php $stars = $thisModel->getTotalRating($data->account->accountid);?>
+                                    <span class="rating">
+                                        <?php foreach ($stars as $i => $star) { ?>
+                                            <i class="fa <?=$star?>"></i>
+                                        <?php } ?>
+                                        <?php $reviews = $thisModel->getTotalReviews($data->account->accountid);?>
+                                        <a href="#"><?=$reviews?> Review<?=$reviews > 1 ? 's' : ''?></a>
+                                    </span>
+
+                                    <?php $isverified = Query::isVerified($data->account->accountid);?>
+                                    <?php if($isverified == 1) { ?>
+                                        <div class="verified">Verified by Medicaccess</div>
+                                    <?php } ?>
+                                </div>
+                            </div><!--./ content-right -->
+                        </div><!--~~./ listing-todo-content ~~-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--~~~~~ Start Main Wrapper ~~~~~-->
+    <div class="main-wrapper ptb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!--~~~~~ Start Site Main ~~~~~-->
+                    <main class="site-main">
+                        <div class="single-listing-todo">
+                            <!--~~~~~ Start Listing Description ~~~~~-->
+                            <div class="listing-description">
+                                <div class="title-icon">
+                                    <h3 class="title"><span class="icon-folder2"></span>Overview</h3>
+                                </div><!--~./ title-icon ~-->
+                                <div class="box-inner-content">
+                                    <p><?=$data->account->about?></p>
+                                </div>
+                            </div><!--~./ end listing description ~-->
+
+                           <!--~~~~~ Start Listing Leave Review ~~~~~-->
+                           <div class="listing-leave-review">
+                                <div class="title-icon">
+                                    <h3 class="title"><span class="icon-comment"></span>Description</h3>
+                                </div><!--~./ title-icon ~-->
+                                <div class="box-inner-content">
+                                    <div class="leave-review-content">
+                                        <div class="review-box">
+                                            <ul class="list">
+                                                <?php $keys = array_keys($description);?>
+                                                <?php foreach ($keys as $index => $key) { ?>
+                                                    <li>
+                                                        <span class="text" style="margin-right: 10px;"><?=ucwords($key)?></span>
+                                                        <div style="opacity: 0.6; font-size: 14px;"><?=$description[$key]?></div>
+                                                    </li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--~./ end listing leave review ~-->
+
+                            <?php $photolist = photo_gallery::get('accountid=?',$data->account->accountid)->orderby('photoid','desc')->limit(0,8);?>
+                            <?php if($photolist->rows > 0) { ?>
+                                <!--~~~~~ Start Listing Gallery ~~~~~-->
+                                <div class="listing-gallery">
+                                        <div class="title-icon">
+                                            <h3 class="title"><span class="icon-photo-camera"></span>gallery</h3>
+                                        </div><!--~./ title-icon ~-->
+                                        <div class="box-inner-content">
+                                            <div class="listing-gallery-item">
+                                                    <ul class="listing-gallery-slide owl-carousel carousel-nav-align-center">
+                                                        <?php
+$photolist = $photolist;if ($photolist->rows > 0){
+while ($big = $photolist->obj())
+{ ?>
+                                                            <li class="item">
+                                                                <img src="<?=image($big->photo,'770:508')?>" alt="img">
+                                                            </li>
+                                                        <?php }} ?>						
+                                                    </ul>
+
+                                                    <ul class="thumbnails-wrapper">
+                                                        <?php
+$photolist = $photolist;if ($photolist->rows > 0){
+while ($small = $photolist->obj())
+{ ?>
+                                                            <li class="thumbnails">
+                                                                <a href="#"><img src="<?=image($small->photo, '185:120')?>" alt="img"></a>
+                                                            </li>
+                                                        <?php }} ?>
+                                                    </ul>
+                                                        
+                                            </div>
+                                        </div>
+                                    </div><!--~./ end listing gallery ~-->
+                            <?php } ?>
+                            
+                            
+                            <?php if(count($nearby) > 0) { ?>
+                            <!--~~~~~ Start Listing Nearby ~~~~~-->
+                            <div class="listing-nearby">
+                                <div class="title-icon">
+                                    <h3 class="title"><span class="icon-placeholder1"></span>What's Nearby?</h3>
+                                </div><!--~./ title-icon ~-->
+                                <div class="box-inner-content">
+                                    <div class="listing-nearby-contact">
+                                            <?php foreach ($nearby as $ntype => $list) { ?>
+                                                <!-- get icon -->
+                                                <?php $icon = $config[$ntype]->icon;?>
+                                                <?php $bgcolor = 'style="background-color:'.$config[$ntype]->color.';"';?>
+                                                <div class="single-nearby">
+                                                    <div class="icon" <?=$bgcolor?>>
+                                                        <span class="<?=$icon?>"></span>
+                                                    </div>
+                                                    <div class="info">
+                                                        <h3><?=ucfirst($ntype)?></h3>
+                                                        <ul class="list">
+                                                            <?php foreach ($list as $index => $obj) { ?>
+                                                                <li>
+                                                                    <?php $previewLink = strtolower($ntype).'-'.$obj->firstname.'-'.$obj->lastname;?>
+                                                                    <span><a href="<?=url("about/$previewLink")?>" style="color: inherit;"><?=ucwords($obj->firstname.' '.$obj->lastname)?></a></span>
+                                                                    <span>
+                                                                        <?php if($obj->isavaliable == 1) { ?>
+                                                                            <span class="circle-open"></span> open
+                                                                        <?php } else { ?>
+                                                                            <span class="circle-busy"></span> busy
+                                                                        <?php } ?>
+                                                                    </span>
+                                                                    <?php $stars = $thisModel->getTotalRating($obj->accountid);?>
+                                                                    <span class="rating">
+                                                                        <?php foreach ($stars as $i => $star) { ?>
+                                                                            <i class="fa <?=$star?>"></i>
+                                                                        <?php } ?>
+                                                                        <?php $reviews = $thisModel->getTotalReviews($obj->accountid);?>
+                                                                        <a href="#"><?=$reviews?> Review<?=$reviews > 1 ? 's' : ''?></a>
+                                                                    </span>
+                                                                </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                    </div>
+                                </div>
+                            </div><!--~./ end listing nearby tour ~-->
+                            <?php } ?>
+                            
+                            
+                            <!--~~~~~ Start Listing Rating Average ~~~~~-->
+                            <div class="listing-average-rating">
+                                <div class="title-icon">
+                                    <h3 class="title"><span class="icon-review-1"></span>Rating Average</h3>
+                                </div><!--~./ title-icon ~-->
+                                <div class="box-inner-content">
+                                    <div class="rating-overview">
+                                        <div class="rating-overview-left">
+                                            <div class="rating-overview-average">
+                                                <?php $stars = $thisModel->getTotalRating($data->account->accountid, $ratings, $allratings);?>
+                                                <div class="rating-no"><?=$ratings?></div>
+                                                <div class="listing-rating">
+                                                    <span class="rating">
+                                                        <?php foreach ($stars as $i => $star) { ?>
+                                                            <i class="fa <?=$star?>"></i>
+                                                        <?php } ?>
+                                                    </span>
+                                                    <a href="#"><?=$allratings?> Rating<?=$allratings > 1 ? 's' : ''?></a>
+                                                </div>
+                                            </div>
+                                        </div><!--~./ rating-overview-left ~-->
+                                        <div class="rating-overview-right">
+                                            <?php
+$rating_option = \Moorexa\DB::sql('SELECT * FROM '.(\Moorexa\DB::getTableName('rating_option')).' ');if ($rating_option->rows > 0){
+while ($option = $rating_option->obj())
+{ ?>
+                                                    <div class="single-progress-bar">
+                                                        <div class="progress-type"><?=ucfirst($option->options)?></div>
+                                                        <?php $rating = $thisModel->getGroupRating($option->optionid, $data->account->accountid);?>
+                                                        <?php $style = 'style="width:'.$rating.'%;"';?>
+                                                        <div class="progress">
+                                                            <div class="progress-bar" role="progressbar" <?=$style?> aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                        <div class="progress-percent"><?=$rating?></div>
+                                                    </div>
+                                            <?php }} ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--~./ end listing average rating ~-->
+                            
+                            <!--~~~~~ Start Listing Reviews ~~~~~-->
+                            <?php $reviews = reviews::get('accountid=? and parentid = 0', $data->account->accountid)->orderby('reviewid','desc');?>
+                            <?php if($reviews->rows > 0) { ?>
+                            <div class="listing-reviews-area">
+                                <div class="title-icon">
+                                    <h3 class="title"><span class="icon-chat"></span><?=$reviews->rows?> Review<?=$reviews->rows > 1 ? 's' : ''?></h3>
+                                </div><!--~./ title-icon ~-->
+                                <div class="box-inner-content">
+                                    <?=\Moorexa\Rexa::runDirective(true,'alert')?>
+                                    <ol class="comment-list">
+                                        <?php
+$reviews = $reviews;if ($reviews->rows > 0){
+while ($review = $reviews->obj())
+{ ?>
+                                            <?php $user = account::get('accountid=?', $review->userid);?>
+                                            <?php $photo = web_photo::get('accountid=?', $review->userid);?>
+                                            <li id="comment-<?=$review->reviewid?>" class="comment even thread-even depth-1 parent">
+                                                <article class="comment-body">
+                                                    <div class="comment-author vcard">
+                                                        <?php if($photo->row == 1) { ?>
+                                                            <img alt="card" src="<?=image($photo->profile_image, '90:90')?>" class="avatar photo">   
+                                                        <?php } else { ?>
+                                                            <img alt="card" src="<?=image('man-3.png','90:90')?>" class="avatar photo"> 
+                                                        <?php } ?> 
+                                                        <b class="author-name">
+                                                            <a href="#" rel="external nofollow" class="url"><?=$user->firstname?></a>
+                                                        </b>
+                                                        <div class="reviews-no">
+                                                        <span class="number"><i class="fa fa-star"></i><?=$thisModel->totalStar($review->ratingcode, $stars)?></span>
+                                                            <span class="text">Rating</span>
+                                                        </div>
+                                                    </div><!-- .comment-author -->
+                                                    <div class="comment-info">
+                                                        <div class="comment-info-inner">
+                                                            <div class="info-title-header">
+                                                                <h3 class="title"><?=$review->review_title?></h3>
+                                                                <div class="comment-metadata">
+                                                                    <a href="#">
+                                                                        <span><?=get_time_ago($review->date_created)?></span>
+                                                                    </a>
+                                                                </div><!-- .comment-metadata -->
+                                                            </div><!-- .info-title-header -->   
+                                                            <div class="comment-rating">
+                                                                <span class="rating">
+                                                                    <?php foreach ($stars as $i => $star) { ?>
+                                                                        <i class="fa <?=$star?>"></i>
+                                                                    <?php } ?>
+                                                                </span>
+                                                            </div><!-- .comment-rating -->  
+                                                        </div><!-- .comment-content --> 
+                                                        <div class="comment-content">
+                                                            <p><?=$review->review?></p>
+                                                        </div><!-- .comment-content --> 
+                                                    </div>      
+                                                </article><!-- .comment-body -->
+                                                <?php $parent = reviews::get('parentid=?', $review->reviewid);?>
+                                                <?php
+$parent = $parent;if ($parent->rows > 0){
+while ($reply = $parent->obj())
+{ ?>
+                                                <ol class="children">
+                                                    <?php $photo = web_photo::get('accountid=?', $review->accountid);?>
+                                                    <li id="comment-3" class="comment odd alt depth-2">
+                                                        <article class="comment-body">
+                                                            <div class="comment-author vcard">
+                                                                <?php if($photo->row == 1) { ?>
+                                                                    <img alt="card" src="<?=image($photo->profile_image, '90:90')?>" class="avatar photo">   
+                                                                <?php } else { ?>
+                                                                    <img alt="card" src="<?=image('man-3.png','90:90')?>" class="avatar photo"> 
+                                                                <?php } ?> 
+                                                            </div><!-- .comment-author -->
+                                                            <div class="comment-info">
+                                                                <div class="comment-info-inner">
+                                                                    <div class="info-title-header">
+                                                                        <h3 class="title">Re: <?=$reply->review_title?></h3>
+                                                                        <div class="comment-metadata">
+                                                                            <a href="#">
+                                                                                <span><?=get_time_ago($reply->date_created)?></span>
+                                                                            </a>
+                                                                        </div><!-- .comment-metadata -->
+                                                                    </div><!-- .info-title-header -->		
+                                                                </div><!-- .comment-content -->	
+                                                                <div class="comment-content">
+                                                                    <p><?=$reply->review?></p>
+                                                                </div><!-- .comment-content -->	
+                                                                </form>
+                                                            </div>		
+                                                        </article><!-- .comment-body -->
+                                                    </li><!-- #comment -->
+                                                </ol><!-- .children -->
+                                                <?php }} ?>
+                                            </li>
+                                        <?php }} ?>
+                                    </ol>
+                                </div>
+                            </div><!--~./ end listing reviews ~-->
+                            <?php } ?>
+                            
+                            <!--~~~~~ Start Listing Leave Review ~~~~~-->
+                            <div class="listing-leave-review" id="leave-review">
+                                <div class="title-icon">
+                                    <h3 class="title"><span class="icon-comment"></span>Leave a Review</h3>
+                                </div><!--~./ title-icon ~-->
+                                <div class="box-inner-content">
+                                    <div class="leave-review-content">
+                                        <form name="reviewForm" id='review_form' method="post" action=''>
+                                            <?=csrf_token()?>
+                                            <?=requestMethod('submitReview')?>
+                                            <input type="hidden" name="accountid" value="<?=$data->account->accountid?>">
+                                            <div class="review-box">
+                                                <ul class="list">
+                                                    <?php
+$rating_option = \Moorexa\DB::sql('SELECT * FROM '.(\Moorexa\DB::getTableName('rating_option')).' ');if ($rating_option->rows > 0){
+while ($option = $rating_option->obj())
+{ ?>
+                                                        <li>
+                                                            <span class="text"><?=$option->options?></span>
+                                                            <div class="review-rating" id="option<?=$option->optionid?>"></div>
+                                                            <input type="hidden" name="rating[<?=$option->options?>]" data-name="option<?=$option->optionid?>" />
+                                                        </li>
+                                                    <?php }} ?>
+                                                </ul>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <p>
+                                                        <input type='text' name='review_title' class="form-controllar"  aria-required="true" placeholder="Review Title" required>
+                                                    </p>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p>
+                                                        <textarea name='review' id='message' class="form-controllar" aria-required="true" rows="8" cols="45" placeholder="Your Review" required></textarea>
+                                                    </p>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p class="form-submit">
+                                                        <input type="submit" value="SUBMIT REVIEW" id="submit">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </form> 
+                                    </div>
+                                </div>
+                            </div><!--~./ end listing leave review ~-->
+                        </div>
+                    </main>
+                    <!--~./ end site main ~-->
+                </div>
+                
+                <!--~~~~~ Start sidebar ~~~~~-->
+                <div class="col-lg-4">
+                    <div class="sidebar sidebar-one">
+                        <aside class="widget bt-about-us-widget">
+                                <h4 class="widget-title"><span class="icon-review"></span>About <?=$previous?></h4>
+                                <div class="widget-content">
+                                    <div class="about-info">
+                                        <div class="thumb">
+                                            <img src="<?=image($image,'100:100')?>" alt="img">
+                                        </div>
+                                        <div class="info">
+                                            <h3><?=ucwords($about_name)?></h3>
+                                            <p style="margin-bottom: 6px;">Member Since <?=date('F Y', strtotime($data->account->date_added))?></p>
+                                            <p>
+                                                <?php if($data->account->isavaliable == 1) { ?>
+                                                    <span class="circle-open"></span> avaliable
+                                                <?php } else { ?>
+                                                    <span class="circle-busy"></span> currently busy
+                                                <?php } ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <ul class="info-list list">
+                                        <li>
+                                            <?php if(session()->has('account.id')) { ?>
+                                                <a href="tel:<?=$data->account->telephone?>" style="color: inherit; outline: none;"><span class="icon-call"></span> <?=$data->account->telephone?></a>
+                                            <?php } else { ?>
+                                                <a href="<?=url("sign-in?redirectTo=about/$who")?>"><span class="icon-call"></span> <?=substr($data->account->telephone, 0, 5)?>-show number</a>
+                                            <?php } ?>
+                                        </li>
+                                        <li><a href="<?=$data->account->email?>"><span class="icon-email"></span><?=$data->account->email?></a></li>
+                                        
+                                        <?php if($data->account->groups != '') { ?>
+                                            <li><a href="javascript:void(0)"><span class="icon-flag1"></span>Offers: <?=ucwords($data->account->groups)?></a></li>
+                                        <?php } ?>
+
+                                        <li><a href="<?=$url?>" data-wishlist="<?=$addWish?>" data-wishlist-text="true"><span class="icon-heart"></span>
+                                            <b style="font-weight: normal;">
+                                                <?php if($addWish != 'false') { ?>
+                                                    Add to Wishlist 
+                                                <?php } else { ?>
+                                                    Remove from Wishlist 
+                                                <?php } ?>
+                                            </b>
+                                            <i class="total-wishlist">(<?=$wishlist->rows?>)</i></a></li>
+                                        <li>
+                                            <?php if($previous != 'Pharmacy') { ?>
+                                            <?php
+	$befafdcefaa= <<<EOT
+
+                                                <request namespace="Button">Request Service</request>
+                                            
+EOT;
+	echo \Hyphe\Engine::ParseTags($befafdcefaa, 'directives/');
+	?>
+                                            <?php } else { ?>
+                                                <?php $href = 'pharmacy/' . $about_name;?>
+                                            <?php
+	$cfeddfffabfbbbea= <<<EOT
+
+                                                <request namespace="Button" href="{$href}">Visit Store</request>
+                                            
+EOT;
+	echo \Hyphe\Engine::ParseTags($cfeddfffabfbbbea, 'directives/');
+	?>
+                                            <?php } ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                        </aside>
+
+                        <!--~~~~~ Start Statistic Widget ~~~~~--> 
+                        <aside class="widget bt-statistic-widget">
+                                <h4 class="widget-title"><span class="icon-presentation2"></span>Statistic</h4>
+                                <div class="widget-content">
+                                    <div class="statistic-list">
+                                        <div class="statistic-item">
+                                            <span class="icon-compass1"></span><?=$views?> View<?=$views > 1 ? 's' : ''?>
+                                        </div>
+                                        <div class="statistic-item">
+                                            <span class="icon-review-1"></span><?=$allratings?> Rating<?=$allratings > 1 ? 's' : ''?>
+                                        </div>
+                                        <div class="statistic-item">
+                                            <?php $orders = orders::get('accountid=?',$data->account->accountid)->rows;?>
+                                            <span class="icon-bookmark1"></span><?=$orders?> Order<?=$orders > 1 ? 's' : ''?>
+                                        </div>
+                                        <div class="statistic-item">
+                                            <span class="icon-share1"></span>0 Share
+                                        </div>
+                                    </div>
+                                </div>
+                        </aside><!--~./ end statistic widget ~-->
+                    </div>
+                </div><!--~./ end sidebar ~-->
+            </div>
+        </div>
+    </div><!--~./ end main wrapper ~--> 
+
+    <?php if($thisModel->allowReport($data->account->accountid)) { ?>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Start User Report Model
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div id="reg_form_report" class="user-reg-form-area modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog register-modal-area" role="document">
+            <div class="register-modal-area-outer-inner">
+                <div class="modal-header">
+                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                        <img src="<?=$assets->image("icon/close.png")?>" alt="close">
+                    </button>
+                </div>
+                <div class="modal-content user-register-area">
+                    <!--~~~ Start User Signin Area ~~~--> 
+                    <div class="user-signin-area">
+                        <div class="user-left-thumb">
+                            <img src="<?=$assets->image("sliderImage1.jpg")?>" alt="thumb">
+                        </div>
+
+                        <div class="form-content">
+                            <div class="form-content-signin">
+                                <h3 style="margin-bottom: 10px;">Report <?=$fullname?></h3>
+                                <form class="default-form signin-form" method="POST" action="">
+                                    <?=csrf_token()?>
+                                    <?=requestMethod('makeAReport')?>
+                                    <div class="form-group">
+                                        <?php if(session()->has('account.id')) { ?>
+                                            <?php $info = session()->get('account.info');?>
+                                            <input name="email" type="hidden" value="<?=$info->email?>">
+                                            <input name="fullname" type="hidden" value="<?=$info->firstname . ' ' . $info->lastname?>">
+                                            <input class="form-controllar" readonly value="From: <?=$info->firstname . ' ' . $info->lastname?>">
+                                        <?php } else { ?>
+                                            <input id="email" name="email" class="form-controllar" type="email" placeholder="Your Email Address" required>
+                                        <?php } ?>
+                                    </div><!--/.form-group-->
+
+                                    <div class="form-group">
+                                        <textarea name="report" class="form-controllar" required placeholder="Your complain here"></textarea>
+                                    </div><!--/.form-group-->
+
+                                    <div class="form-btn-group">
+                                        <button type="submit" class="btn btn-default">
+                                            report
+                                        </button>
+                                    </div>
+                                </form>  
+                            </div>
+                        </div>
+                    </div><!--~./ end user report area ~--> 
+                </div>
+            </div>
+        </div>
+    </div><!--~./ end user registation model ~-->
+    <?php } ?>

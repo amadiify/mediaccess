@@ -1,0 +1,41 @@
+<section class="popular-categories-section popular-categories-style-one">
+	<div class="container">
+			<div class="breadcrumb-content-area" style="margin-top: 50px;">
+				<div class="breadcrumb-area">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a $href="/">Home</a></li>  
+						<li class="breadcrumb-item"><a $href="register">Register</a></li>  
+						<li aria-current="page" class="breadcrumb-item active">Non Patient</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="col-12 ptb-100" style="padding-bottom: 40px">
+				<div class="section-header" style="margin-bottom:10px;">
+					<h2 class="section-title">What Are You <span>Interested In</span></h2>
+					<p>Choose an account type</p>
+					<div class="divider">
+						<img $src="icon/divider.png" alt="icon">
+					</div>
+				</div>
+			</div>
+
+			<div class="row categories-list">
+
+				{$account_types = Query::publicAccounts();}
+				
+				@fetch($account_types, list)
+					<div class="col-lg-3 col-md-6">
+						<div class="single-cat">
+							<div class="icon">
+								<span class="{$list->icon}"></span>
+							</div>
+							{$type = strtolower($list->accounttype);}
+							<h3 class="title"><a $href="register-as-{$type}">{ucwords($list->accounttype)}</a></h3>
+						</div>
+					</div>
+				@endfetch
+					
+			</div>
+	</div>
+</section>

@@ -1,0 +1,154 @@
+<div class="container">
+
+	<div class="breadcrumb-content-area" style="margin-top: 50px;">
+		<div class="breadcrumb-area">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="<?=url("")?>">Home</a></li>  
+				<li class="breadcrumb-item"><a href="<?=url("cart")?>">Cart</a></li>  
+			</ol>
+		</div>
+	</div>
+
+	<div class="col-12 ptb-100" style="padding-bottom: 40px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Checkout <span>Order</span></h2>
+			<p>Please complete your purchase by reviewing your billing information.</p>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+		<br>
+		<a href="<?=url("cart")?>" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back to Cart </a>
+	</div>
+</div>
+
+<!--********************************************************-->
+<!--********************* SITE CONTENT *********************-->
+<!--********************************************************-->
+<div class="site-content">
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Start Shopping Checkout Section
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<div class="shopping-checkout-section ptb-100">
+		<form action="" method="POST">
+			<?=\Moorexa\Rexa::runDirective(true,'csrf')?>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 col-md-12">
+						<div class="checkout-form-row">
+							<div class="title-icon">
+								<h3 class="title"><span class="icon-card"></span>Billing Information</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					
+					<div class="col-lg-4 col-md-6">
+						<br>
+						<div class="checkout-form-row">
+							<div class="form-group">
+								<label>First Name</label>
+								<input type="text" class="form-controllar" placeholder="First Name" name="firstname" value="<?=$account->firstname?>" required>
+							</div>
+							<div class="form-group">
+								<label>Last Name</label>
+								<input type="text" class="form-controllar" placeholder="Last Name" name="lastname" value="<?=$account->lastname?>" required>
+							</div>
+							<div class="form-group">
+								<label>Phone Number</label>
+								<input type="text" class="form-controllar" placeholder="Phone Number" name="telephone" value="<?=$account->telephone?>" required>
+							</div>
+							<div class="form-group">
+								<label>Email Address</label>
+								<input type="email" class="form-controllar" placeholder="E-mail Address" name="email" value="<?=$account->email?>" required>
+							</div>
+							<div class="form-group">
+								<label>Home/Office Address</label>
+								<textarea class="form-controllar" placeholder="Address" name="address" required><?=$account->address?></textarea>
+							</div>
+						</div>
+					</div><!--~~./ end checkout form row ~~-->
+					
+					<div class="col-lg-4 col-md-6">
+						<br>
+						<div class="checkout-form-row">
+							<div class="form-group">
+								<label>Country</label>
+								<select name="country" class="country custom-select">
+									<?php
+$countries = \Moorexa\DB::sql('SELECT * FROM countries ');if ($countries->rows > 0){
+while ($country = $countries->obj())
+{ ?>
+										<?php $option = $country->countryid == $countryid ? 'selected' : '';?>
+										<option value="<?=$country->countryid?>" <?=$option?>><?=$country->country?></option>
+									<?php }} ?>
+								</select>	
+							</div>
+							<div class="form-group">
+								<label>State</label>
+								<select name="state" class="country custom-select" required>
+									<?php
+$states = \Moorexa\DB::sql('SELECT * FROM states ');if ($states->rows > 0){
+while ($state = $states->obj())
+{ ?>
+										<?php $option = $account->stateid == $state->stateid ? 'selected' : '';?>
+										<option value="<?=$state->stateid?>" <?=$option?>><?=$state->state?></option>
+									<?php }} ?>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>City</label>
+								<select name="city" class="city custom-select" required>
+									<?php
+$cities = \Moorexa\DB::sql('SELECT * FROM cities ');if ($cities->rows > 0){
+while ($city = $cities->obj())
+{ ?>
+										<?php $option = $account->cityid == $city->cityid ? 'selected' : '';?>
+										<option value="<?=$city->cityid?>" <?=$option?>><?=$city->city?></option>
+									<?php }} ?>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Postal Code</label>
+								<input type="text" class="form-controllar" name="postalcode" placeholder="Postal Code" required>
+							</div>
+							<div class="form-group">
+								<label>Order Note</label>
+								<textarea class="form-controllar" placeholder="Order Note" name="ordernote"></textarea>
+							</div>
+						</div>
+					</div><!--~~./ end checkout form row ~~-->
+					
+					<div class="col-lg-4">
+						<div class="checkout-form-row">
+							<div class="cart-total-area">
+								<div class="cart-total-info">
+									<ul class="list">
+										<li class="cart-subtotal"><span>Sub Total</span> <strong><?=$cart['subtotal']?></strong></li>
+										<li class="order-shipping"><span>Shipping & Handling </span> <strong><?=$cart['shipping']?></strong></li>
+									</ul>
+									<h3 class="cart-total-amount"><span>order total</span> <span class="amount"><?=$cart['total']?></span></h3>
+								</div>
+								<div class="payment-method">
+									<div class="form-group">
+										<input checked="" name="paymentmethod" id="card" value="card" type="radio">
+										<label class="payment-radio" for="card">Credit/Naria Card</label>
+									</div>
+									<div class="form-group">
+										<input name="paymentmethod" id="cash" type="radio" value="cash">
+										<label class="payment-radio" for="cash">Cash on Delivery/Pickup</label>
+									</div>
+								</div>
+								<div class="text-center">
+									<button type="submit" name="checkout" class="btn btn-default">Place Order</button>
+								</div>
+							</div>
+						</div>
+					</div><!--~~./ end checkout form row ~~-->
+				</div>
+			</div>
+		</form>
+	</div><!--~./ end shopping checkout section ~-->
+</div>
+<!--~./ end site content ~-->

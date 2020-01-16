@@ -1,0 +1,107 @@
+<div class="container">
+	<div class="col-12 ptb-10" style="padding-bottom: 40px">
+		<div class="section-header" style="margin-bottom:10px;">
+			<h2 class="section-title">Order</h2>
+			<p>Review your order details.</p>
+			<div class="divider">
+				<img src="<?=$assets->image("icon/divider.png")?>" alt="icon">
+			</div>
+		</div>
+	</div>
+
+	<?=\Moorexa\Rexa::runDirective(true,'partial','notification', ['type' => 'danger', 'title' => 'End Consultation', 'message' => 'This action would end any ongoing conversation between you and this patient. Click "Okay" to continue'])?>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<?=\Moorexa\Rexa::runDirective(true,'alert')?>
+			<div class="overall-info-area default-form-area">
+				<div class="table-responsive">
+					<table class="table">
+						<tr>
+							<td><?=$type?></td>
+							<td><?=ucwords($account->firstname . ' ' . $account->lastname)?></td>
+						</tr>
+						<tr>
+							<td>Service Type</td>
+							<td><?=$service?></td>
+						</tr>
+						<tr>
+							<td><?=$type?> Telephone</td>
+							<td><a href="tel:<?=$account->telephone?>"><?=$account->telephone?></a></td>
+						</tr>
+						<tr>
+							<td>Patient Address</td>
+							<td><?=$account->address?></td>
+						</tr>
+						<tr>
+							<td><?=$type?> Email</td>
+							<td><a href="mailto:<?=$account->email?>"><?=$account->email?></a></td>
+						</tr>
+						<tr>
+							<td>Service Charge</td>
+							<td>₦<?=number_format($amount, 2, '.', ',')?> <i>- paid</i></td>
+						</tr>
+						<tr>
+							<td>Approval</td>
+							<td><span class="badge badge-<?=$order->status?>"><?=ucwords($order->status)?></span></td>
+						</tr>
+						<tr>
+							<td>Request</td>
+							<td><?=get_time_ago($order->dateissued)?></td>
+						</tr>
+						<tr>
+							<td>Status</td>
+							<td>
+								<?php if($status == 'opened') { ?>
+									<span class="text-success">opened</span>
+								<?php } else { ?>
+									<span class="text-danger">closed</span>
+								<?php } ?>
+							</td>
+						</tr>
+						<tr>
+							<td>Rating</td>
+							<td>
+								<div class="listing-rating">
+									<span class="rating">
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+										<i class="fa fa-star-o"></i>
+									</span>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Order Note</td>
+							<td>
+								<p style="width: 50%; word-break:keep-all;">
+									<?php if(strlen($order->remark) > 1) { ?>
+										<?=$order->remark?>
+									<?php } else { ?>	
+										No note attached to this order.
+									<?php } ?>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<?php if($order->status == 'pending') { ?>
+									<a href="<?=url("order-$orderid/approve")?>" class="btn btn-default">Approve</a>
+								<?php } else { ?>
+									<?php if($status == 'opened') { ?>
+										<a href="<?=url("open-chat-for-$orderid")?>" class="btn btn-default">Open Conversation</a>
+										<a href="<?=url("orders/$orderid/trigger-confirm/close")?>" class="btn btn-default" style="background-color: #dc3545;">Close Order</a>
+									<?php } ?>
+								<?php } ?>
+								<a href="<?=url("orders")?>"  class="<?=($status == 'closed' ? 'btn btn-default' : 'btn btn-outline')?>">Go Back</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div><!--~./ default-form-area ~-->
+		</div>
+	</div>
+</div>

@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="breadcrumb-content-area" style="margin-bottom: 20px;">
+        <div class="breadcrumb-area">
+            <ol class="breadcrumb">
+                <?php foreach ($breadcum->list as $i => $li) { ?>
+                    <?=$li?>
+                <?php } ?>
+            </ol>
+        </div>
+    </div>
+</div>
