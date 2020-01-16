@@ -26,7 +26,7 @@
 							<h3>Login to Account</h3>
 							<form class="default-form signin-form" action="" method="post">
 								<?=csrf_token()?>
-								<?=\Moorexa\Rexa::runDirective(true,'alert',"")?>
+								<?=\Moorexa\Rexa::runDirective(true,'alert')?>
 								<div class="form-group">
 									<input id="username" name="username" class="form-controllar" type="text" placeholder="Username or Email Address" value="<?=$model->username?>">
 									<?=$model->onError('username')?>

@@ -44,7 +44,7 @@
                                         <li><a $href="/">Home</a>
                                         </li>
                                         <li php-if::class="$view == 'list' || $view == 'about' ? 'active-link dropdown-trigger mega-menu' : 'dropdown-trigger mega-menu'">
-                                            <a href="#">Explore</a>
+                                            <a href="#" class="dropdown-trigger2">Explore</a>
                                             <div class="mega-menu-content carousel-nav-dots owl-carousel">
                                                 {$account_types = db('account_types')->get('showpublic = 1');}
 												@fetch($account_types, row)
@@ -55,13 +55,18 @@
 														<span class="cat-name">{ucwords($row->accounttype)}</span>
 													</a>
 												@endfetch
-
                                             </div><!--/.mega-menu-content-->
+
+                                            <ul class="dropdown-content mobile-dropdown">
+                                                @fetch($account_types, row)
+                                                    <li><a $href="list/{$row->accounttype}">{ucwords($row->accounttype)}</a></li>
+                                                @endfetch
+                                            </ul>
                                         </li>
                                         <li php-if::class="$view == 'how-it-works' ? 'active-link' : ''"><a $href="how-it-works">How it works</a>
                                         </li>
                                         <li class="dropdown-trigger">
-                                            <a href="#">Store</a>
+                                            <a href="#" class="dropdown-trigger2">Store</a>
                                             <ul class="dropdown-content">
                                                 <li><a $href="about-us">About us</a></li>
                                                 <li><a $href="pricing">Pricing</a></li>

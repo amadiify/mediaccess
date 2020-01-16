@@ -14182,6 +14182,8 @@ ul.dropdown-content > .dropdown-trigger:hover > ul.dropdown-content > li:hover >
   }
   .error-page-section .error-thumbnail {
     margin-bottom: 50px;
+    display: none;
+    padding-top: 50px;
   }
   .search-form-area {
     padding-top: 10px;

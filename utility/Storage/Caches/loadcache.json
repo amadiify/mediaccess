@@ -1,6 +1,6 @@
 {
     ".\/pages\/App\/Custom\/header.html": {
-        "hash": "f81de13e8ea25688315e6b33204b1aff",
+        "hash": "1180a2f175cd1c66f39cbdcb0b885978",
         "path": "utility\/Storage\/Caches\/Headers\/cache.429d0c39bdea32321e7eaec3332389bb.App.header.html"
     },
     ".\/pages\/App\/Views\/home.html": {
@@ -30,5 +30,29 @@
     ".\/pages\/App\/Views\/drug.html": {
         "hash": "c6a1913fc1ef25e5c4ec6bef598bca68",
         "path": "utility\/Storage\/Caches\/Views\/cache.a3ffa3fac0e12e69ef659bce1e0e5aa7.App.drug.html"
+    },
+    ".\/pages\/App\/Views\/signin.html": {
+        "hash": "5413905b979947d02e8d92548675fd8e",
+        "path": "utility\/Storage\/Caches\/Views\/cache.63b25f66b0162c83dbb330fa5d5f0854.App.signin.html"
+    },
+    ".\/pages\/App\/Views\/register.html": {
+        "hash": "559e5627cb0f65b988cd9bc1cb652aab",
+        "path": "utility\/Storage\/Caches\/Views\/cache.02c66c2e9896cf7b4382f2fd2b335d92.App.register.html"
+    },
+    ".\/pages\/App\/Views\/non-patient.html": {
+        "hash": "0c00c1af60fe3dc98cb5bd300a2794ec",
+        "path": "utility\/Storage\/Caches\/Views\/cache.58207abe57bce609ebb9ef49ea09b39b.App.non-patient.html"
+    },
+    ".\/custom\/header.html": {
+        "hash": "6ebcc45a957425cf2df7df1fb23279a7",
+        "path": "utility\/Storage\/Caches\/Headers\/cache.d29db69b1a9178a48f1d2ab32f72b35c.AppError.header.html"
+    },
+    ".\/pages\/AppError\/Views\/error404.html": {
+        "hash": "af9f71f9853a6c29ef01283f45c86b84",
+        "path": "utility\/Storage\/Caches\/Views\/cache.be0e00ed045156756e7f9bc7f81b4313.AppError.error404.html"
+    },
+    ".\/custom\/footer.html": {
+        "hash": "b457562442fdc85a972c2112a084d02c",
+        "path": "utility\/Storage\/Caches\/Footers\/cache.420f043b55cd0ea699bdd46745316f3d.AppError.footer.html"
     }
 }

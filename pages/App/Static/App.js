@@ -27,4 +27,28 @@
             clearInterval(switched);
         }
     }, false);
+
+    $(document).ready(function(){
+         // manage dropdown
+        var mean = $('.mean-expand');
+        mean.on('click', function(){
+            var parent = this.parentNode.querySelector('.mobile-dropdown');
+            if (parent.hasAttribute('data-clicked'))
+            {
+                parent.style.display = 'none';
+                parent.removeAttribute('data-clicked');
+            }
+            else
+            {
+                parent.style.display = 'block';
+                parent.setAttribute('data-clicked', true);
+            }
+        });
+
+        $('.dropdown-trigger2').click(function(){
+            var expand = this.parentNode.querySelector('.mean-expand');
+            expand.click();
+        });
+    });
+
 })(window);

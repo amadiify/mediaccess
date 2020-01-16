@@ -44,7 +44,7 @@
                                         <li><a href="<?=url("")?>">Home</a>
                                         </li>
                                         <li  class="<?=($view == 'list' || $view == 'about' ? 'active-link dropdown-trigger mega-menu' : 'dropdown-trigger mega-menu')?>">
-                                            <a href="#">Explore</a>
+                                            <a href="#" class="dropdown-trigger2">Explore</a>
                                             <div class="mega-menu-content carousel-nav-dots owl-carousel">
                                                 <?php $account_types = db('account_types')->get('showpublic = 1');?>
 												<?php
@@ -58,13 +58,21 @@ while ($row = $account_types->obj())
 														<span class="cat-name"><?=ucwords($row->accounttype)?></span>
 													</a>
 												<?php }} ?>
-
                                             </div><!--/.mega-menu-content-->
+
+                                            <ul class="dropdown-content mobile-dropdown">
+                                                <?php
+$account_types = $account_types;if ($account_types->rows > 0){
+while ($row = $account_types->obj())
+{ ?>
+                                                    <li><a href="<?=url("list/$row->accounttype")?>"><?=ucwords($row->accounttype)?></a></li>
+                                                <?php }} ?>
+                                            </ul>
                                         </li>
                                         <li  class="<?=($view == 'how-it-works' ? 'active-link' : '')?>"><a href="<?=url("how-it-works")?>">How it works</a>
                                         </li>
                                         <li class="dropdown-trigger">
-                                            <a href="#">Store</a>
+                                            <a href="#" class="dropdown-trigger2">Store</a>
                                             <ul class="dropdown-content">
                                                 <li><a href="<?=url("about-us")?>">About us</a></li>
                                                 <li><a href="<?=url("pricing")?>">Pricing</a></li>

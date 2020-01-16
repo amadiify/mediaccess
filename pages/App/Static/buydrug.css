@@ -23,3 +23,17 @@ padding: 0px; grid-row-gap:10px; }
 .popular-todo-item.status-closed .todo-footer .todo-status {
     color:#2F669C;
 }
+
+@media only screen and (max-width:600px)
+{
+    .has-shadow{margin-top: -42px; padding: 20px;}
+    .drug-categories {
+        grid-template-columns: repeat(1, 1fr);
+        grid-row-gap: 8px;
+    }
+    .breadcrumb-content-area{margin-top: 10px; overflow: hidden; margin-bottom: 34px;}
+    .breadcrumb-area{width: 600px;}
+    .item-thumb-image {
+        width: 100%;
+    }
+}
