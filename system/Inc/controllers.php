@@ -1830,20 +1830,44 @@ if (!class_exists('Moorexa\Controller'))
 			if (is_array($css) && count($css) > 0)
 			{
 				$cssArray = [];
+				$bundle = [];
+
+
 				foreach ($css as $index => $fname)
 				{
-					if (preg_match('/^((http|https)[:](\/\/))|((\/\/))/i', $fname))
+					if (is_string($index) and $index == 'stylesheet@bundle')
 					{
-						$cssArray[] = $fname;
+						if (is_array($fname))
+						{
+							foreach ($fname as $i => $bundlef)
+							{
+								$bundle[] = $assets->css($bundlef);
+							}
+						}
+						else {
+							$bundle[] = $assets->css($fname);
+						}
 					}
 					else
 					{
-						$path = $assets->css($fname);
-						if ($path != '')
+						if (preg_match('/^((http|https)[:](\/\/))|((\/\/))/i', $fname))
 						{
-							$cssArray[] = $path;
+							$cssArray[] = $fname;
 						}
+						else
+						{
+							$path = $assets->css($fname);
+							if ($path != '')
+							{
+								$cssArray[] = $path;
+							}
+						}	
 					}
+				}
+
+				if (count($bundle))
+				{
+					$cssArray = $bundle;
 				}
 
 				if (count($cssArray) > 0)
@@ -1867,28 +1891,51 @@ if (!class_exists('Moorexa\Controller'))
 			if (is_array($js) && count($js) > 0)
 			{
 				$jsArray = [];
+				$bundle = [];
+
 				foreach ($js as $index => $fname)
 				{
 					$config = [];
 
-					if (is_array($fname))
+					if (is_string($index) and $index == 'scripts@bundle')
 					{
-						Assets::$jsLoadConfig[$index] = $fname;
-						$fname = $index;
-					}
-
-					if (preg_match('/^((http|https)[:](\/\/))|((\/\/))/i', $fname))
-					{
-						$jsArray[] = $fname;
+						if (is_array($fname))
+						{
+							foreach ($fname as $i => $bundlef)
+							{
+								$bundle[] = $assets->js($bundlef);
+							}
+						}
+						else {
+							$bundle[] = $assets->js($fname);
+						}
 					}
 					else
 					{
-						$path = $assets->js($fname);
-						if ($path != '')
+						if (is_array($fname))
 						{
-							$jsArray[] = $path;
+							Assets::$jsLoadConfig[$index] = $fname;
+							$fname = $index;
+						}
+
+						if (preg_match('/^((http|https)[:](\/\/))|((\/\/))/i', $fname))
+						{
+							$jsArray[] = $fname;
+						}
+						else
+						{
+							$path = $assets->js($fname);
+							if ($path != '')
+							{
+								$jsArray[] = $path;
+							}
 						}
 					}
+				}
+
+				if (count($bundle) > 0)
+				{
+					$jsArray = $bundle;
 				}
 
 				if (count($jsArray) > 0)

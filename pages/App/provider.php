@@ -61,7 +61,8 @@ class AppProvider extends App
             'markerclusterer.js',
             'maps.js',
             'main.js',
-            'reset.js'
+            'reset.js',
+            'scripts@bundle' => 'bundle.js'
         ]);
 
        // call route! Applies Globally.

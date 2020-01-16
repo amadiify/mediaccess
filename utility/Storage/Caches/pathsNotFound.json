@@ -1621,5 +1621,13 @@
     "public\/Assets\/Images\/:.\/pages\/My\/Uploads\/78d840858df304d095448c86d8fd3355.png": [
         "public\/Assets\/Images\/",
         ".\/pages\/My\/Uploads\/78d840858df304d095448c86d8fd3355.png"
+    ],
+    "public\/Assets\/Js\/App\/:bundle.js": [
+        "public\/Assets\/Js\/App\/",
+        "bundle.js"
+    ],
+    "public\/Assets\/Css\/:plugin.css": [
+        "public\/Assets\/Css\/",
+        "plugin.css"
     ]
 }

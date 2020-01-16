@@ -50,6 +50,13 @@ $kernel->db([
 			'password'  =>   'mediaccess@2019',
 			'dbname'    =>   'db_a0c157_mediapi',
 		],
+		'production2'=> [
+			'driver'  =>   'mysql',
+			'host'    =>   'mysql5022.site4now.net',
+			'user'    =>   'a0c157_mediapi',
+			'password'  =>   'mediaccess@2019',
+			'dbname'    =>   'db_a0c157_mediapi',
+		],
 		'options'   => [ PDO::ATTR_PERSISTENT => true ]
 	],
  
@@ -57,7 +64,7 @@ $kernel->db([
 // choose from any of your configuration for a default connection
 ])
 ->default(['development' => 'mediaccess-db', 'live' => 'mediaccess-db'])
-->domain('mywekiwork.com', ['development' => 'mediaccess-db@production'])
+//->domain('console.fregatelab.com', ['live' => 'mediaccess-db@production2'])
 
 // add channel to requests
 ->channel(function($request){

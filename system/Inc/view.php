@@ -1484,7 +1484,7 @@ class View extends Bootloader
 		$files = Linker::getFiles();
 
 		$jsp = rtrim(PATH_TO_JS, '/');
-
+		
 		if (isset($files[$jsp]))
 		{
 			$files = $files[$jsp];
@@ -1522,7 +1522,10 @@ class View extends Bootloader
 		
 		if (is_array($livejs))
 		{
-			$javascripts = array_merge($javascripts, $livejs);
+			if (is_array($javascripts))
+			{
+				$javascripts = array_merge($javascripts, $livejs);
+			}
 		}
 
 		$this->js_minified = $javascripts;

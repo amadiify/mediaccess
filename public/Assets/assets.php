@@ -677,7 +677,7 @@ class Assets
 	}
 
 	// change file position before rendering
-	private function changePositionIfChanged(string $typeOfFile, array &$referenceArray)
+	private function changePositionIfChanged(string $typeOfFile, &$referenceArray = [])
 	{
 		$changePosition = self::$changePosition[$typeOfFile];
 

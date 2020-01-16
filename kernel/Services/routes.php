@@ -18,6 +18,6 @@ Route::domain('console.fregatelab.com', function()
 {
     if (!isset($_SESSION['lab.access.guranted']))
     {
-        redirect('http://console.fregatelab.com?msg=Access denied');
+        //redirect('http://console.fregatelab.com?msg=Access denied');
     }
 });
