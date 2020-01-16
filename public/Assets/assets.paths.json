@@ -69,5 +69,6 @@
     "man-3.png@90:90": "public\/Assets\/Images\/icon\/man-3.png",
     ".\/pages\/My\/Uploads\/\/b1ef0ff9a29fa7192d44c1dd675393b39899ed56.jpg@90:90": ".\/pages\/My\/Uploads\/\/b1ef0ff9a29fa7192d44c1dd675393b39899ed56.jpg",
     ".\/pages\/My\/Uploads\/\/b1ef0ff9a29fa7192d44c1dd675393b39899ed56.jpg@100:100": ".\/pages\/My\/Uploads\/\/b1ef0ff9a29fa7192d44c1dd675393b39899ed56.jpg",
-    "sliderImage1.jpg": "public\/Assets\/Images\/sliderImage1.jpg"
+    "sliderImage1.jpg": "public\/Assets\/Images\/sliderImage1.jpg",
+    "close.png": "public\/Assets\/Images\/Icons\/close.png"
 }

@@ -26,5 +26,9 @@
     ".\/pages\/App\/Views\/howitworks.html": {
         "hash": "d41d8cd98f00b204e9800998ecf8427e",
         "path": "utility\/Storage\/Caches\/Views\/cache.9ba10cc2ab1039fd376cdbd8ee86d90b.App.howitworks.html"
+    },
+    ".\/pages\/App\/Views\/drug.html": {
+        "hash": "c6a1913fc1ef25e5c4ec6bef598bca68",
+        "path": "utility\/Storage\/Caches\/Views\/cache.a3ffa3fac0e12e69ef659bce1e0e5aa7.App.drug.html"
     }
 }

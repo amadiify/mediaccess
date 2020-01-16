@@ -228,7 +228,7 @@ while ($review = $reviews->obj())
 													<div class="review-box">
 														<ul class="list">
 															<?php
-$drug_rating_option = \Moorexa\DB::sql('SELECT * FROM drug_rating_option ');if ($drug_rating_option->rows > 0){
+$drug_rating_option = \Moorexa\DB::sql('SELECT * FROM '.(\Moorexa\DB::getTableName('drug_rating_option')).' ');if ($drug_rating_option->rows > 0){
 while ($option = $drug_rating_option->obj())
 { ?>
 																<li>

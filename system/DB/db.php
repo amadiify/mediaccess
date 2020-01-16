@@ -430,8 +430,9 @@ class DB
     public static function getTableName(string $table)
     {
         $prefix = self::getPrefix();
+        $quote = preg_quote($prefix);
 
-        if (stripos($table, $prefix) === false)
+        if (preg_match("/($quote)/", $table))
         {
             $table = $prefix . $table;
         }
