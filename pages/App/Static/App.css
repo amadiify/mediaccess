@@ -286,3 +286,8 @@ background-size: cover;}
 .shopping-cart-section .shop-table thead {
     background-color:#2f669c;
 }
+
+@media only screen and (min-width: 992px) { 
+    .error-page-section .error-thumbnail{display: none;}
+    .features-cat-list-area{display: none;}
+}
