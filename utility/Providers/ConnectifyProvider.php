@@ -18,7 +18,7 @@ class ConnectifyProvider
      */
     public function boot()
     {
-        Http::$endpoint = 'http://api.mediaccessng.com/';
+        Http::$endpoint = 'http://api.mediaccess.com.ng/';
 
         // set authorize token
         Http::setHeader('x-authorize-token:fadca654b5afbfbe4e262a36eb17c8af');

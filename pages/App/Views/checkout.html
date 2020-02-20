@@ -76,7 +76,7 @@
 							<div class="form-group">
 								<label>Country</label>
 								<select name="country" class="country custom-select">
-									@fetch('countries', 'country')
+									@fetch('countries' as 'country')
 										{$option = $country->countryid == $countryid ? 'selected' : '';}
 										<option value="{$country->countryid}" {$option}>{$country->country}</option>
 									@endfetch
@@ -85,7 +85,7 @@
 							<div class="form-group">
 								<label>State</label>
 								<select name="state" class="country custom-select" required>
-									@fetch ('states', 'state')
+									@fetch ('states' as 'state')
 										{$option = $account->stateid == $state->stateid ? 'selected' : '';}
 										<option value="{$state->stateid}" {$option}>{$state->state}</option>
 									@endfetch
@@ -94,7 +94,7 @@
 							<div class="form-group">
 								<label>City</label>
 								<select name="city" class="city custom-select" required>
-									@fetch ('cities', 'city')
+									@fetch ('cities' as 'city')
 										{$option = $account->cityid == $city->cityid ? 'selected' : '';}
 										<option value="{$city->cityid}" {$option}>{$city->city}</option>
 									@endfetch

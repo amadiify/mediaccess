@@ -92,7 +92,7 @@ class AppList extends Model
         $query->if($sort != null, function($req) use ($sort)
         {
             $sort = ltrim(substr($sort, strpos($sort, '-')), '-');
-            $req->like('groups', "%$sort%");
+            $req->like('accountgroups', "%$sort%");
         });
     }
 
@@ -103,7 +103,7 @@ class AppList extends Model
 
         if ($get->has('group', $group))
         {
-            $query->like('groups', "%$group%");
+            $query->like('accountgroups', "%$group%");
         }
 
         if ($get->has('city', $city))
@@ -580,7 +580,7 @@ class AppList extends Model
             });
 
             $groups = [];
-            db('groups')->get()->obj(function($row) use (&$groups){
+            db('account_groups')->get()->obj(function($row) use (&$groups){
                 $groups[] = $row->group_name;
             });
 
@@ -723,7 +723,7 @@ class AppList extends Model
                     $query['group'] = $group;
 
                     // apply target
-                    $group = db('groups')->get('group_name = ?', $group);
+                    $group = db('account_groups')->get('group_name = ?', $group);
                     // get account type
                     $accountType = db('account_types')->get('accounttypeid=?', $group->accounttypeid);
                     $target = strtolower($accountType->accounttype);

@@ -309,21 +309,21 @@ class App extends Controller
                 $model->pop('complete','iagree');
 
                 //create account
-                $create = Http::body($model->getData())->post('user/register');
-                $model->setErrors($create->json);
+                // $create = Http::body($model->getData())->post('user/register');
+                // $model->setErrors($create->json);
 
-                if ($model->isOk() || $create->json->status == 'success')
-                {
-                    Alert::success($create->json->message);
-                    // activation
-                    $view = 'register/activation';
-                    $this->changeState('activation');
-                }
-                else
-                {
-                    Alert::error($create->json->message);
-                    $view = 'register/full-form';
-                }
+                // if ($model->isOk() || $create->json->status == 'success')
+                // {
+                //     Alert::success($create->json->message);
+                //     // activation
+                //     $view = 'register/activation';
+                //     $this->changeState('activation');
+                // }
+                // else
+                // {
+                //     Alert::error($create->json->message);
+                //     $view = 'register/full-form';
+                // }
             }
 
             // export
@@ -1231,6 +1231,19 @@ class App extends Controller
             'countryid' => $country->countryid,
             'cart' => $json
         ]);
+	}
+	/**
+    * App/about-us wrapper. 
+    *
+    * See documention https://www.moorexa.com/doc/controller
+    *
+    * @param Any You can catch params sent through the $_GET request
+    * @return void
+    **/
+
+	public function aboutUs()
+	{
+		$this->render('aboutus');
 	}
 }
 // END class

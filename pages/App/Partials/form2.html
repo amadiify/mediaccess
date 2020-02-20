@@ -10,7 +10,7 @@
 <div class="form-group form-select">
     <select class="form-controllar" name="sexid" required>
         <option value="">Sex</option>
-        @fetch('sex', row)
+        @fetch('sex' as row)
             <option value="{$row->sexid}">{ucwords($row->sex)}</option>
         @endfetch
     </select>
@@ -20,7 +20,7 @@
 <div class="form-group form-select">
     <select class="form-controllar" name="stateid" required>
         <option value="">State/City</option>
-        @fetch('states', row)
+        @fetch('states' as row)
             <option value="{$row->stateid}">{ucwords($row->state)}</option>
         @endfetch
     </select>

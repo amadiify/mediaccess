@@ -28,6 +28,25 @@
         }
     }, false);
 
+    win.addEventListener('load', function(){
+        // get preloader
+        var preloader = document.querySelector('.preloader');
+        if (preloader !== null)
+        {
+            var preloaderimg = preloader.querySelector('img');
+
+            preloaderimg.style.opacity = 0;
+
+            setTimeout(() => {
+                preloader.classList.add('moveOut');
+
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 1500);
+            }, 800);
+        }
+    });
+
     $(document).ready(function(){
          // manage dropdown
         var mean = $('.mean-expand');
@@ -49,6 +68,8 @@
             var expand = this.parentNode.querySelector('.mean-expand');
             expand.click();
         });
+
+        
     });
 
 })(window);

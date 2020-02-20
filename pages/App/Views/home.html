@@ -29,7 +29,7 @@
 
                 {$account_types = Query::publicAccounts();}
 
-                @fetch($account_types, list)
+                @fetch($account_types as list)
                     <!--~~~~~ Start Cat List Item ~~~~~-->
                     {$hasGroup = Query::getGroups($list->accounttypeid);}
 
@@ -43,7 +43,7 @@
                                     <div class="cat-name">{$list->accounttype}</div>
                                 </div>
                                 <ul class="list">
-                                    @fetch($hasGroup, group)
+                                    @fetch($hasGroup as group)
                                         <!-- get group -->
                                         {$users = Query::getRowsFromGroupUsers($group->group_name);}
                                         <li><a $href="list/{$list->accounttype}/show-{$group->group_name}">{ucwords($group->group_name)}</a><span>{$users}</span></li>
@@ -75,7 +75,7 @@
             <div class="col-12">
                 <div class="section-header text-center">
                     <h2 class="section-title">What Are You <span>Interested In</span></h2>
-                    <p>Poular Categories</p>
+                    <p>Popular Categories</p>
                     <div class="divider">
                         <img $src="icon/divider.png" alt="icon">
                     </div>
@@ -85,7 +85,7 @@
         
         <div class="row categories-list">
 
-            @fetch($account_types, list)
+            @fetch($account_types as 'list')
                 <div class="col-lg-3 col-md-6">
                     <div class="single-cat">
                         <div class="icon">

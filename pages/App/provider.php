@@ -26,8 +26,8 @@ class AppProvider extends App
         
         // load css
         $this->loadCss([
-            'fontawesome.min.css',
-            'icomoon.css',
+            'fontawesome.min2.css',
+            'icomoon2.css',
             'plugins.css',
             'style.css',
             'reset.css'

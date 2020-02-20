@@ -70,7 +70,7 @@ class My extends Model
                 // send email
                 $order = db('templates')->get('tag = ?', 'order-approved');
                 $template = $order->template;
-                $group = \groups::get('groupid = ?', $track->groupid);
+                $group = \account_groups::get('groupid = ?', $track->groupid);
 
                 $service = $group->group_name;
 
@@ -96,8 +96,8 @@ class My extends Model
                 $mail->subject('Mediaccess')
                 ->from('noreply@mediaccessng.com')
                 ->to($user->email)
-                ->html($template);
-                //->send(); // send mail
+                ->html($template)
+                ->send(); // send mail
 
                 if ($track->update(['status' => 'success']))
                 {

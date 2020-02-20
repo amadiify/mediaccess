@@ -1,4 +1,0 @@
-[2019-10-31 11:58 pm] ParseError: syntax error, unexpected 'case' (T_CASE) in File: /Users/amadiify/Desktop/workspace/PHP/mediportal/system/Lib/funcLib.php on Line 5768
-[2019-12-30 6:23 pm] Error: Call to undefined function utility\Classes\BootMgr\function_exits() in File: /Users/amadiify/Desktop/workspace/PHP/mediportal/utility/Classes/BootMgr/Manager.php on Line 186
-[2019-12-30 6:23 pm] Error: Call to undefined function utility\Classes\BootMgr\function_exit() in File: /Users/amadiify/Desktop/workspace/PHP/mediportal/utility/Classes/BootMgr/Manager.php on Line 186
-[2019-12-30 6:24 pm] Error: Call to undefined function utility\Classes\BootMgr\function_exist() in File: /Users/amadiify/Desktop/workspace/PHP/mediportal/utility/Classes/BootMgr/Manager.php on Line 186

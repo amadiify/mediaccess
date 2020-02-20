@@ -1629,5 +1629,23 @@
     "public\/Assets\/Css\/:plugin.css": [
         "public\/Assets\/Css\/",
         "plugin.css"
+    ],
+    "utility\/Components\/:app.php:App.php:APP.php:app.php": [
+        "utility\/Components\/",
+        [
+            "app.php",
+            "App.php",
+            "APP.php",
+            "app.php"
+        ]
+    ],
+    "utility\/Exceptions\/:app.php:App.php:APP.php:app.php": [
+        "utility\/Exceptions\/",
+        [
+            "app.php",
+            "App.php",
+            "APP.php",
+            "app.php"
+        ]
     ]
 }

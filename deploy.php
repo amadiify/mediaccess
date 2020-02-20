@@ -18,7 +18,7 @@
  class DeployProject
  {
     // @var $remote_address (optional)
-    public $remote_address = 'http://console.fregatelab.com/workspace/mediportal/'; 
+    public $remote_address = 'http://mediaccess.com.ng/'; 
 
     // @var $requestID 
     // set a unique requestID
@@ -97,7 +97,6 @@
 
         $this->failed("Request Option missing.");
 
-        return null;
     }
 
     // show text and sleep for 100000 milleseconds.
@@ -118,7 +117,7 @@
             // define home dir
             define('HOME', __ROOT__ . '/');
         }
-        
+
         // get command 
         $command = $args[0] ?? null;
 
@@ -154,7 +153,6 @@
 
                         $other = null;
                         $haslognew = false;
-                        $log = [];
 
                         // check directory
                         if (!is_dir(HOME . 'utility/Storage'))
@@ -171,7 +169,6 @@
 
                         $_allfiles = 0;
                         $notrack = false;
-                        $allfiles = null;
 
                         // create zip file
                         if (count($options) > 0)
@@ -224,7 +221,7 @@
                                 $url = rtrim($address, 'deploy.php');
                                 $url = rtrim($url, '/') . '/deploy.php';
 
-                                if ($haslognew)
+                                if ($haslog)
                                 {
                                     $url .= '?mode=add-replace';
                                 }
@@ -358,9 +355,9 @@
 
                         $post = ['option' => 'rollback'];
 
-                        if (isset($options[1]))
+                        if (isset($option[1]))
                         {
-                            $post['deploy'] = $options[1];
+                            $post['deploy'] = $option[1];
                         }
 
                         $parse = parse_url($url);
@@ -680,7 +677,7 @@
 
             if (count($del) > 0)
             {
-                $sym = $haslognew === true ? '&' : '?';
+                $sym = $haslog === true ? '&' : '?';
                 $other = $sym.'del='.json_encode($del);
             }
         }
@@ -939,8 +936,6 @@
         }
 
         $this->failed("No file with {$this->uploadName} to deploy.");
-
-        return null;
     }
 
     // rollback option
@@ -1049,8 +1044,6 @@
         }
 
         $this->failed("Rollback failed! File $deploy not found");
-
-        return null;
     }
 
     // Helper functions 

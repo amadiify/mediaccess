@@ -685,7 +685,6 @@ class Assist
     // private storage
     private static $storage = [];
 
-
     // ansii codes
     private $ansii = [
         'reset' => "\033[0m",

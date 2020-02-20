@@ -770,7 +770,7 @@ class My extends Controller
                 }
 
                 // get service type
-                $group = groups::get('groupid = ?', $order->groupid);
+                $group = account_groups::get('groupid = ?', $order->groupid);
                 $this->service = ucfirst($group->group_name);
 
                 // get account type

@@ -14,7 +14,7 @@ class App extends Model
             $ref = $getref->ref;
 
             // create payment.
-            $groups = \groups::get('group_name =?', $post->service_type);
+            $groups = \account_groups::get('group_name =?', $post->service_type);
             $amount = $groups->service_fee; // amount 
             $narration = 'Paying for '. $post->service_type . ' consultation to '. $post->consultant; // narration
 

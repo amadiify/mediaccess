@@ -146,7 +146,7 @@ if (!class_exists('Moorexa\SysPath'))
                     }
                     else
                     {
-                        $xml = simplexml_load_file(HOME . 'config.xml');
+                        $xml = simplexml_load_file(HOME . 'kernel/Config/config.xml');
                         $cont = $xml->router->default->controller;
                         $server['REQUEST_QUERY_STRING'] = $cont .'/'. $last;
                     }

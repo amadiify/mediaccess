@@ -14,13 +14,13 @@ class Query
     // get groups
     public static function getGroups(int $accountTypeId)
     {
-        return db('groups')->get('accounttypeid = ?', $accountTypeId);
+        return db('account_groups')->get('accounttypeid = ?', $accountTypeId);
     }
 
     // get users in a group from account and return rows
     public static function getRowsFromGroupUsers(string $group)
     {
-        return db('account')->get()->like("groups", "%$group%")->rows;
+        return db('account')->get()->like("accountgroups", "%$group%")->rows;
     }
 
     // is account verified by medi access ?
@@ -174,7 +174,7 @@ class Query
     public static function getServiceFee(int $groupid, &$group=null)
     {
         // get group information
-        $group = db('groups')->get('groupid=?', $groupid);
+        $group = db('account_groups')->get('groupid=?', $groupid);
 
         // return service fee
         return intval($group->service_fee);

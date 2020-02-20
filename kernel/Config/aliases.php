@@ -78,7 +78,7 @@ $tables = [
 		'photo_gallery',
 		'web_photo',
 		'orders',
-		'groups',
+		'account_groups',
 		'payments',
 		'pharmacytypes'
 	]

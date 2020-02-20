@@ -51,7 +51,7 @@
 				<div class="col-lg-12">
 					<h2>Categories</h2>
 					<ul class="drug-categories">
-						@fetch('pharmacytypes', 'pharmacy')
+						@fetch('pharmacytypes' as 'pharmacy')
 							<li php-if::class="$this->isActive($pharmacy->pharmacytype) ? 'active' : ''"><a $href="buydrug/category/{$pharmacy->pharmacytype}">{$pharmacy->pharmacytype}</a></li>
 						@endfetch
 					</ul>

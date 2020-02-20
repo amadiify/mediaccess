@@ -18,7 +18,17 @@
 </head>
 	
 <body>
-    
+    <div class="preloader">
+        <div class="status">
+          <div class="status-message">
+            <div style="margin-top: -100px;" align="center">
+              <img $src="logo_trans.png" class="img-responsive">
+            </div>
+            <h1>
+            </h1>
+          </div>
+        </div>
+    </div>
 <!--********************************************************-->
     <!--********************* SITE HEADER **********************-->
     <!--********************************************************-->
@@ -47,7 +57,7 @@
                                             <a href="#" class="dropdown-trigger2">Explore</a>
                                             <div class="mega-menu-content carousel-nav-dots owl-carousel">
                                                 {$account_types = db('account_types')->get('showpublic = 1');}
-												@fetch($account_types, row)
+												@fetch($account_types as row)
 													<a class="cat-item" $href="list/{$row->accounttype}">
 														<div class="cat-thumb">
 															<img src="{image($row->image)}" alt="cat">
@@ -58,7 +68,7 @@
                                             </div><!--/.mega-menu-content-->
 
                                             <ul class="dropdown-content mobile-dropdown">
-                                                @fetch($account_types, row)
+                                                @fetch($account_types as row)
                                                     <li><a $href="list/{$row->accounttype}">{ucwords($row->accounttype)}</a></li>
                                                 @endfetch
                                             </ul>

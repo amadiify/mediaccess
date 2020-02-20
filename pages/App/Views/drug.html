@@ -86,7 +86,7 @@
 											<h5 class="small-title">Shipping Option</h5>
 											<div class="form-group">
 											<select name="shipping_option">
-												@fetch($groups, 'group')
+												@fetch($groups as 'group')
 													<option value="{$group->groupid}">{ucwords($group->group_name)}</option>
 												@endfetch
 											</select>
@@ -173,7 +173,7 @@
 												<a $href="sign-in?redirectTo=drug/$pharmacy/$drugName">{substr($drug->account->telephone, 0, 5)}-show number</a>
 											@endif   
 										</span>
-                                        <span class="item-tag"><b>Order Options :</b>  {$drug->account->groups}</span>
+                                        <span class="item-tag"><b>Order Options :</b>  {$drug->account->accountgroups}</span>
                                     </div>
                                 </div><!--~./ end tab pane ~-->
                                 
@@ -182,7 +182,7 @@
 									@alert;
                                     <div class="product-review-list">
 										
-										@fetch($reviews, 'review')
+										@fetch($reviews as 'review')
                                         <div class="product-review">
 											{$this->totalStar($review->ratingcode, $stars)}
                                             <div class="rating-riview">
@@ -221,7 +221,7 @@
 													<input type="hidden" name="drugid" value="{$drug->drug->drugid}">
 													<div class="review-box">
 														<ul class="list">
-															@fetch ('drug_rating_option', 'option')
+															@fetch ('drug_rating_option' as 'option')
 																<li>
 																	<span class="text">{$option->options}</span>
 																	<div class="review-rating" id="option{$option->optionid}"></div>
@@ -275,7 +275,7 @@
                     </div><!--./ section-header -->
                 </div>
                 <div class="row">
-					@fetch ($related, 'other')
+					@fetch ($related as 'other')
                     <!--~~~~~ Start Shop Item ~~~~~-->
                     <div class="col-lg-3 col-md-6">
                         <div class="shop-item">
